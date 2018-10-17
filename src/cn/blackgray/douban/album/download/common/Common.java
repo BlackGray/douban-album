@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  */
 public class Common {
 	
-	public static String VERSION = "v0.5.10";
+	public static String VERSION = "v0.5.11";
 	
 	public static final String DEFAULT_DOC_NAME = "描述.txt";
 	public static final String DEFAULT_HTML_NAME = "index.html";
