@@ -15,7 +15,7 @@ public class SiteAlbumHandler extends AlbumHandler {
 	public static final int PAGE_SIZE_IMAGES_SITE = 30;		//小站照片分页大小（一页30张图）
 	public static final String PAGE_TAG = "start";
 	public static final String IMAGE_NAME_REGEX = "p\\d+.(" + Common.IMAGE_TYPE + ")";
-	public static final String ALBUM_URL_REGEX = "(http|https)://site.douban.com/widget/photos/\\d+/";
+	public static final String ALBUM_URL_REGEX = "(http|https)://site.douban.com/\\d+/widget/photos/\\d+/";
 
 	@Override
 	public String getURLRegex() {
@@ -55,6 +55,8 @@ public class SiteAlbumHandler extends AlbumHandler {
 
 	@Override
 	public String getRawURL(String imageURL) {
+//		https://img3.doubanio.com/view/photo/photo/public/p1826089744.webp
+//		https://img3.doubanio.com/view/photo/raw/public/p1826089744.jpg
 		return imageURL.replace("photo/photo", "photo/raw").trim();
 	}
 
@@ -114,7 +116,7 @@ public class SiteAlbumHandler extends AlbumHandler {
 		//				http://img1.douban.com/view/photo/albumicon/public/p1097123994.jpg
 		imageURL = imageURL.replace("thumb", "photo").trim();		//thumb——>photo：缩略图——>大图
 		desc = desc.replace("\\t\\n","").trim();
-		if (!map.containsKey(imageURL)) {
+		if (!map.containsKey(imageURL) && !imageURL.contains("sqs")) {
 			BGImage bgImage = new BGImage(desc, imageURL, commentTatol);
 			map.put(imageURL, bgImage);
 		}
