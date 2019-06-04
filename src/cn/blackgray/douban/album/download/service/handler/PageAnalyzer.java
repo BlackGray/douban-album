@@ -131,9 +131,10 @@ public class PageAnalyzer {
 		//		http://img3.douban.com/view/photo/photo/public/p1424544615.jpg - 豆瓣图片地址
 
 		Map<String,BGImage> result = new HashMap<String,BGImage>();
+		//读取页面源码
 		String source = URLUtils.readSource(pageURL);
 
-		//【获取单页所有图片地址】
+		//获取单页所有图片地址
 		String regex = "(http|https)://(\\w|\\s|\\.|-|_|/)+[\\.](" + Common.IMAGE_TYPE + ")";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(source);
@@ -149,7 +150,7 @@ public class PageAnalyzer {
 			}
 		}
 		
-		//【去除albumicon图片】
+		//去除albumicon图片
 		List<String> removeList = new ArrayList<String>();
 		for (Entry<String, BGImage> element : result.entrySet()) {
 			if(!albumHandler.checkBGImage(element.getValue())){

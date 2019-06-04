@@ -544,6 +544,9 @@ public class MainFrame extends javax.swing.JFrame {
 					if (url.indexOf("?start=") != -1) {
 						url = url.substring(0, url.indexOf("?start="));
 					}
+					if (url.indexOf("?m_start=") != -1) {
+						url = url.substring(0, url.indexOf("?m_start="));
+					}
 				}
 				//Î²²¿Ìí¼Ó¡°/¡±
 				if (url.indexOf("?") != -1 || url.substring(url.length() - 1).equals("/")) {

@@ -144,9 +144,9 @@ public class DownloadProcessing {
 		Console.print("处理单元：开始下载：" + album.getName() + "(" + imageURLSet.size() + "张)");
 		update = DownloadManager.downloadImage(new ArrayList<String>(imageURLSet),album.getPath());
 
-		//【如果是小站相册&个人相册，下载大图】
+		//【下载大图】
 		AlbumHandler albumHandler = album.getAlbumHandler();
-		if (albumHandler.hasRaw()) {
+		if (Common.IS_DOWNLOAD_RAW && albumHandler.hasRaw()) {
 			Console.print("处理单元：检测并下载大图");
 			//创建目录
 			String path = album.getPath() + File.separatorChar + "raw";

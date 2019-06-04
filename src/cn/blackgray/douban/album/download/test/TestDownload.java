@@ -12,7 +12,7 @@ public class TestDownload {
 
 	public static void main(String[] args) {
 		try {
-			URL url = new URL("http://img3.douban.com/view/photo/photo/public/p1601592092.png");
+			URL url = new URL("https://img1.doubanio.com/view/photo/l/public/p2257588668.jpg");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			HttpURLConnection.setFollowRedirects(false);
 			
@@ -27,7 +27,7 @@ public class TestDownload {
 			
 			
 			BufferedInputStream inputStream = new BufferedInputStream(in);
-			BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(new File("d://TEST.JPG")));
+			BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(new File("/Users/blackgray/Desktop/douban/test.jpg")));
 			byte[] data = new byte[1024];
 			int n = 0; 
 			while ((n = inputStream.read(data)) != -1) {

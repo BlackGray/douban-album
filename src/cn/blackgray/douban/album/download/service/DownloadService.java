@@ -50,6 +50,7 @@ public class DownloadService {
 		//【执行处理】
 		for (int i = 0; i < albums.size(); i++) {
 			Album album = albums.get(i);
+			//初始化相册对象
 			album.init();
 			//执行下载
 			album.download();

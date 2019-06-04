@@ -102,7 +102,7 @@ public class URLUtils {
 		HttpURLConnection.setFollowRedirects(true);
 		conn.setInstanceFollowRedirects(true);
 		/* 设置 URL 请求的方法， GET POST HEAD OPTIONS PUT DELETE TRACE 以上方法之一是合法的，具体取决于协议的限制。*/
-		conn.setRequestMethod("HEAD");
+		conn.setRequestMethod("GET");
 		conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36");
 		
 		//2016-03-16 如不加referer信息，下载影人相册时，大图监测返回403异常

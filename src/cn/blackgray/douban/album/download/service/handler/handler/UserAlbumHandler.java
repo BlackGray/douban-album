@@ -13,7 +13,7 @@ import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 public class UserAlbumHandler extends AlbumHandler {
 
 	public static final int PAGE_SIZE_IMAGES = 18;			//照片分页大小（一页18张图）
-	public static final String PAGE_TAG = "start";
+	public static final String PAGE_TAG = "m_start";
 	public static final String IMAGE_NAME_REGEX = "p\\d+.(" + Common.IMAGE_TYPE + ")";
 	public static final String ALBUM_URL_REGEX = "(http|https)://www.douban.com/photos/album/\\d+/";
 	
