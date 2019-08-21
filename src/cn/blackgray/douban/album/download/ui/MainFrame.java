@@ -8,6 +8,8 @@ package cn.blackgray.douban.album.download.ui;
 
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -585,10 +589,27 @@ public class MainFrame extends javax.swing.JFrame {
 					JOptionPane.showMessageDialog(null,
 							"未找到新皮肤，请升级JDK到6.0 update 10");
 				}
-				MainFrame.getInstance().setVisible(true);
+				
+				MainFrame frame = MainFrame.getInstance();
+				
+				//设置macos下快捷键
+				JTextArea albumTextArea = frame.albumTextArea;
+				String osName = System.getProperty("os.name").toLowerCase();
+				if (osName.indexOf("mac") >= 0) {
+					int MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+					albumTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A, MASK), "select-all");
+					albumTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, MASK), "copy");
+					albumTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_X, MASK), "cut");
+					albumTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_V, MASK), "paste");
+				}
+				
+				frame.setVisible(true);
+				
+				//设置透明度
 				//AWTUtilities.setWindowOpacity(MainFrame.getInstance(), 0.70f);
 			}
 		});
+		
 //		//检查是否有最新版本，如果有，提示下载
 //		if (VersionChecker.haveNewVersion()) {
 //			int result = JOptionPane.showConfirmDialog(MainFrame.getInstance(),
@@ -599,6 +620,7 @@ public class MainFrame extends javax.swing.JFrame {
 //						MainFrame.getInstance());
 //			}
 //		}
+		
 	}
 
 	//GEN-BEGIN:variables
