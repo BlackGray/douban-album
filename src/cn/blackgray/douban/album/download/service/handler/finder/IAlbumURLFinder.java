@@ -3,20 +3,20 @@ package cn.blackgray.douban.album.download.service.handler.finder;
 import java.util.List;
 
 /**
- * Ïà²áURL»ñÈ¡Æ÷½Ó¿Ú - ÓÃÓÚ»ñÈ¡Ïà²áµØÖ·£¨Èç¸ù¾İÓÃ»§Ê×Ò³¡¢»î¶¯Ò³Ê×Ò³µÈ»ñÈ¡¶ÔÓ¦ÏÂÊôÏà²áµØÖ·£©
+ * ç›¸å†ŒURLè·å–å™¨æ¥å£ - ç”¨äºè·å–ç›¸å†Œåœ°å€ï¼ˆå¦‚æ ¹æ®ç”¨æˆ·é¦–é¡µã€æ´»åŠ¨é¡µé¦–é¡µç­‰è·å–å¯¹åº”ä¸‹å±ç›¸å†Œåœ°å€ï¼‰
  * @author BlackGray
  */
 public interface IAlbumURLFinder {
 	
 
 	/**
-	 * »ñÈ¡Ïà²áURLÕıÔò
+	 * è·å–ç›¸å†ŒURLæ­£åˆ™
 	 * @return
 	 */
 	public String getURLRegex();
 	
 	/**
-	 * ¸ù¾İÕıÔò»ñÈ¡Ïà²áURL
+	 * æ ¹æ®æ­£åˆ™è·å–ç›¸å†ŒURL
 	 * @param url
 	 * @return
 	 */

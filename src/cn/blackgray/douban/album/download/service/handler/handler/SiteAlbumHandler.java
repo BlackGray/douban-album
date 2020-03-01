@@ -8,11 +8,11 @@ import cn.blackgray.douban.album.download.model.BGImage;
 import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 
 /**
- * Ğ¡Õ¾Ïà²á´¦ÀíÆ÷
+ * å°ç«™ç›¸å†Œå¤„ç†å™¨
  */
 public class SiteAlbumHandler extends AlbumHandler {
 
-	public static final int PAGE_SIZE_IMAGES_SITE = 30;		//Ğ¡Õ¾ÕÕÆ¬·ÖÒ³´óĞ¡£¨Ò»Ò³30ÕÅÍ¼£©
+	public static final int PAGE_SIZE_IMAGES_SITE = 30;		//å°ç«™ç…§ç‰‡åˆ†é¡µå¤§å°ï¼ˆä¸€é¡µ30å¼ å›¾ï¼‰
 	public static final String PAGE_TAG = "start";
 	public static final String IMAGE_NAME_REGEX = "p\\d+.(" + Common.IMAGE_TYPE + ")";
 	public static final String ALBUM_URL_REGEX = "(http|https)://site.douban.com/\\d+/widget/photos/\\d+/";
@@ -63,7 +63,7 @@ public class SiteAlbumHandler extends AlbumHandler {
 	@Override
 	public void createBGImage(String source, String pageURL, String imageURL, Map<String, BGImage> map) {
 
-		//			=================¾É
+		//			=================æ—§
 		//			http://site.douban.com/widget/photos/1803367/
 		//			http://site.douban.com/widget/photos/1803367/?start=0
 		//			<li>
@@ -72,27 +72,27 @@ public class SiteAlbumHandler extends AlbumHandler {
 		//		    <div class="desc">
 		//		    
 		//		    <p>Dina Larot. Kun...</p>
-		//		        <span>5ÍÆ¼ö</span>
+		//		        <span>5æ¨è</span>
 		//		    </div>
 		//		    </div>
 		//			</li>
-		//			=================ĞÂ
+		//			=================æ–°
 		//			http://site.douban.com/108128/widget/photos/7398196/
 		//			<a href="http://site.douban.com/108128/widget/photos/7398196/photo/1483981067/" title="Bessa by Voigtlnder
 		//	<li>
 		//	    <div class="photo-item">
-		//	    <a href="http://site.douban.com/127530/widget/photos/5066948/photo/1599127738/" title="Ò»Ë²¼äµÄÎÂÅ¯ºÄ¾¡ÁËÒ»Éú¡£" alt="Ò»Ë²¼äµÄÎÂÅ¯ºÄ¾¡ÁËÒ»Éú¡£" class="album_photo" id="p1599127738"><img src="http://img5.douban.com/view/photo/thumb/public/p1599127738.jpg" ></a>
+		//	    <a href="http://site.douban.com/127530/widget/photos/5066948/photo/1599127738/" title="ä¸€ç¬é—´çš„æ¸©æš–è€—å°½äº†ä¸€ç”Ÿã€‚" alt="ä¸€ç¬é—´çš„æ¸©æš–è€—å°½äº†ä¸€ç”Ÿã€‚" class="album_photo" id="p1599127738"><img src="http://img5.douban.com/view/photo/thumb/public/p1599127738.jpg" ></a>
 		//	    <div class="desc">
 		//	    
-		//	    <p>Ò»Ë²¼äµÄÎÂÅ¯ºÄ...</p>
-		//	        <a href="http://site.douban.com/127530/widget/photos/5066948/photo/1599127738/#comments">1»ØÓ¦</a>
+		//	    <p>ä¸€ç¬é—´çš„æ¸©æš–è€—...</p>
+		//	        <a href="http://site.douban.com/127530/widget/photos/5066948/photo/1599127738/#comments">1å›åº”</a>
 		//	    </div>
 		//	    </div>
 		//	</li>
 		
 		String imageId = imageURL.substring(imageURL.lastIndexOf("/p") + 2,imageURL.lastIndexOf("."));
 		String siteAlbumId = pageURL.substring(pageURL.indexOf("photos/") + 7, pageURL.lastIndexOf("/"));
-		//¡¾ÃèÊö¡¿
+		//ã€æè¿°ã€‘
 		String startIndexStr = pageURL.substring(0,pageURL.indexOf(siteAlbumId)) + siteAlbumId + "/photo/" + imageId + "/\" title=\"";
 		int descStartIndex = source.indexOf(startIndexStr);
 		String desc;
@@ -102,19 +102,19 @@ public class SiteAlbumHandler extends AlbumHandler {
 		}else{
 			desc = "";
 		}
-		//¡¾ÕÕÆ¬ÆÀÂÛÊı¡¿
-		//<a href="http://site.douban.com/127530/widget/photos/5066948/photo/1599127738/#comments">1»ØÓ¦</a>
+		//ã€ç…§ç‰‡è¯„è®ºæ•°ã€‘
+		//<a href="http://site.douban.com/127530/widget/photos/5066948/photo/1599127738/#comments">1å›åº”</a>
 		String commentTatolStartIndexStr = pageURL.substring(0,pageURL.indexOf(siteAlbumId)) + siteAlbumId + "/photo/" + imageId + "/#comments\">";
 		int commentTatolStartIndex = source.indexOf(commentTatolStartIndexStr);
 		Integer commentTatol = null;
 		if (commentTatolStartIndex != -1) {
-			//¡°3»ØÓ¦¡±
+			//â€œ3å›åº”â€
 			String s = source.substring(commentTatolStartIndex + commentTatolStartIndexStr.length(), source.indexOf("</a>",commentTatolStartIndex));
-			commentTatol = Integer.valueOf(s.replace("»ØÓ¦", ""));
+			commentTatol = Integer.valueOf(s.replace("å›åº”", ""));
 		}
-		//¡¾ÕÕÆ¬¡¿
+		//ã€ç…§ç‰‡ã€‘
 		//				http://img1.douban.com/view/photo/albumicon/public/p1097123994.jpg
-		imageURL = imageURL.replace("thumb", "photo").trim();		//thumb¡ª¡ª>photo£ºËõÂÔÍ¼¡ª¡ª>´óÍ¼
+		imageURL = imageURL.replace("thumb", "photo").trim();		//thumbâ€”â€”>photoï¼šç¼©ç•¥å›¾â€”â€”>å¤§å›¾
 		desc = desc.replace("\\t\\n","").trim();
 		if (!map.containsKey(imageURL) && !imageURL.contains("sqs")) {
 			BGImage bgImage = new BGImage(desc, imageURL, commentTatol);

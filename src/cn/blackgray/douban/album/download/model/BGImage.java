@@ -3,20 +3,20 @@ package cn.blackgray.douban.album.download.model;
 import cn.blackgray.douban.album.download.common.Common;
 
 /**
- * Í¼Æ¬MODEL
+ * å›¾ç‰‡MODEL
  * @author BlackGray
  */
 public class BGImage {
 	
-	private String ownerName;		//ÕÕÆ¬ËùÓĞÕßêÇ³Æ
-	private String ownerURL;		//ÕÕÆ¬ËùÓĞÕßID
-	private String desc;			//ÕÕÆ¬ÃèÊö
-	private String commentURL;		//ÕÕÆ¬ÆÀÂÛ
-	private Integer commentTotal;	//ÕÕÆ¬ÆÀÂÛÊı
-	private String url;				//ÕÕÆ¬µØÖ·
-	private String name;			//ÕÕÆ¬Ãû
-	private String number;			//ÕÕÆ¬±àºÅ
-	private String id;				//ÕÕÆ¬ID - ¶¹°êÕÕÆ¬ID
+	private String ownerName;		//ç…§ç‰‡æ‰€æœ‰è€…æ˜µç§°
+	private String ownerURL;		//ç…§ç‰‡æ‰€æœ‰è€…ID
+	private String desc;			//ç…§ç‰‡æè¿°
+	private String commentURL;		//ç…§ç‰‡è¯„è®º
+	private Integer commentTotal;	//ç…§ç‰‡è¯„è®ºæ•°
+	private String url;				//ç…§ç‰‡åœ°å€
+	private String name;			//ç…§ç‰‡å
+	private String number;			//ç…§ç‰‡ç¼–å·
+	private String id;				//ç…§ç‰‡ID - è±†ç“£ç…§ç‰‡ID
 
 	public BGImage() {
 		super();

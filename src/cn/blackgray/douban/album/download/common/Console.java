@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import javax.swing.JTextArea;
 
 /**
- * ¿ØÖÆÌ¨ÈÕÖ¾Êä³ö
+ * æ§åˆ¶å°æ—¥å¿—è¾“å‡º
  * @author BlackGray
  */
 public class Console {
@@ -34,7 +34,7 @@ public class Console {
 					consoleArea.replaceRange("", 0, end);
 				}
 				consoleArea.append(sdf.format(new Date()) + " | " + text + "\r\n");
-				consoleArea.setCaretPosition(consoleArea.getText().length());			//¹ö¶¯ÌõÏÔÊ¾µ½×îÏÂ·½
+				consoleArea.setCaretPosition(consoleArea.getText().length());			//æ»šåŠ¨æ¡æ˜¾ç¤ºåˆ°æœ€ä¸‹æ–¹
 				count++;
 			}
 		}

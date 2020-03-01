@@ -19,19 +19,19 @@ import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 import cn.blackgray.douban.album.download.service.handler.AlbumHandlerFactory;
 
 /**
- * Ïà²á¹¤³§
+ * ç›¸å†Œå·¥å‚
  * @author BlackGray
  */
 public class AlbumFactory {
 	
 	/**
-	 * ¸ù¾İµØÖ·»ñÈ¡Ïà²á
+	 * æ ¹æ®åœ°å€è·å–ç›¸å†Œ
 	 * @param url
 	 * @return
 	 */
 	public static List<Album> getFromURL(String url){
 		List<Album> albums = new ArrayList<Album>();
-		//¸ù¾İµØÖ·»ñÈ¡´¦ÀíÆ÷
+		//æ ¹æ®åœ°å€è·å–å¤„ç†å™¨
 		List<AlbumHandler> albumHandlers = AlbumHandlerFactory.getHandler(url);
 		for (AlbumHandler albumHandler : albumHandlers) {
 			Album album = new Album();
@@ -43,7 +43,7 @@ public class AlbumFactory {
 	}
 	
 	/**
-	 * ¸ù¾İ±¾µØÎÄ¼ş»ñÈ¡Ïà²á
+	 * æ ¹æ®æœ¬åœ°æ–‡ä»¶è·å–ç›¸å†Œ
 	 * @return
 	 * @throws IOException 
 	 */
@@ -56,11 +56,11 @@ public class AlbumFactory {
 		Date downloadTime = null;
 		List<BGImage> photosList = new ArrayList<BGImage>();
 		final List<String> imageNameList = new ArrayList<String>();
-		//¡¾1¡¿Èç¹ûÎÄ¼ş´æÔÚ£¬»ñÈ¡ĞÅÏ¢£¨Ïà²áµØÖ·£¬ÕÕÆ¬µØÖ·£¬ÃèÊö£©
+		//ã€1ã€‘å¦‚æœæ–‡ä»¶å­˜åœ¨ï¼Œè·å–ä¿¡æ¯ï¼ˆç›¸å†Œåœ°å€ï¼Œç…§ç‰‡åœ°å€ï¼Œæè¿°ï¼‰
 		if (descFile.exists()) {
 			BufferedReader reader = new BufferedReader(new FileReader(descFile));
 			String str;
-			//»ñÈ¡Ïà²áĞÅÏ¢
+			//è·å–ç›¸å†Œä¿¡æ¯
 			if ((str = reader.readLine()) != null) {
 				String[] strArray = str.trim().split(" ",4);
 				if (strArray.length == 1) {
@@ -86,7 +86,7 @@ public class AlbumFactory {
 					album.setAlbumHandler(handlerList.get(0));						
 				}
 			}
-			//»ñÈ¡Í¼Æ¬ĞÅÏ¢
+			//è·å–å›¾ç‰‡ä¿¡æ¯
 			List<BGImage> bgImages = album.getAlbumHandler().getBGImageFromDescDoc(descFile);
 			photosList.addAll(bgImages);
 			for (BGImage bgImage : bgImages) {
@@ -95,7 +95,7 @@ public class AlbumFactory {
 			reader.close();
 		}
 		
-		//¡¾2¡¿Ìí¼ÓÎÄµµÖĞÃ»ÓĞ£¬µ«Ä¿Â¼ÏÂÓĞµÄÍ¼Æ¬
+		//ã€2ã€‘æ·»åŠ æ–‡æ¡£ä¸­æ²¡æœ‰ï¼Œä½†ç›®å½•ä¸‹æœ‰çš„å›¾ç‰‡
 		File dir = new File(path);
 		File[] images = dir.listFiles(new FileFilter() {
 			@Override

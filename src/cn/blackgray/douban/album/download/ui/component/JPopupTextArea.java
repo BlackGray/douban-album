@@ -23,7 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
 /**
- * ÓÒ¼ü²Ëµ¥ÎÄ±¾Óò
+ * å³é”®èœå•æ–‡æœ¬åŸŸ
  * @author BlackGray
  */
 public class JPopupTextArea extends JTextArea implements MouseListener,
@@ -37,11 +37,11 @@ ActionListener {
 	public JPopupTextArea() {
 		super();
 		popupMenu = new JPopupMenu();
-		cutMenu = new JMenuItem("¼ôÇĞ");
-		copyMenu = new JMenuItem("¸´ÖÆ");
-		pasteMenu = new JMenuItem("Õ³Ìù");
-		selectAllMenu = new JMenuItem("È«Ñ¡");
-		formatMenu = new JMenuItem("¸ñÊ½»¯");
+		cutMenu = new JMenuItem("å‰ªåˆ‡");
+		copyMenu = new JMenuItem("å¤åˆ¶");
+		pasteMenu = new JMenuItem("ç²˜è´´");
+		selectAllMenu = new JMenuItem("å…¨é€‰");
+		formatMenu = new JMenuItem("æ ¼å¼åŒ–");
 
 		cutMenu.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_MASK));
 		copyMenu.setAccelerator(KeyStroke.getKeyStroke('C',InputEvent.CTRL_MASK));

@@ -13,7 +13,7 @@ import cn.blackgray.douban.album.download.service.handler.handler.DefaultAlbumHa
 
 
 /**
- * Ïà²á´¦ÀíÆ÷¹¤³§Àà£¬¸ù¾İ²»Í¬µÄÏûÏ¢£¬Éú³É²»Í¬µÄÏûÏ¢´¦ÀíÆ÷ÊµÏÖ
+ * ç›¸å†Œå¤„ç†å™¨å·¥å‚ç±»ï¼Œæ ¹æ®ä¸åŒçš„æ¶ˆæ¯ï¼Œç”Ÿæˆä¸åŒçš„æ¶ˆæ¯å¤„ç†å™¨å®ç°
  */
 public class AlbumHandlerFactory {
 
@@ -25,7 +25,7 @@ public class AlbumHandlerFactory {
 
 
 	static{
-		//·´Éä»ñÈ¡ËùÓĞÏà²áµØÖ·²éÑ¯Æ÷¶ÔÏó
+		//åå°„è·å–æ‰€æœ‰ç›¸å†Œåœ°å€æŸ¥è¯¢å™¨å¯¹è±¡
 		List<Class<?>> finderClassList = ReflectUtils.getClassWithPackage(PACKAGE_FINDER);
 		for (Class<?> finderClass : finderClassList) {
 			try {
@@ -37,7 +37,7 @@ public class AlbumHandlerFactory {
 				e.printStackTrace();
 			}
 		}
-		//·´Éä»ñÈ¡ËùÓĞ´¦ÀíÆ÷Àà
+		//åå°„è·å–æ‰€æœ‰å¤„ç†å™¨ç±»
 		List<Class<?>> handlerClassList = ReflectUtils.getClassWithPackage(PACKAGE_HANDER);
 		for (Class<?> handerClass : handlerClassList) {
 			try {
@@ -57,7 +57,7 @@ public class AlbumHandlerFactory {
 	
 	public static List<AlbumHandler> getHandler(String url, boolean isPrintLog) {
 		List<String> albumURLList = new ArrayList<String>(); 
-		//1.²é¿´ÊÇ·ñ´æÔÚURL²éÑ¯Æ÷£¬Èç¹ûÓĞ£¬Ö´ĞĞ²éÑ¯£¬»ñÈ¡Ïà²áµØÖ·
+		//1.æŸ¥çœ‹æ˜¯å¦å­˜åœ¨URLæŸ¥è¯¢å™¨ï¼Œå¦‚æœæœ‰ï¼Œæ‰§è¡ŒæŸ¥è¯¢ï¼Œè·å–ç›¸å†Œåœ°å€
 		boolean hasFinder = false;
 		for (Entry<String, IAlbumURLFinder> element : albumURLFinderMap.entrySet()) {
 			if (url.matches(element.getKey())) {
@@ -65,7 +65,7 @@ public class AlbumHandlerFactory {
 				List<String> albumURLs = albumURLFinder.findAlbumURL(url);
 				for (String u : albumURLs) {
 					if(isPrintLog){
-						Console.print("»ñÈ¡Ïà²áµØÖ·£º" + u);
+						Console.print("è·å–ç›¸å†Œåœ°å€ï¼š" + u);
 					}
 				}
 				albumURLList.addAll(albumURLs);
@@ -76,10 +76,10 @@ public class AlbumHandlerFactory {
 		if (hasFinder == false) {
 			albumURLList.add(url);
 			if(isPrintLog){
-				Console.print("»ñÈ¡Í¼Æ¬µØÖ·£º" + url);
+				Console.print("è·å–å›¾ç‰‡åœ°å€ï¼š" + url);
 			}
 		}
-		//2.¸ù¾İÏà²áµØÖ·£¬»ñÈ¡´¦ÀíÆ÷
+		//2.æ ¹æ®ç›¸å†Œåœ°å€ï¼Œè·å–å¤„ç†å™¨
 		List<AlbumHandler> handlerList = new ArrayList<AlbumHandler>();
 		boolean hasHander = false;
 		for (String albumURL : albumURLList) {
@@ -92,7 +92,7 @@ public class AlbumHandlerFactory {
 						handler.setAlbumURL(albumURL);
 						handlerList.add(handler);
 						if(isPrintLog){
-							Console.print("´´½¨Ïà²á´¦ÀíÆ÷£º" + clazz.getSimpleName() + " - " + albumURL);
+							Console.print("åˆ›å»ºç›¸å†Œå¤„ç†å™¨ï¼š" + clazz.getSimpleName() + " - " + albumURL);
 						}
 						hasHander = true;
 					} catch (IllegalArgumentException e) {
@@ -112,7 +112,7 @@ public class AlbumHandlerFactory {
 				defaultAlbumHandler.setAlbumURL(albumURL);
 				handlerList.add(defaultAlbumHandler);
 				if(isPrintLog){
-					Console.print("´´½¨Ä¬ÈÏÏà²á´¦ÀíÆ÷£º" + defaultAlbumHandler.getClass().getSimpleName() + " - " + albumURL);
+					Console.print("åˆ›å»ºé»˜è®¤ç›¸å†Œå¤„ç†å™¨ï¼š" + defaultAlbumHandler.getClass().getSimpleName() + " - " + albumURL);
 				}
 			}
 		}
@@ -122,26 +122,26 @@ public class AlbumHandlerFactory {
 
 	public static void main(String[] args) {
 
-		System.out.println("-------------Ïà²áÁĞ±í--------------");
+		System.out.println("-------------ç›¸å†Œåˆ—è¡¨--------------");
 		getHandler("http://www.douban.com/people/blackgray/photos/");
-		System.out.println("-------------Ïà²á--------------");
+		System.out.println("-------------ç›¸å†Œ--------------");
 		getHandler("http://www.douban.com/photos/album/67952443/");
 
-		System.out.println("-------------Ğ¡Õ¾--------------");
+		System.out.println("-------------å°ç«™--------------");
 		getHandler("http://site.douban.com/108128/widget/photos/7528342/");
 		getHandler("http://site.douban.com/zheng/widget/photos/17304118/");
 
-		System.out.println("-------------Ó°ÈËÊ×Ò³--------------");
+		System.out.println("-------------å½±äººé¦–é¡µ--------------");
 		getHandler("http://movie.douban.com/celebrity/1048027/");
-		System.out.println("-------------Ó°ÈË--------------");
+		System.out.println("-------------å½±äºº--------------");
 		getHandler("http://movie.douban.com/celebrity/1048027/photos/");
 
-		System.out.println("-------------»î¶¯Ê×Ò³--------------");
+		System.out.println("-------------æ´»åŠ¨é¦–é¡µ--------------");
 		getHandler("http://www.douban.com/online/11127307/");
-		System.out.println("-------------»î¶¯--------------");
+		System.out.println("-------------æ´»åŠ¨--------------");
 		getHandler("http://www.douban.com/online/11127307/album/72416214/");
 
-		System.out.println("-------------ÆäËû--------------");
+		System.out.println("-------------å…¶ä»–--------------");
 		getHandler("http://www.baidu.com/");
 
 	}

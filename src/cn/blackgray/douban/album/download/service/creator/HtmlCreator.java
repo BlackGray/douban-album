@@ -27,16 +27,16 @@ import cn.blackgray.douban.album.download.service.image.ImageInfo;
 import cn.blackgray.douban.album.download.service.image.ImageUtils;
 
 /**
- * HTMLÒ³ÃæÉú³É¹¤¾ßÀà
+ * HTMLé¡µé¢ç”Ÿæˆå·¥å…·ç±»
  * @author BlackGray
  */
 public class HtmlCreator {
 
-	public static final String DESC_FRONT_COVER = "¡¾Ïà²á·âÃæ¡¿";
+	public static final String DESC_FRONT_COVER = "ã€ç›¸å†Œå°é¢ã€‘";
 	public static final String DESC_DEFAULT = "-";
 
 	/**
-	 * Éú³ÉÏà²áHTMLÒ³Ãæ - ¸ù¾İÏà²á»ñÈ¡Ê±Éú³É
+	 * ç”Ÿæˆç›¸å†ŒHTMLé¡µé¢ - æ ¹æ®ç›¸å†Œè·å–æ—¶ç”Ÿæˆ
 	 * @param url
 	 * @return
 	 * @throws IOException 
@@ -47,7 +47,7 @@ public class HtmlCreator {
 		if (!albumDir.exists()) {
 			return false;
 		}
-		//ÑéÖ¤Ä¿Â¼ÏÂÊÇ·ñÓĞÎÄ¼ş
+		//éªŒè¯ç›®å½•ä¸‹æ˜¯å¦æœ‰æ–‡ä»¶
 		File[] imageFiles = albumDir.listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File f) {
@@ -63,33 +63,33 @@ public class HtmlCreator {
 			album = AlbumFactory.getFromLocalFile(albumPath);
 		} catch (IOException e) {
 			Console.print(e.getMessage());
-			Console.print("HTMLÎÄµµÉú³ÉÊ§°Ü");
+			Console.print("HTMLæ–‡æ¡£ç”Ÿæˆå¤±è´¥");
 		}
 		
 		String name = album.getName();
 		AlbumHandler albumHandler = album.getAlbumHandler();
 		List<BGImage> photosList = album.getPhotosList();
 		
-		//¡¾Æ´×°Ò³Ãæ¡¿
+		//ã€æ‹¼è£…é¡µé¢ã€‘
 		String page = Common.HTML_TEMPLATE_PAGE;
-//		page = page.replace(Common.HTML_TAG_CHARSET, album.getCharset());		//×Ö·û¼¯
-		page = page.replace(Common.HTML_TAG_TITLE, HTMLUtils.textToHTML(name) + "(" + photosList.size() + ")");	//±êÌâ
-		page = page.replace(Common.HTML_TAG_NAME, HTMLUtils.textToHTML(name));	//Ïà²áÃû
-		page = page.replace(Common.HTML_TAG_URL, album.getUrl());				//Ïà²áÔ­Ê¼µØÖ·
-		//Ïà²áÃèÊö
+//		page = page.replace(Common.HTML_TAG_CHARSET, album.getCharset());		//å­—ç¬¦é›†
+		page = page.replace(Common.HTML_TAG_TITLE, HTMLUtils.textToHTML(name) + "(" + photosList.size() + ")");	//æ ‡é¢˜
+		page = page.replace(Common.HTML_TAG_NAME, HTMLUtils.textToHTML(name));	//ç›¸å†Œå
+		page = page.replace(Common.HTML_TAG_URL, album.getUrl());				//ç›¸å†ŒåŸå§‹åœ°å€
+		//ç›¸å†Œæè¿°
 		if (album.getDesc() == null || album.getDesc().equals("-")) {
 			page = page.replace(Common.HTML_TAG_ALBUM_DESC, "");
 		}else{
-			page = page.replace(Common.HTML_TAG_ALBUM_DESC, HTMLUtils.textToHTML("¡öÏà²áÃèÊö£º" + album.getDesc()));	
+			page = page.replace(Common.HTML_TAG_ALBUM_DESC, HTMLUtils.textToHTML("â– ç›¸å†Œæè¿°ï¼š" + album.getDesc()));	
 		}
-		//ÏÂÔØÊ±¼ä
-		page = page.replace(Common.HTML_TAG_DOWNLOAD_TIME, "¡öÏÂÔØÊ±¼ä£º" + Common.SIMPLE_DATE_FORMAT.format(album.getDate()));
-		//ÕÕÆ¬ÊıÁ¿
-		page = page.replace(Common.HTML_TAG_IMAGES_TOTAL, "¡öÕÕÆ¬ÊıÁ¿£º" + photosList.size());	
+		//ä¸‹è½½æ—¶é—´
+		page = page.replace(Common.HTML_TAG_DOWNLOAD_TIME, "â– ä¸‹è½½æ—¶é—´ï¼š" + Common.SIMPLE_DATE_FORMAT.format(album.getDate()));
+		//ç…§ç‰‡æ•°é‡
+		page = page.replace(Common.HTML_TAG_IMAGES_TOTAL, "â– ç…§ç‰‡æ•°é‡ï¼š" + photosList.size());	
 		
 
 
-		//¡¾Æ´×°ÕÕÆ¬ÁĞ±í¡¿
+		//ã€æ‹¼è£…ç…§ç‰‡åˆ—è¡¨ã€‘
 		Collections.sort(photosList,new Comparator<BGImage>() {
 			@Override
 			public int compare(BGImage i1, BGImage i2) {
@@ -99,7 +99,7 @@ public class HtmlCreator {
 				int id2;
 				if (number1.startsWith("O-")) {
 					if (number2.startsWith("O-")) {
-						//±¾µØÎÄ¼ş
+						//æœ¬åœ°æ–‡ä»¶
 						id1 = Integer.parseInt(number1.substring(number1.indexOf("O-") + 2));
 						id2 = Integer.parseInt(number2.substring(number2.indexOf("O-") + 2));						
 					}else{
@@ -109,7 +109,7 @@ public class HtmlCreator {
 					if (number2.startsWith("O-")) {
 						return -1;					
 					}else{
-						//ÍøÂçÎÄ¼ş
+						//ç½‘ç»œæ–‡ä»¶
 						id1 = Integer.parseInt(number1);
 						id2 = Integer.parseInt(number2);
 					}
@@ -118,7 +118,7 @@ public class HtmlCreator {
 			}
 		});
 		
-		//¡¾Èç¹ûÊÇĞ¡Õ¾&¸öÈËÏà²á£¬»ñÈ¡rawÄ¿Â¼ÏÂÎÄ¼şÁĞ±í¡¿
+		//ã€å¦‚æœæ˜¯å°ç«™&ä¸ªäººç›¸å†Œï¼Œè·å–rawç›®å½•ä¸‹æ–‡ä»¶åˆ—è¡¨ã€‘
 		Set<String> rawSet = new HashSet<String>();
 		if (albumHandler.hasRaw()) {
 			File dir = new File(album.getPath() + File.separatorChar + "raw");
@@ -129,37 +129,37 @@ public class HtmlCreator {
 			}
 		}
 
-		//¡¾Æ´×°JSON¡¿
+		//ã€æ‹¼è£…JSONã€‘
 		StringBuffer images = new StringBuffer("[");
 		for (BGImage image : photosList) {
-			//»ñÈ¡Öµ
+			//è·å–å€¼
 			String desc = image.getDesc();
 			if (desc.trim().length() == 0) {
 				desc = DESC_DEFAULT;
 			}else{
-				if (desc.startsWith("¡ù")) {
-					desc = DESC_FRONT_COVER + desc.replaceAll("¡ù+", "");
+				if (desc.startsWith("â€»")) {
+					desc = DESC_FRONT_COVER + desc.replaceAll("â€»+", "");
 				};
 			}
 			
 			images.append("{");
-			//±àºÅ
+			//ç¼–å·
 			images.append("'number':'").append(image.getNumber()).append("',");	
-			//Í¼Æ¬
+			//å›¾ç‰‡
 			images.append("'name':'").append(HTMLUtils.textToJson(image.getName())).append("',");
-			//ÃèÊö
+			//æè¿°
 			images.append("'desc':'").append(HTMLUtils.textToJson(desc)).append("',");	
-			//ÕÕÆ¬ËùÓĞÕß			
+			//ç…§ç‰‡æ‰€æœ‰è€…			
 			if (image.getOwnerName() != null) {
 				images.append("'ownerName':'").append(HTMLUtils.textToJson(image.getOwnerName())).append("',");
 				images.append("'ownerURL':'").append(image.getOwnerURL()).append("',");
 			}
-			//ÆÀÂÛ
+			//è¯„è®º
 			String commentURL = albumHandler.getCommentURL(album, image);
 			if (commentURL != null) {
 				images.append("'commentURL':'").append(commentURL).append("',");	
 			}
-			//»ØÓ¦Êı
+			//å›åº”æ•°
 			Integer commentTotal = image.getCommentTotal();
 			if (commentTotal != null) {
 				images.append("'commentTotal':'").append(commentTotal).append("',");	
@@ -167,11 +167,11 @@ public class HtmlCreator {
 			
 			
 			
-			//¡¾¼ì²érawÄ¿Â¼¡¿
+			//ã€æ£€æŸ¥rawç›®å½•ã€‘
 			if (albumHandler.hasRaw()) {
 				if (rawSet.contains(image.getName())) {
 					try {
-						//ÅĞ¶ÏÍ¼Æ¬´óĞ¡£¬Èç¹û´óĞ¡ÏàÍ¬
+						//åˆ¤æ–­å›¾ç‰‡å¤§å°ï¼Œå¦‚æœå¤§å°ç›¸åŒ
 						ImageInfo imageInfo = ImageUtils.getImageSize(album.getPath() + File.separatorChar + image.getName());
 						ImageInfo rawInfo = ImageUtils.getImageSize(album.getPath() + File.separatorChar + Common.DEFAULT_RAW_DIR + File.separatorChar + image.getName());
 						if ((imageInfo.getWidth() == rawInfo.getWidth()) && imageInfo.getHeight() == rawInfo.getHeight()) {
@@ -180,13 +180,13 @@ public class HtmlCreator {
 							images.append("'raw':'").append(Common.RAW_TYPE_LARGE).append("'");
 						}						
 					} catch (Exception e) {
-						//Èç¹û¶Ô±È³öÏÖÒì³££¬Ä¬ÈÏRAW³ß´ç¸ü´ó
+						//å¦‚æœå¯¹æ¯”å‡ºç°å¼‚å¸¸ï¼Œé»˜è®¤RAWå°ºå¯¸æ›´å¤§
 						images.append("'raw':'").append(Common.RAW_TYPE_LARGE).append("'");
 					}
 				};
 			}
 			
-			//È¥µô¶àÓàµÄ¶ººÅ
+			//å»æ‰å¤šä½™çš„é€—å·
 			if (images.substring(images.length() - 1, images.length()).equals(",")) {
 				images.delete(images.length() - 1, images.length());				
 			}
@@ -204,7 +204,7 @@ public class HtmlCreator {
 		bw.close();
 
 
-		//Êä³ö×ÊÔ´ÎÄ¼ş
+		//è¾“å‡ºèµ„æºæ–‡ä»¶
 		List<String> resourceList = new ArrayList<String>(); 
 		resourceList.add("/cn/blackgray/douban/album/download/resources/html/bg.jpg");
 		resourceList.add("/cn/blackgray/douban/album/download/resources/html/numberBg.png");
@@ -230,14 +230,14 @@ public class HtmlCreator {
 		return true;
 	}
 
-	//ÅúÁ¿Éú³ÉÍøÒ³
+	//æ‰¹é‡ç”Ÿæˆç½‘é¡µ
 	public static void createAlbumHTML(List<String> paths) {
 		for (String path : paths) {
 			try {
 				HtmlCreator.createAlbumHTML(path);
 			} catch (IOException e) {
 				Console.print(e.getMessage());
-				Console.print("HTMLÎÄµµÉú³ÉÊ§°Ü");
+				Console.print("HTMLæ–‡æ¡£ç”Ÿæˆå¤±è´¥");
 				e.printStackTrace();
 			}
 		}		

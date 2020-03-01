@@ -15,7 +15,7 @@ public class TestCheckExists {
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 				HttpURLConnection.setFollowRedirects(false);
 				
-				 /* ÉèÖÃ URL ÇëÇóµÄ·½·¨£¬ GET POST HEAD OPTIONS PUT DELETE TRACE ÒÔÉÏ·½·¨Ö®Ò»ÊÇºÏ·¨µÄ£¬¾ßÌåÈ¡¾öÓÚĞ­ÒéµÄÏŞÖÆ¡£*/
+				 /* è®¾ç½® URL è¯·æ±‚çš„æ–¹æ³•ï¼Œ GET POST HEAD OPTIONS PUT DELETE TRACE ä»¥ä¸Šæ–¹æ³•ä¹‹ä¸€æ˜¯åˆæ³•çš„ï¼Œå…·ä½“å–å†³äºåè®®çš„é™åˆ¶ã€‚*/
 				conn.setRequestMethod("HEAD");;
 				System.out.println(i + " = " + conn.getResponseCode());
 				//System.out.println(HttpURLConnection.HTTP_OK);

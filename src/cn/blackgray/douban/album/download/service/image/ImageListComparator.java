@@ -5,7 +5,7 @@ import java.util.Comparator;
 import cn.blackgray.douban.album.download.common.Common;
 
 /**
- * Í¼Æ¬¶Ô±ÈÅÅĞò
+ * å›¾ç‰‡å¯¹æ¯”æ’åº
  * @author BlackGray
  */
 public class ImageListComparator implements Comparator<String>{

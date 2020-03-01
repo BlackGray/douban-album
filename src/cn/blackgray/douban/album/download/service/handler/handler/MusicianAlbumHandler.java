@@ -8,11 +8,11 @@ import cn.blackgray.douban.album.download.model.BGImage;
 import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 
 /**
- * ÒôÀÖÈËÏà²á´¦ÀíÆ÷
+ * éŸ³ä¹äººç›¸å†Œå¤„ç†å™¨
  */
 public class MusicianAlbumHandler extends AlbumHandler {
 
-	public static final int PAGE_SIZE_IMAGES_MUSICIAN = 30;	//ÒôÀÖÈËÕÕÆ¬·ÖÒ³´óĞ¡£¨Ò»Ò³40ÕÅÍ¼£©
+	public static final int PAGE_SIZE_IMAGES_MUSICIAN = 30;	//éŸ³ä¹äººç…§ç‰‡åˆ†é¡µå¤§å°ï¼ˆä¸€é¡µ40å¼ å›¾ï¼‰
 	public static final String PAGE_TAG = "start";
 	public static final String IMAGE_NAME_REGEX = "p\\d+.(" + Common.IMAGE_TYPE + ")";
 	public static final String ALBUM_URL_REGEX = "(http|https)://music.douban.com/musician/\\d+/photos/";
@@ -24,12 +24,12 @@ public class MusicianAlbumHandler extends AlbumHandler {
 	
 	@Override
 	public String albumNameProcess(String name) {
-		return name = "ÒôÀÖÈË-" + super.albumNameProcess(name);
+		return name = "éŸ³ä¹äºº-" + super.albumNameProcess(name);
 	}
 
 	@Override
 	public String getPageRegex() {
-		//ÒôÀÖÈËÏà²á·ÖÒ³º¬ÓĞ¶à¸ö²ÎÊı
+		//éŸ³ä¹äººç›¸å†Œåˆ†é¡µå«æœ‰å¤šä¸ªå‚æ•°
 		return getAlbumURL() + "\\?(\\w+=\\w+&*(amp;)*)+";
 	}
 	
@@ -68,7 +68,7 @@ public class MusicianAlbumHandler extends AlbumHandler {
 
 	@Override
 	public void createBGImage(String source, String pageURL, String imageURL, Map<String, BGImage> map) {
-//		===============Í¼Æ¬ÃèÊö===============
+//		===============å›¾ç‰‡æè¿°===============
 //	  <li>
 //		<div class="cover"><a href="https://music.douban.com/musician/100144/photo/1318874397/">
 //		<img src="https://img1.doubanio.com/view/photo/thumb/public/p1318874397.webp" /></a></div>
@@ -77,13 +77,13 @@ public class MusicianAlbumHandler extends AlbumHandler {
 //            414x613
 //        </div>
 //        <div class="name">
-//            ´Ëæ¤Ö»Ó¦ÌìÉÏÓĞ
-//                <a href="https://music.douban.com/musician/100144/photo/1318874397/#comments">1»ØÓ¦</a>
+//            æ­¤å¦åªåº”å¤©ä¸Šæœ‰
+//                <a href="https://music.douban.com/musician/100144/photo/1318874397/#comments">1å›åº”</a>
 //        </div>
 //    </li>
 		String imageId = imageURL.substring(imageURL.lastIndexOf("/p") + 2,imageURL.lastIndexOf("."));
 		String musicianId = pageURL.substring(pageURL.indexOf("musician/") + 9, pageURL.indexOf("/photos"));
-		//¡¾ÃèÊö¡¿
+		//ã€æè¿°ã€‘
 		String startIndexStr = "<a href=\"https://music.douban.com/musician/" + musicianId + "/photo/" + imageId + "/\"";
 		int descStartIndex = source.indexOf(startIndexStr);
 		String desc;
@@ -94,18 +94,18 @@ public class MusicianAlbumHandler extends AlbumHandler {
 		}else{
 			desc = "";
 		}
-		//¡¾ÕÕÆ¬ÆÀÂÛÊı¡¿
-		//<a href="https://music.douban.com/musician/100144/photo/1318874397/#comments">1»ØÓ¦</a>
+		//ã€ç…§ç‰‡è¯„è®ºæ•°ã€‘
+		//<a href="https://music.douban.com/musician/100144/photo/1318874397/#comments">1å›åº”</a>
 		String commentTatolStartIndexStr = "<a href=\"https://music.douban.com/musician/" + musicianId + "/photo/" + imageId + "/#comments\">";
 		int commentTatolStartIndex = source.indexOf(commentTatolStartIndexStr);
 		Integer commentTatol = null;
 		if (commentTatolStartIndex != -1) {
-			//¡°3»ØÓ¦¡±
+			//â€œ3å›åº”â€
 			String s = source.substring(commentTatolStartIndex + commentTatolStartIndexStr.length(), source.indexOf("</a>",commentTatolStartIndex));
-			commentTatol = Integer.valueOf(s.replace("»ØÓ¦", ""));
+			commentTatol = Integer.valueOf(s.replace("å›åº”", ""));
 		}
-		//¡¾ÕÕÆ¬¡¿
-		imageURL = imageURL.replace("photo/m", "photo/l").trim();	//thumb¡ª¡ª>photo£ºËõÂÔÍ¼¡ª¡ª>´óÍ¼
+		//ã€ç…§ç‰‡ã€‘
+		imageURL = imageURL.replace("photo/m", "photo/l").trim();	//thumbâ€”â€”>photoï¼šç¼©ç•¥å›¾â€”â€”>å¤§å›¾
 		desc = desc.replace("\\t\\n","").trim();
 		if (!map.containsKey(imageURL)) {
 			BGImage bgImage = new BGImage(desc, imageURL, commentTatol);

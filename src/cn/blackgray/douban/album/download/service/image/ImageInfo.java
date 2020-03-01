@@ -1,7 +1,7 @@
 package cn.blackgray.douban.album.download.service.image;
 
 /**
- * 图片信息MODEL - 用于对比图片宽高尺寸
+ * 鍥剧墖淇℃伅MODEL - 鐢ㄤ簬瀵规瘮鍥剧墖瀹介珮灏哄
  * @author BlackGray
  */
 public class ImageInfo {

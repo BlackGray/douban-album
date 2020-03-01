@@ -17,28 +17,28 @@ import cn.blackgray.douban.album.download.common.Console;
 import cn.blackgray.douban.album.download.ui.MainFrame;
 
 /**
- * Í¼Æ¬¹¤¾ßÀà£¬¸ºÔğÏÂÔØ
+ * å›¾ç‰‡å·¥å…·ç±»ï¼Œè´Ÿè´£ä¸‹è½½
  * @author BlackGray
  */
 public class DownloadManager {
 	
-	//Ö÷½ø¶ÈÌõ - ÏÔÊ¾ÕÕÆ¬ÏÂÔØµÈ½ø¶È
+	//ä¸»è¿›åº¦æ¡ - æ˜¾ç¤ºç…§ç‰‡ä¸‹è½½ç­‰è¿›åº¦
 	private final static JProgressBar mainProgressBar = MainFrame.getInstance().progressBar;
 	public static Integer updateCount = 0;
-	private static final Integer TIMEOUT = 10;	//µ¥Í¼Æ¬ÏÂÔØ³¬Ê±Ê±¼ä
+	private static final Integer TIMEOUT = 10;	//å•å›¾ç‰‡ä¸‹è½½è¶…æ—¶æ—¶é—´
 	
 	public static int downloadImage(List<String> imageURLList,String path) {
 		
-		mainProgressBar.setMaximum(imageURLList.size());	//½ø¶ÈÌõÉèÖÃ - ×î´óÖµ
-		mainProgressBar.setValue(0);						//½ø¶ÈÌõÉèÖÃ - ³õÊ¼Öµ
+		mainProgressBar.setMaximum(imageURLList.size());	//è¿›åº¦æ¡è®¾ç½® - æœ€å¤§å€¼
+		mainProgressBar.setValue(0);						//è¿›åº¦æ¡è®¾ç½® - åˆå§‹å€¼
 		List<DownloadThread> threadList = new ArrayList<DownloadThread>();
 		int imageSize = imageURLList.size();
 		for (int i = 0; i < Common.DOWNLOAD_THREAD; i++) {
-			String threadName = "Ïß³Ì0";
+			String threadName = "çº¿ç¨‹0";
 			if (i < 10) {
 				threadName += i;
 			}else{
-				threadName = "Ïß³Ì" + String.valueOf(i);
+				threadName = "çº¿ç¨‹" + String.valueOf(i);
 			}
 			DownloadThread thread = new DownloadThread(threadName,imageURLList, imageSize, path, mainProgressBar);
 			thread.start();
@@ -51,7 +51,7 @@ public class DownloadManager {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			//ÅĞ¶ÏÏß³ÌÊÇ·ñ¶¼ÒÑ¾­½áÊø
+			//åˆ¤æ–­çº¿ç¨‹æ˜¯å¦éƒ½å·²ç»ç»“æŸ
 			if (imageURLList.size() == 0) {
 				for (DownloadThread thread : threadList) {
 					if (thread.isAlive()) {
@@ -60,18 +60,18 @@ public class DownloadManager {
 						}else{
 							waitThreadMap.put(thread, 0);
 						}
-						//ÅĞ¶Ï³¬Ê±
+						//åˆ¤æ–­è¶…æ—¶
 						if (waitThreadMap.get(thread) > TIMEOUT) {
-							//ÖĞ¶ÏÏß³Ì
+							//ä¸­æ–­çº¿ç¨‹
 							try {
-								Console.print("ÏÂÔØ³¬Ê±,ÖĞ¶ÏÏß³Ì,ÇëÉÔµÈ.. - " + thread.getName() + " - " + thread.getUrl());
+								Console.print("ä¸‹è½½è¶…æ—¶,ä¸­æ–­çº¿ç¨‹,è¯·ç¨ç­‰.. - " + thread.getName() + " - " + thread.getUrl());
 								thread.closeStream();
-								//Ìí¼ÓÖÁ´íÎó¼¯ºÏ
+								//æ·»åŠ è‡³é”™è¯¯é›†åˆ
 								if (!Common.failFileMap.containsKey(thread.getUrl())) {
 									Common.failFileMap.put(thread.getUrl(), thread.getPath());
 								};
 							} catch (IOException e) {
-								Console.print("Ïß³ÌÖĞ¶Ï²Ù×÷Òì³££º" + e.getMessage());
+								Console.print("çº¿ç¨‹ä¸­æ–­æ“ä½œå¼‚å¸¸ï¼š" + e.getMessage());
 								e.printStackTrace();
 							}
 							waitThreadMap.remove(thread);
@@ -80,19 +80,19 @@ public class DownloadManager {
 						waitThreadMap.remove(thread);
 					}
 				}
-				//Èç¹û½áÊø£¬Ìø³öÑ­»·£¬·ñÔòÌáÊ¾				
+				//å¦‚æœç»“æŸï¼Œè·³å‡ºå¾ªç¯ï¼Œå¦åˆ™æç¤º				
 				if (waitThreadMap.size() == 0) {
 					mainProgressBar.setValue(mainProgressBar.getMaximum());
 					break;
 				}else{
-					//ÌáÊ¾
-					Console.print("¾Í¿ìºÃÁË~ ¡«(£ş¨Œ£ş¡«)(¡«£ş¨Œ£ş)¡« ");
+					//æç¤º
+					Console.print("å°±å¿«å¥½äº†~ ï½(ï¿£â–½ï¿£ï½)(ï½ï¿£â–½ï¿£)ï½ ");
 					Console.print("---------------------------------------------------");
 					for (Entry<DownloadThread, Integer> entry : waitThreadMap.entrySet()) {
 						DownloadThread t = entry.getKey();
 						Integer time = entry.getValue();
 						StringBuffer sb = new StringBuffer();
-						sb.append("µÈ´ıÏß³Ì").append(" - ").append(t.getName()).append(" - [").append(time).append("s]");
+						sb.append("ç­‰å¾…çº¿ç¨‹").append(" - ").append(t.getName()).append(" - [").append(time).append("s]");
 						sb.append(" = ").append(t.getUrl());
 						Console.print(sb.toString());	
 					}
@@ -110,16 +110,16 @@ public class DownloadManager {
 		progressBar.setMaximum(size);
 		progressBar.setValue(0);
 		Console.print("=====================================");
-		Console.print("ÏÂÔØÍ¼Æ¬ÉÏ´ÎÊ§°ÜÍ¼Æ¬£º" + size + "(ÕÅ)");
+		Console.print("ä¸‹è½½å›¾ç‰‡ä¸Šæ¬¡å¤±è´¥å›¾ç‰‡ï¼š" + size + "(å¼ )");
 		Map<String, String> failMap = new TreeMap<String, String>();
 		for (Entry<String, String> element : Common.failFileMap.entrySet()) {
 			try {
-				//ÏÂÔØ
-				Console.print("ÏÂÔØÍ¼Æ¬(" + num + "/" + size + ")£º" + element.getKey());
+				//ä¸‹è½½
+				Console.print("ä¸‹è½½å›¾ç‰‡(" + num + "/" + size + ")ï¼š" + element.getKey());
 				DownloadThread downloadThread = new DownloadThread();
 				downloadThread.downloadImage(element.getKey(), element.getValue(), true);
 			} catch (IOException e) {
-				Console.print("Í¼Æ¬ÏÂÔØÊ§°Ü£º" + element.getKey());
+				Console.print("å›¾ç‰‡ä¸‹è½½å¤±è´¥ï¼š" + element.getKey());
 				failMap.put(element.getKey(), element.getValue());
 			}
 			progressBar.setValue(num);
@@ -127,11 +127,11 @@ public class DownloadManager {
 		}
 		Common.failFileMap.clear();
 		if (failMap.size() > 0) {
-			Console.print("¡¾FINISH¡¿³É¹¦£º" + (size - failMap.size()) + "£¬Ê§°Ü" + failMap.size());
+			Console.print("ã€FINISHã€‘æˆåŠŸï¼š" + (size - failMap.size()) + "ï¼Œå¤±è´¥" + failMap.size());
 			Common.failFileMap.putAll(failMap);
 			return 0;
 		} else {
-			Console.print("¡¾FINISH¡¿³É¹¦£º" + size + "£¬Ê§°Ü" + 0);
+			Console.print("ã€FINISHã€‘æˆåŠŸï¼š" + size + "ï¼Œå¤±è´¥" + 0);
 			return 1;
 		}
 	}

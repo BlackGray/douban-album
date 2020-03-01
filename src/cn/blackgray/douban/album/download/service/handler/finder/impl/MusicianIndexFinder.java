@@ -7,7 +7,7 @@ import cn.blackgray.douban.album.download.service.handler.finder.IAlbumURLFinder
 
 
 /**
- * Ïà²áURL»ñÈ¡Æ÷ÊµÏÖ - ÒôÀÖÈËÈËÊ×Ò³»ñÈ¡Ïà²á
+ * ç›¸å†ŒURLè·å–å™¨å®ç° - éŸ³ä¹äººäººé¦–é¡µè·å–ç›¸å†Œ
  */
 public class MusicianIndexFinder implements IAlbumURLFinder{
 

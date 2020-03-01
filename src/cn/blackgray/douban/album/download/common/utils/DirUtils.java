@@ -8,13 +8,13 @@ import cn.blackgray.douban.album.download.common.Console;
 import cn.blackgray.douban.album.download.model.Album;
 
 /**
- * ´æ´¢Ä¿Â¼Éú³É¡¢»ñÈ¡¹¤¾ßÀà
+ * å­˜å‚¨ç›®å½•ç”Ÿæˆã€èŽ·å–å·¥å…·ç±»
  * @author BlackGray
  */
 public class DirUtils {
 
 	private static File getDir(final Album album){
-		//ÅÐ¶ÏÄ¿Â¼ÏÂÊÇ·ñ´æÔÚÏà²áÄ¿Â¼£¬Èç¹ûÒÑ¾­´æÔÚ£¬¸üÐÂÄ¿Â¼Ãû³Æ£¬Èç¹û²»´æÔÚ£¬´´½¨ÐÂÄ¿Â¼
+		//åˆ¤æ–­ç›®å½•ä¸‹æ˜¯å¦å­˜åœ¨ç›¸å†Œç›®å½•ï¼Œå¦‚æžœå·²ç»å­˜åœ¨ï¼Œæ›´æ–°ç›®å½•åç§°ï¼Œå¦‚æžœä¸å­˜åœ¨ï¼Œåˆ›å»ºæ–°ç›®å½•
 		File parentDir = new File(Common.PATH_DOWNLOAD);
 		File[] files = parentDir.listFiles(new FilenameFilter() {
 			@Override
@@ -33,14 +33,14 @@ public class DirUtils {
 		}
 	}
 	/**
-	 * Éú³É±£´æÄ¿Â¼
+	 * ç”Ÿæˆä¿å­˜ç›®å½•
 	 */
 	public static void createDir(final Album album){
-		//ÏÂÔØÄ¿Â¼
+		//ä¸‹è½½ç›®å½•
 		File dir = getDir(album);
 		if (dir != null) {
 			String newName = dir.getParent() + File.separator + dir.getName().replaceAll("\\(\\d+\\)", "").trim();
-			Console.print("Ïà²áÒÑ´æÔÚ£¬¸üÐÂÄ¿Â¼£º" + dir.getAbsolutePath() + " -> " + newName);
+			Console.print("ç›¸å†Œå·²å­˜åœ¨ï¼Œæ›´æ–°ç›®å½•ï¼š" + dir.getAbsolutePath() + " -> " + newName);
 			File newDir = new File(newName);
 			boolean flag = dir.renameTo(newDir);
 			if (flag) {
@@ -52,7 +52,7 @@ public class DirUtils {
 			dir = new File(path);
 			if (!dir.exists()) {
 				dir.mkdirs();
-				Console.print("ÐÂ½¨Ä¿Â¼£º" + path);
+				Console.print("æ–°å»ºç›®å½•ï¼š" + path);
 			}
 		}
 		album.setPath(dir.getAbsolutePath());

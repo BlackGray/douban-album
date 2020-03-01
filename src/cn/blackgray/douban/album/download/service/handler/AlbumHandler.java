@@ -20,7 +20,7 @@ import cn.blackgray.douban.album.download.model.BGImage;
 import cn.blackgray.douban.album.download.service.image.ImageListComparator;
 
 /**
- * Ïà²á´¦ÀíÆ÷¸¸Àà - ×ÓÀàÓÃÓÚ´¦Àí²¢»ñÈ¡Ïà²áÏÂÕÕÆ¬ĞÅÏ¢£¨µØÖ·¡¢ÃèÊö¡¢ÆÀÂÛÊıµÈ£©
+ * ç›¸å†Œå¤„ç†å™¨çˆ¶ç±» - å­ç±»ç”¨äºå¤„ç†å¹¶è·å–ç›¸å†Œä¸‹ç…§ç‰‡ä¿¡æ¯ï¼ˆåœ°å€ã€æè¿°ã€è¯„è®ºæ•°ç­‰ï¼‰
  * @author BlackGray
  */
 public abstract class AlbumHandler{
@@ -41,7 +41,7 @@ public abstract class AlbumHandler{
 	}
 	
 	/**
-	 * »ñÈ¡Ïà²áÃèÊö
+	 * è·å–ç›¸å†Œæè¿°
 	 */
 	public abstract String getAlbumDesc(String source);
 	
@@ -56,19 +56,19 @@ public abstract class AlbumHandler{
 	}
 
 	/**
-	 * »ñÈ¡Ò³ÃæÕÕÆ¬Êı´óĞ¡
+	 * è·å–é¡µé¢ç…§ç‰‡æ•°å¤§å°
 	 */
 	public abstract Integer getPageSize();
 	
 	
 	/**
-	 * »ñÈ¡·ÖÒ³±êÇ©
-	 * ¶¹°êÎªstart
+	 * è·å–åˆ†é¡µæ ‡ç­¾
+	 * è±†ç“£ä¸ºstart
 	 */
 	public abstract String getPageTag();
 	
 	/**
-	 * Ïà²áÃû³Æ´¦Àí
+	 * ç›¸å†Œåç§°å¤„ç†
 	 * @param name
 	 * @return
 	 */
@@ -77,26 +77,26 @@ public abstract class AlbumHandler{
 	}
 	
 	/**
-	 * »ñÈ¡Ïà²áURLÕıÔò
+	 * è·å–ç›¸å†ŒURLæ­£åˆ™
 	 * @return
 	 */
 	public abstract String getURLRegex();
 	
 	/**
-	 * »ñÈ¡Ïà²á·ÖÒ³ÕıÔò
+	 * è·å–ç›¸å†Œåˆ†é¡µæ­£åˆ™
 	 * @return
 	 */
 	public abstract String getPageRegex();
 	
 	/**
-	 * Í¼Æ¬Ãû³ÆÕıÔò
-	 * ¿ÉÌá¸ß×¼È·ÂÊ
+	 * å›¾ç‰‡åç§°æ­£åˆ™
+	 * å¯æé«˜å‡†ç¡®ç‡
 	 * @return
 	 */
 	public abstract String getImageNameRegex();
 	
 	/**
-	 * ÊÇ·ñÓĞ´óÍ¼
+	 * æ˜¯å¦æœ‰å¤§å›¾
 	 * @return
 	 */
 	public boolean hasRaw(){
@@ -104,13 +104,13 @@ public abstract class AlbumHandler{
 	}
 	
 	/**
-	 * »ñÈ¡´óÍ¼µØÖ·
+	 * è·å–å¤§å›¾åœ°å€
 	 * @return
 	 */
 	public abstract String getRawURL(String imageURL);
 	
 	/**
-	 * »ñÈ¡ÆÀÂÛµØÖ·
+	 * è·å–è¯„è®ºåœ°å€
 	 * @param album
 	 * @param image
 	 * @return
@@ -119,7 +119,7 @@ public abstract class AlbumHandler{
 	
 	
 	/**
-	 * É¾³ıURLÖĞµÄ²ÎÊı
+	 * åˆ é™¤URLä¸­çš„å‚æ•°
 	 * @return
 	 */
 	public boolean removeURLParameter(){
@@ -128,7 +128,7 @@ public abstract class AlbumHandler{
 	
 	
 	/**
-	 * ¸ù¾İÔ´ÂëºÍÍ¼Æ¬Â·¾¶·ÖÎö²¢´´½¨Í¼Æ¬¶ÔÏó
+	 * æ ¹æ®æºç å’Œå›¾ç‰‡è·¯å¾„åˆ†æå¹¶åˆ›å»ºå›¾ç‰‡å¯¹è±¡
 	 * @param source
 	 * @param imageURL
 	 * @param map 
@@ -138,7 +138,7 @@ public abstract class AlbumHandler{
 	public abstract void createBGImage(String source,String pageURL, String imageURL, Map<String, BGImage> map);
 	
 	/**
-	 * ´óÍ¼µØÖ·´¦Àí
+	 * å¤§å›¾åœ°å€å¤„ç†
 	 * @return
 	 */
 	public boolean checkBGImage(BGImage bgImage){
@@ -146,7 +146,7 @@ public abstract class AlbumHandler{
 	}
 
 	/**
-	 * ´´½¨ÃèÊöÎÄµµ
+	 * åˆ›å»ºæè¿°æ–‡æ¡£
 	 * @param album
 	 */
 	public void createDescDoc(Album album) {
@@ -156,18 +156,18 @@ public abstract class AlbumHandler{
 			map.put(bgImage.getUrl(), bgImage);
 		}
 		List<String> keyList = new ArrayList<String>(map.keySet());
-		//ÅÅĞò
+		//æ’åº
 		Collections.sort(keyList,new ImageListComparator());
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(album.getPath() + "/" + Common.DEFAULT_DOC_NAME));
-			//Êä³öÏà²áµØÖ·
+			//è¾“å‡ºç›¸å†Œåœ°å€
 			if (album.getDesc() == null) {
 				bw.write(URLUtils.charset + " " + album.getUrl() + " " + album.getDate().getTime() + " -");
 			}else{
 				bw.write(URLUtils.charset + " " + album.getUrl() + " " + album.getDate().getTime() + " " + album.getDesc());
 			}
 			bw.newLine();
-			//Êä³öÕÕÆ¬µØÖ·ºÍÃèÊö£¬¸ñÊ½£ºĞòºÅ + ÆÀÂÛÊı + ÕÕÆ¬µØÖ· + ÃèÊö
+			//è¾“å‡ºç…§ç‰‡åœ°å€å’Œæè¿°ï¼Œæ ¼å¼ï¼šåºå· + è¯„è®ºæ•° + ç…§ç‰‡åœ°å€ + æè¿°
 			for (int i = 0; i < keyList.size(); i++) {
 				BGImage bgImage = map.get(keyList.get(i));
 				Integer commentTotal = bgImage.getCommentTotal();
@@ -177,15 +177,15 @@ public abstract class AlbumHandler{
 			}
 			bw.flush();
 			bw.close();
-			Console.print("Éú³ÉÃèÊöÎÄµµ£º³É¹¦");
+			Console.print("ç”Ÿæˆæè¿°æ–‡æ¡£ï¼šæˆåŠŸ");
 		} catch (IOException e) {
-			Console.print("Éú³ÉÃèÊöÎÄµµ£ºÊ§°Ü");
+			Console.print("ç”Ÿæˆæè¿°æ–‡æ¡£ï¼šå¤±è´¥");
 			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * ´ÓÃèÊöÎÄµµ»ñÈ¡Í¼Æ¬¼¯ºÏ
+	 * ä»æè¿°æ–‡æ¡£è·å–å›¾ç‰‡é›†åˆ
 	 * @param descFile
 	 * @return
 	 * @throws IOException 
@@ -200,11 +200,11 @@ public abstract class AlbumHandler{
 				if (line == 0) {
 					line++;
 				}else{
-					//»ñÈ¡ÕÕÆ¬µØÖ·&ÃèÊöĞÅÏ¢
+					//è·å–ç…§ç‰‡åœ°å€&æè¿°ä¿¡æ¯
 					String[] info = str.split(" ",4);
-					//info[0],info[1],info[2],info[3]·Ö±ğÎªÕÕÆ¬±àºÅ¡¢Ô­Ê¼URLµØÖ·¡¢ÆÀÂÛÊı¡¢ÕÕÆ¬ÃèÊö
+					//info[0],info[1],info[2],info[3]åˆ†åˆ«ä¸ºç…§ç‰‡ç¼–å·ã€åŸå§‹URLåœ°å€ã€è¯„è®ºæ•°ã€ç…§ç‰‡æè¿°
 					BGImage bgImage = new BGImage(info[0],info[1],info[3]);
-					//ÆÀÂÛÊı
+					//è¯„è®ºæ•°
 					if (!info[2].equals("-")) {
 						bgImage.setCommentTotal(Integer.valueOf(info[2]));
 					}

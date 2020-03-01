@@ -10,22 +10,22 @@ import cn.blackgray.douban.album.download.model.BGImage;
 import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 
 /**
- * µçÓ°Ïà²á´¦ÀíÆ÷
+ * ç”µå½±ç›¸å†Œå¤„ç†å™¨
  */
 public class MovieAlbumHandler extends AlbumHandler {
 
-	//µçÓ°Ê×Ò³
+	//ç”µå½±é¦–é¡µ
 	//http://movie.douban.com/subject/3652297/?from=hot_movie
-	//µçÓ°Ïà²áÊ×Ò³
+	//ç”µå½±ç›¸å†Œé¦–é¡µ
 	//http://movie.douban.com/subject/3652297/all_photos
-	//¾çÕÕ
+	//å‰§ç…§
 	//http://movie.douban.com/subject/3652297/photos?type=S
-	//º£±¨
+	//æµ·æŠ¥
 	//http://movie.douban.com/subject/3652297/photos?type=R
-	//±ÚÖ½
+	//å£çº¸
 	//http://movie.douban.com/subject/3652297/photos?type=W
 			
-	public static final int PAGE_SIZE_IMAGES_MOVIE = 30;//µçÓ°ÕÕÆ¬·ÖÒ³´óĞ¡£¨Ò»Ò³40ÕÅÍ¼£©
+	public static final int PAGE_SIZE_IMAGES_MOVIE = 30;//ç”µå½±ç…§ç‰‡åˆ†é¡µå¤§å°ï¼ˆä¸€é¡µ40å¼ å›¾ï¼‰
 	public static final String PAGE_TAG = "start";
 	public static final String IMAGE_NAME_REGEX = "p\\d+.(" + Common.IMAGE_TYPE + ")";
 	public static final String ALBUM_URL_REGEX = "(http|https)://movie.douban.com/subject/\\d+/photos\\?(\\w+=\\w+&*)+";
@@ -110,12 +110,12 @@ public class MovieAlbumHandler extends AlbumHandler {
 //                1024x576
 //            </div>
 //                <div class="name">
-//                    ÄãÃÃ°¡£¡£¡£¡ËµºÃÁËµÄ...
-//                        <a href="http://movie.douban.com/photos/photo/2158663965/#comments">1»ØÓ¦</a>
+//                    ä½ å¦¹å•Šï¼ï¼ï¼è¯´å¥½äº†çš„...
+//                        <a href="http://movie.douban.com/photos/photo/2158663965/#comments">1å›åº”</a>
 //                </div>
 //        </li>
 		String imageId = imageURL.substring(imageURL.lastIndexOf("/p") + 2,imageURL.lastIndexOf("."));
-		//¡¾ÃèÊö¡¿
+		//ã€æè¿°ã€‘
 		String startIndexStr = "<a href=\"https://movie.douban.com/photos/photo/" + imageId + "/\">";
 		int descStartIndex = source.indexOf(startIndexStr);
 		String desc;
@@ -126,20 +126,20 @@ public class MovieAlbumHandler extends AlbumHandler {
 		}else{
 			desc = "";
 		}
-		//¡¾ÕÕÆ¬ÆÀÂÛÊı¡¿
-		//<a href="http://movie.douban.com/celebrity/1040543/photo/1261122420/#comments">29»ØÓ¦</a>
+		//ã€ç…§ç‰‡è¯„è®ºæ•°ã€‘
+		//<a href="http://movie.douban.com/celebrity/1040543/photo/1261122420/#comments">29å›åº”</a>
 		String commentTatolStartIndexStr = "<a href=\"https://movie.douban.com/photos/photo/" + imageId + "/#comments\">";
 		int commentTatolStartIndex = source.indexOf(commentTatolStartIndexStr);
 		Integer commentTatol = null;
 		if (commentTatolStartIndex != -1) {
-			//¡°3»ØÓ¦¡±
+			//â€œ3å›åº”â€
 			String s = source.substring(commentTatolStartIndex + commentTatolStartIndexStr.length(), source.indexOf("</a>",commentTatolStartIndex));
-			commentTatol = Integer.valueOf(s.replace("»ØÓ¦", ""));
+			commentTatol = Integer.valueOf(s.replace("å›åº”", ""));
 		}
-		//¡¾ÕÕÆ¬¡¿
+		//ã€ç…§ç‰‡ã€‘
 //		http://img3.douban.com/view/photo/thumb/public/p2125663360.jpg
 //		http://img3.douban.com/view/photo/photo/public/p2109950882.jpg
-		imageURL = imageURL.replace("photo/m", "photo/l").trim();	//thumb¡ª¡ª>photo£ºËõÂÔÍ¼¡ª¡ª>´óÍ¼
+		imageURL = imageURL.replace("photo/m", "photo/l").trim();	//thumbâ€”â€”>photoï¼šç¼©ç•¥å›¾â€”â€”>å¤§å›¾
 		desc = desc.replace("\\t\\n","").trim();
 		if (!map.containsKey(imageURL)) {
 			BGImage bgImage = new BGImage(desc, imageURL, commentTatol);

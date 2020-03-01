@@ -9,16 +9,16 @@ import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 import cn.blackgray.douban.album.download.service.handler.PageAnalyzer;
 
 /**
- * Ïà²áMODEL
+ * ç›¸å†ŒMODEL
  * @author BlackGray
  */
 public class Album {
 	
-	//1.¡ùÍ¼Æ¬ - ÎÄ¼şÃû(Ïà¶ÔÂ·¾¶»ñÈ¡£¬²»ĞèÒªÂ·¾¶)
-	//2.¡ù±¸×¢ - ±¸×¢.txt
-	//3.¡ùÏà²áÃû³Æ - ÎÄ¼ş¼ĞÃû³Æ
-	//4.¡ùÏà²áµØÖ· - ±¸×¢.txtµÚÒ»ĞĞ
-	//5.ÎÄµµÉú³ÉÊ±¼ä - ³ÌĞòÖ´ĞĞÊ±¼ä
+	//1.â€»å›¾ç‰‡ - æ–‡ä»¶å(ç›¸å¯¹è·¯å¾„è·å–ï¼Œä¸éœ€è¦è·¯å¾„)
+	//2.â€»å¤‡æ³¨ - å¤‡æ³¨.txt
+	//3.â€»ç›¸å†Œåç§° - æ–‡ä»¶å¤¹åç§°
+	//4.â€»ç›¸å†Œåœ°å€ - å¤‡æ³¨.txtç¬¬ä¸€è¡Œ
+	//5.æ–‡æ¡£ç”Ÿæˆæ—¶é—´ - ç¨‹åºæ‰§è¡Œæ—¶é—´
 	
 //	public static final int TYPE_NOMAL = 1;
 //	public static final int TYPE_DOUBAN_ALBUM = 2;
@@ -26,21 +26,21 @@ public class Album {
 //	public static final int TYPE_DOUBAN_SITE = 4;
 //	public static final int TYPE_DOUBAN_CELEBRITY = 5;
 	
-	private String name;			//Ïà²áÃû³Æ
-	private String url;				//Ïà²áµØÖ·
-	private Date date;				//ÈÕÆÚ
-	private String path;			//´¢´æÂ·¾¶
-	private String charset;			//×Ö·û¼¯
-	private String desc;			//Ïà²áÃèÊö
-//	private int type = TYPE_NOMAL;	//Ïà²áÀàĞÍ
+	private String name;			//ç›¸å†Œåç§°
+	private String url;				//ç›¸å†Œåœ°å€
+	private Date date;				//æ—¥æœŸ
+	private String path;			//å‚¨å­˜è·¯å¾„
+	private String charset;			//å­—ç¬¦é›†
+	private String desc;			//ç›¸å†Œæè¿°
+//	private int type = TYPE_NOMAL;	//ç›¸å†Œç±»å‹
 	
-	private boolean update = false;	//ÊÇ·ñÎª¸üĞÂ
+	private boolean update = false;	//æ˜¯å¦ä¸ºæ›´æ–°
 	
-	private AlbumHandler albumHandler;	//Ïà²á´¦ÀíÆ÷
+	private AlbumHandler albumHandler;	//ç›¸å†Œå¤„ç†å™¨
 	
-	//ÕÕÆ¬¼¯ºÏ
+	//ç…§ç‰‡é›†åˆ
 	private List<BGImage> photosList = new ArrayList<BGImage>();
-	//Ò³Ãæ¼¯ºÏ - Ã¿¸öÒ³ÃæÏÂ¶àÕÅÕÕÆ¬
+	//é¡µé¢é›†åˆ - æ¯ä¸ªé¡µé¢ä¸‹å¤šå¼ ç…§ç‰‡
 	private List<String> pageURLLsit = new ArrayList<String>();
 	
 	public Album() {
@@ -61,24 +61,24 @@ public class Album {
 //	}
 	
 //	/**
-//	 * ¼ì²éÏà²áÀàĞÍ
+//	 * æ£€æŸ¥ç›¸å†Œç±»å‹
 //	 * @param url
 //	 * @return
 //	 */
 //	public static int checkType(String url) {
-//		//¶¹°êÏà²áÏÂÔØ
+//		//è±†ç“£ç›¸å†Œä¸‹è½½
 //		if (url.matches(DownloadService.REGEX_DOUBAN_ALBUM)) {
 //			return TYPE_DOUBAN_ALBUM;
 //		}
-//		//¶¹°ê»î¶¯ÏÂÔØ
+//		//è±†ç“£æ´»åŠ¨ä¸‹è½½
 //		if (url.matches(DownloadService.REGEX_DOUBAN_ONLINE_ALBUM)) {
 //			return TYPE_DOUBAN_ONLINE;
 //		}
-//		//¶¹°êĞ¡Õ¾
+//		//è±†ç“£å°ç«™
 //		if (url.matches(DownloadService.REGEX_DOUBAN_SITE) || url.matches(DownloadService.REGEX_DOUBAN_SITE_NEW)) {
 //			return TYPE_DOUBAN_SITE;
 //		}
-//		//ÆÕÍ¨ÏÂÔØ
+//		//æ™®é€šä¸‹è½½
 //		return TYPE_NOMAL;
 //	}
 
@@ -178,17 +178,17 @@ public class Album {
 	}
 	
 	/**
-	 * ÏÂÔØ
+	 * ä¸‹è½½
 	 */
 	public void download(){
-		//´´½¨Ïà²áÄ£ĞÍ
-		//¸ù¾İÄ£ĞÍÏÂÔØÏà²á
+		//åˆ›å»ºç›¸å†Œæ¨¡å‹
+		//æ ¹æ®æ¨¡å‹ä¸‹è½½ç›¸å†Œ
 		DownloadProcessing.downloadAlbum(this);
 		
 	};
 	
 	/**
-	 * Éú³ÉÃèÊöÎÄµµ
+	 * ç”Ÿæˆæè¿°æ–‡æ¡£
 	 * @param imageAndDescMap
 	 */
 	public void createDescDoc(){
@@ -196,7 +196,7 @@ public class Album {
 	}
 	
 	/**
-	 * ³õÊ¼»¯Ïà²á
+	 * åˆå§‹åŒ–ç›¸å†Œ
 	 */
 	public void init(){
 		
@@ -210,21 +210,21 @@ public class Album {
 //		}
 //		this.url = url;
 		
-		//¡¾³õÊ¼»¯Ïà²áĞÅÏ¢¡¿
+		//ã€åˆå§‹åŒ–ç›¸å†Œä¿¡æ¯ã€‘
 		//URL
 		this.setUrl(this.albumHandler.getAlbumURL());
-		//ËùÓĞÒ³Ãæ
+		//æ‰€æœ‰é¡µé¢
 		List<String> pageURLLsit = PageAnalyzer.findPageURL(albumHandler);
 		this.setPageURLLsit(pageURLLsit);
-		//Ïà²áÃû³Æ
+		//ç›¸å†Œåç§°
 		String name = PageAnalyzer.findAlbumName().trim();
 		this.setName(albumHandler.albumNameProcess(name));
-		//Ïà²áÃèÊö
+		//ç›¸å†Œæè¿°
 		String desc = PageAnalyzer.findAlbumDesc(albumHandler);
 		if (desc != null) {
 			this.setDesc(desc.trim());
 		}
-		//ÏÂÔØÈÕÆÚ
+		//ä¸‹è½½æ—¥æœŸ
 		this.setDate(new Date());
 		
 	}

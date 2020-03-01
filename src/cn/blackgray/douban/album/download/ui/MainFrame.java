@@ -30,7 +30,7 @@ import cn.blackgray.douban.album.download.service.creator.HtmlCreator;
 import cn.blackgray.douban.album.download.ui.component.DropTextArea;
 
 /**
- * ÏÂÔØÆ÷Ö÷½çÃæ
+ * ä¸‹è½½å™¨ä¸»ç•Œé¢
  */
 public class MainFrame extends javax.swing.JFrame {
 
@@ -41,10 +41,10 @@ public class MainFrame extends javax.swing.JFrame {
 		initComponents();
 		this.setBounds(350, 100, this.getWidth(), this.getHeight());
 		String ext = "";
-//		String ext = " FOR Óë°¢Ã×¹û.avi";
-		this.setTitle("¶¹°êÏà²áÏÂÔØ" + Common.VERSION + ext);
+//		String ext = " FOR ä¸é˜¿ç±³æœ.avi";
+		this.setTitle("è±†ç“£ç›¸å†Œä¸‹è½½" + Common.VERSION + ext);
 		Console.setArea(infoTextArea);
-		//½ø¶ÈÌõÉèÖÃ
+		//è¿›åº¦æ¡è®¾ç½®
 		progressBar.setOrientation(JProgressBar.HORIZONTAL);
 		progressBar.setMinimum(0);
 		progressBar.setStringPainted(true);
@@ -56,13 +56,13 @@ public class MainFrame extends javax.swing.JFrame {
 		albumListProgressBar.setStringPainted(true);
 		albumListProgressBar.setPreferredSize(new Dimension(300, 20));
 		albumListProgressBar.setBorderPainted(true);
-		//´¦Àíµ¥Ôª½ø¶ÈÌõ
+		//å¤„ç†å•å…ƒè¿›åº¦æ¡
 		processUnitProgressBar.setOrientation(JProgressBar.HORIZONTAL);
 		processUnitProgressBar.setMinimum(0);
 		processUnitProgressBar.setStringPainted(true);
 		processUnitProgressBar.setPreferredSize(new Dimension(300, 20));
 		processUnitProgressBar.setBorderPainted(true);
-		//ÉèÖÃÄ¬ÈÏ´æ´¢Â·¾¶
+		//è®¾ç½®é»˜è®¤å­˜å‚¨è·¯å¾„
 		pathTextField.setText(Common.PATH_DOWNLOAD);
 	}
 
@@ -445,21 +445,21 @@ public class MainFrame extends javax.swing.JFrame {
 			@Override
 			public void run() {
 				JFileChooser chooser = new JFileChooser(Common.PATH_APP);
-				chooser.setDialogTitle("ÇëÑ¡ÔñÒªÉú³ÉÎÄ¼şµÄÄ¿Â¼");
+				chooser.setDialogTitle("è¯·é€‰æ‹©è¦ç”Ÿæˆæ–‡ä»¶çš„ç›®å½•");
 				chooser.setMultiSelectionEnabled(true);
 				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				chooser.showOpenDialog(MainFrame.getInstance());
 				File[] dirs = chooser.getSelectedFiles();
-				Console.print("¿ªÊ¼Éú³É£¬ÇëÉ§µÈ~");
+				Console.print("å¼€å§‹ç”Ÿæˆï¼Œè¯·éªšç­‰~");
 				if (dirs.length != 0) {
 					try {
 						for (File dir : dirs) {
 							HtmlCreator.createAlbumHTML(dir.getAbsolutePath());
 							Console.print("[Finish]" + dir.getAbsolutePath());
 						}
-						Console.print("Éú³ÉÍê±Ï");
+						Console.print("ç”Ÿæˆå®Œæ¯•");
 					} catch (IOException e) {
-						Console.print("Éú³É´íÎó");
+						Console.print("ç”Ÿæˆé”™è¯¯");
 						Console.print(e.getMessage());
 						e.printStackTrace();
 					}
@@ -494,7 +494,7 @@ public class MainFrame extends javax.swing.JFrame {
 			if (dir.exists()) {
 				desktop.open(dir);
 			} else {
-				JOptionPane.showMessageDialog(this, "ÔİÎŞÍ¼Æ¬");
+				JOptionPane.showMessageDialog(this, "æš‚æ— å›¾ç‰‡");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -506,13 +506,13 @@ public class MainFrame extends javax.swing.JFrame {
 	}
 
 	/**
-	 * Ö´ĞĞÏÂÔØ¶¯×÷
+	 * æ‰§è¡Œä¸‹è½½åŠ¨ä½œ
 	 */
 	private void downloadBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				//ÏÂÔØÏà²á
+				//ä¸‹è½½ç›¸å†Œ
 				download();
 			}
 		}).start();
@@ -520,7 +520,7 @@ public class MainFrame extends javax.swing.JFrame {
 
 	private void download() {
 		downloadBtn.setEnabled(false);
-		//»ñÈ¡Â·¾¶
+		//è·å–è·¯å¾„
 		if (Common.IS_UPDATE) {
 			Common.IS_UPDATE = false;
 		} else {
@@ -530,7 +530,7 @@ public class MainFrame extends javax.swing.JFrame {
 		if (!file.exists()) {
 			file.mkdirs();
 		}
-		//»ñÈ¡Ïà²áµØÖ·
+		//è·å–ç›¸å†Œåœ°å€
 		String[] urls = albumTextArea.getText().split("[\\t \\n]+");
 		List<String> urlList = new ArrayList<String>();
 		boolean flag = true;
@@ -538,12 +538,12 @@ public class MainFrame extends javax.swing.JFrame {
 			String url = urls[i];
 			if (!url.startsWith("http://") && !url.startsWith("https://")) {
 				JOptionPane.showMessageDialog(MainFrame.getInstance(),
-						"µØÖ·¸ñÊ½´íÎó£¬Çë¼ì²éºóÖØĞÂÊäÈë");
+						"åœ°å€æ ¼å¼é”™è¯¯ï¼Œè¯·æ£€æŸ¥åé‡æ–°è¾“å…¥");
 				downloadBtn.setEnabled(true);
 				flag = false;
 				break;
 			} else {
-				//Èç¹ûÊÇ¶¹°êÏà²á£¬È¥³ıÎ²²¿·ÖÒ³ĞÅÏ¢
+				//å¦‚æœæ˜¯è±†ç“£ç›¸å†Œï¼Œå»é™¤å°¾éƒ¨åˆ†é¡µä¿¡æ¯
 				if (url.indexOf("douban.com") != -1) {
 					if (url.indexOf("?start=") != -1) {
 						url = url.substring(0, url.indexOf("?start="));
@@ -552,7 +552,7 @@ public class MainFrame extends javax.swing.JFrame {
 						url = url.substring(0, url.indexOf("?m_start="));
 					}
 				}
-				//Î²²¿Ìí¼Ó¡°/¡±
+				//å°¾éƒ¨æ·»åŠ â€œ/â€
 				if (url.indexOf("?") != -1 || url.substring(url.length() - 1).equals("/")) {
 					urlList.add(url);
 				} else {
@@ -561,11 +561,11 @@ public class MainFrame extends javax.swing.JFrame {
 				System.out.println(url);
 			}
 		}
-		//µØÖ·ÎŞÎó£¬Ö´ĞĞÏÂÔØ
+		//åœ°å€æ— è¯¯ï¼Œæ‰§è¡Œä¸‹è½½
 		if (flag) {
-			//ÊÇ·ñÏÂÔØÔ­Ê¼´óÍ¼
+			//æ˜¯å¦ä¸‹è½½åŸå§‹å¤§å›¾
 			Common.IS_DOWNLOAD_RAW = isDownloadRawCheckBox.isSelected();
-			//Æô¶¯ÏÂÔØ
+			//å¯åŠ¨ä¸‹è½½
 			DownloadService.download(urlList);
 		}
 
@@ -587,12 +587,12 @@ public class MainFrame extends javax.swing.JFrame {
 					}
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null,
-							"Î´ÕÒµ½ĞÂÆ¤·ô£¬ÇëÉı¼¶JDKµ½6.0 update 10");
+							"æœªæ‰¾åˆ°æ–°çš®è‚¤ï¼Œè¯·å‡çº§JDKåˆ°6.0 update 10");
 				}
 				
 				MainFrame frame = MainFrame.getInstance();
 				
-				//ÉèÖÃmacosÏÂ¿ì½İ¼ü
+				//è®¾ç½®macosä¸‹å¿«æ·é”®
 				JTextArea albumTextArea = frame.albumTextArea;
 				String osName = System.getProperty("os.name").toLowerCase();
 				if (osName.indexOf("mac") >= 0) {
@@ -605,15 +605,15 @@ public class MainFrame extends javax.swing.JFrame {
 				
 				frame.setVisible(true);
 				
-				//ÉèÖÃÍ¸Ã÷¶È
+				//è®¾ç½®é€æ˜åº¦
 				//AWTUtilities.setWindowOpacity(MainFrame.getInstance(), 0.70f);
 			}
 		});
 		
-//		//¼ì²éÊÇ·ñÓĞ×îĞÂ°æ±¾£¬Èç¹ûÓĞ£¬ÌáÊ¾ÏÂÔØ
+//		//æ£€æŸ¥æ˜¯å¦æœ‰æœ€æ–°ç‰ˆæœ¬ï¼Œå¦‚æœæœ‰ï¼Œæç¤ºä¸‹è½½
 //		if (VersionChecker.haveNewVersion()) {
 //			int result = JOptionPane.showConfirmDialog(MainFrame.getInstance(),
-//					"ÓĞĞÂ°æ±¾£¬ÊÇ·ñÁ¢¼´²é¿´£¿", "°æ±¾ÌáÊ¾", JOptionPane.YES_NO_OPTION,
+//					"æœ‰æ–°ç‰ˆæœ¬ï¼Œæ˜¯å¦ç«‹å³æŸ¥çœ‹ï¼Ÿ", "ç‰ˆæœ¬æç¤º", JOptionPane.YES_NO_OPTION,
 //					JOptionPane.QUESTION_MESSAGE);
 //			if (result == JOptionPane.YES_OPTION) {
 //				Common.openURLWithBrowse(Common.URL_HELP,

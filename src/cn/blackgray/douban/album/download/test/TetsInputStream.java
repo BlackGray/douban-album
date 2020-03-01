@@ -18,13 +18,13 @@ public class TetsInputStream {
 			String url = "http://img3.douban.com/icon/ul37817084-33.jpg";
 			URL image = new URL(url);
 			HttpURLConnection conn = (HttpURLConnection) image.openConnection();
-			conn.setConnectTimeout(10*1000);	//设置连接超时
-			conn.setReadTimeout(10*1000);		//设置读取超时
-			conn.setDoInput(true);				//默认为true
+			conn.setConnectTimeout(10*1000);	//璁剧疆杩炴帴瓒呮椂
+			conn.setReadTimeout(10*1000);		//璁剧疆璇诲彇瓒呮椂
+			conn.setDoInput(true);				//榛樿涓簍rue
 			conn.connect();
 			InputStream in = conn.getInputStream();
 
-			//执行下载
+			//鎵ц涓嬭浇
 			File file = new File("D:/TEST/test" + (i+1) + ".jpg");
 			BufferedInputStream inputStream = new BufferedInputStream(in);
 			System.out.println("xxxxxxxxx" + in.getClass());

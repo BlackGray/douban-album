@@ -15,7 +15,7 @@ import cn.blackgray.douban.album.download.service.creator.HtmlCreator;
 import cn.blackgray.douban.album.download.service.download.DownloadManager;
 
 /**
- * Ê§°ÜÎÄ¼şÏÂÔØ½çÃæ
+ * å¤±è´¥æ–‡ä»¶ä¸‹è½½ç•Œé¢
  */
 public class FailFileFrame extends javax.swing.JFrame {
 
@@ -25,21 +25,21 @@ public class FailFileFrame extends javax.swing.JFrame {
 	private FailFileFrame() {
 		initComponents();
 		init();
-		this.setTitle("ÏÂÔØÊ§°ÜÎÄ¼şÁĞ±í");
+		this.setTitle("ä¸‹è½½å¤±è´¥æ–‡ä»¶åˆ—è¡¨");
 		this.setLocationRelativeTo(MainFrame.getInstance());
 	}
 
 	/**
-	 * ³õÊ¼»¯
+	 * åˆå§‹åŒ–
 	 */
 	private void init() {
-		//ÏÔÊ¾Ê§°ÜÎÄ¼şÁĞ±í
+		//æ˜¾ç¤ºå¤±è´¥æ–‡ä»¶åˆ—è¡¨
 		failFileInfoTextArea.setText("");
 		for (Entry<String, String> image : Common.failFileMap.entrySet()) {
-			failFileInfoTextArea.append("ÏÂÔØÊ§°Ü£º" + image.getKey() + " ¡ª¡ª> "
+			failFileInfoTextArea.append("ä¸‹è½½å¤±è´¥ï¼š" + image.getKey() + " â€”â€”> "
 					+ image.getValue() + "\r\n");
 		}
-		//ÏÔÊ¾ÎÄ¼ş¸öÊı
+		//æ˜¾ç¤ºæ–‡ä»¶ä¸ªæ•°
 		countLabel.setText(String.valueOf(Common.failFileMap.size()));
 	}
 
@@ -179,27 +179,27 @@ public class FailFileFrame extends javax.swing.JFrame {
 	}
 
 	/**
-	 * ¹Ø±Õ´°¿Ú
-	 * ¹Ø±ÕºóÖ´ĞĞÍøÒ³ÎÄµµ´´½¨²Ù×÷
+	 * å…³é—­çª—å£
+	 * å…³é—­åæ‰§è¡Œç½‘é¡µæ–‡æ¡£åˆ›å»ºæ“ä½œ
 	 */
 	private void closeWindow(){
 		Common.failFileMap.clear();
 		this.setVisible(false);
-		//Éú³ÉÍøÒ³
+		//ç”Ÿæˆç½‘é¡µ
 		createAlbumHTML();
 	}
 	
 	/**
-	 * Éú³ÉÍøÒ³
+	 * ç”Ÿæˆç½‘é¡µ
 	 */
 	private void createAlbumHTML(){
-		//´´½¨ÎÄµµ
+		//åˆ›å»ºæ–‡æ¡£
 		if (FailFileFrame.finishedAlbumPathList != null && FailFileFrame.finishedAlbumPathList.size() != 0) {
-			Console.print("¡¾ÕıÔÚÉú³ÉHTMLÎÄµµ,ÇëÉÔµÈ...¡¿");
+			Console.print("ã€æ­£åœ¨ç”ŸæˆHTMLæ–‡æ¡£,è¯·ç¨ç­‰...ã€‘");
 			HtmlCreator.createAlbumHTML(finishedAlbumPathList);
 			FailFileFrame.finishedAlbumPathList = null;
-			Console.print("¡¾FINISH¡¿");
-			//ÉèÖÃ½çÃæÏÂÔØ°´Å¥¿ÉÓÃ
+			Console.print("ã€FINISHã€‘");
+			//è®¾ç½®ç•Œé¢ä¸‹è½½æŒ‰é’®å¯ç”¨
 			MainFrame.getInstance().downloadBtn.setEnabled(true);
 		}
 	}
@@ -209,16 +209,16 @@ public class FailFileFrame extends javax.swing.JFrame {
 
 			@Override
 			public void run() {
-				//ÖØĞÂÏÂÔØ
+				//é‡æ–°ä¸‹è½½
 				FailFileFrame.getInstance().setVisible(false);
 				int flag = DownloadManager.downloadFailFile();
 				if (flag == 0) {
 					FailFileFrame.getInstance().init();
 					FailFileFrame.getInstance().setVisible(true);	
 				}else{
-					//Éú³ÉÍøÒ³
+					//ç”Ÿæˆç½‘é¡µ
 					createAlbumHTML();
-					//ÉèÖÃ½çÃæÏÂÔØ°´Å¥¿ÉÓÃ
+					//è®¾ç½®ç•Œé¢ä¸‹è½½æŒ‰é’®å¯ç”¨
 					MainFrame.getInstance().downloadBtn.setEnabled(true);					
 				}
 			}

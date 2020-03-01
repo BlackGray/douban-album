@@ -7,7 +7,7 @@ import cn.blackgray.douban.album.download.model.BGImage;
 import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 
 /**
- * Ä¬ÈÏÏà²á´¦ÀíÆ÷
+ * é»˜è®¤ç›¸å†Œå¤„ç†å™¨
  */
 public class DefaultAlbumHandler extends AlbumHandler {
 

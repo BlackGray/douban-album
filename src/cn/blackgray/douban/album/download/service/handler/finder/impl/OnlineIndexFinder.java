@@ -9,16 +9,16 @@ import cn.blackgray.douban.album.download.common.utils.URLUtils;
 import cn.blackgray.douban.album.download.service.handler.finder.IAlbumURLFinder;
 
 /**
- * Ïà²áURL»ñÈ¡Æ÷ÊµÏÖ - ¸ù¾İ»î¶¯Ê×Ò³»ñÈ¡Ïà²á
+ * ç›¸å†ŒURLè·å–å™¨å®ç° - æ ¹æ®æ´»åŠ¨é¦–é¡µè·å–ç›¸å†Œ
  */
 public class OnlineIndexFinder implements IAlbumURLFinder{
 
 	@Override
 	public List<String> findAlbumURL(String url) {
-		//Ê×Ò³ http://www.douban.com/online/11127307/
-		//Ïà²á http://www.douban.com/online/11127307/album/72416214/
-		//Ïà²á http://www.douban.com/online/11023488/album/64765014/?start=0
-		//ÕÕÆ¬ http://www.douban.com/online/11127307/photo/1573338563/
+		//é¦–é¡µ http://www.douban.com/online/11127307/
+		//ç›¸å†Œ http://www.douban.com/online/11127307/album/72416214/
+		//ç›¸å†Œ http://www.douban.com/online/11023488/album/64765014/?start=0
+		//ç…§ç‰‡ http://www.douban.com/online/11127307/photo/1573338563/
 		List<String> list = new ArrayList<String>();
 		String source = URLUtils.readSource(url);
 		String regex = url + "album/\\d+";

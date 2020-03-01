@@ -21,11 +21,11 @@ import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 import cn.blackgray.douban.album.download.service.image.ImageListComparator;
 
 /**
- * »î¶¯Ïà²á´¦ÀíÆ÷
+ * æ´»åŠ¨ç›¸å†Œå¤„ç†å™¨
  */
 public class OnlineAlbumHandler extends AlbumHandler {
 
-	public static final int PAGE_SIZE_IMAGES_ONLINE = 90;	//»î¶¯ÕÕÆ¬·ÖÒ³´óĞ¡£¨Ò»Ò³30ÕÅÍ¼£©
+	public static final int PAGE_SIZE_IMAGES_ONLINE = 90;	//æ´»åŠ¨ç…§ç‰‡åˆ†é¡µå¤§å°ï¼ˆä¸€é¡µ30å¼ å›¾ï¼‰
 	public static final String PAGE_TAG = "start";
 	public static final String IMAGE_NAME_REGEX = "p\\d+.(" + Common.IMAGE_TYPE + ")";
 	public static final String ALBUM_URL_REGEX = "(http|https)://www.douban.com/online/\\d+/album/\\d+/";
@@ -69,20 +69,20 @@ public class OnlineAlbumHandler extends AlbumHandler {
 	public void createBGImage(String source, String pageURL, String imageURL, Map<String, BGImage> map) {
 		
 //	    <div class="photo_wrap">
-//	    <a href="http://www.douban.com/online/11127307/photo/1573338563/" title="ÎÒµÄ½üÕÕ" alt="ÎÒµÄ½üÕÕ">
+//	    <a href="http://www.douban.com/online/11127307/photo/1573338563/" title="æˆ‘çš„è¿‘ç…§" alt="æˆ‘çš„è¿‘ç…§">
 //	    <img src="http://img1.douban.com/view/photo/thumb/public/p1573338563.jpg" />
 //	    </a>
 //	    <div class="pl" style="padding-bottom:8px;">
-//	        ÎÒµÄ½üÕÕ
+//	        æˆ‘çš„è¿‘ç…§
 //	        <br />
-//	    À´×Ô <a href="http://www.douban.com/people/similer/">similerÖíÖí</a>
+//	    æ¥è‡ª <a href="http://www.douban.com/people/similer/">similerçŒªçŒª</a>
 //	    
 //	    </div>
 //	    </div>
 		String imageId = imageURL.substring(imageURL.lastIndexOf("/p") + 2,imageURL.lastIndexOf("."));
 		String onlineId = pageURL.substring(pageURL.indexOf("online/") + 7, pageURL.indexOf("/album"));
 
-		//¡¾ÃèÊö¡¿
+		//ã€æè¿°ã€‘
 		String startIndexStr = "<a href=\"https://www.douban.com/online/" + onlineId + "/photo/" + imageId + "/\" title=\"";
 		int descStartIndex = source.indexOf(startIndexStr);
 		String desc;
@@ -92,8 +92,8 @@ public class OnlineAlbumHandler extends AlbumHandler {
 		}else{
 			desc = "";
 		}
-		//¡¾ËùÓĞÕßID&Ö÷Ò³¡¿
-		String ownerStartStr = "À´×Ô <a href=\"";
+		//ã€æ‰€æœ‰è€…ID&ä¸»é¡µã€‘
+		String ownerStartStr = "æ¥è‡ª <a href=\"";
 		int ownerStartIndex = source.indexOf(ownerStartStr,descStartIndex);
 		String ownerA = source.substring(ownerStartIndex + 12, source.indexOf("</a>", ownerStartIndex));
 		String ownerURL = "@@@@";
@@ -109,19 +109,19 @@ public class OnlineAlbumHandler extends AlbumHandler {
 		}
 		String ownerName = ownerA.substring(ownerA.indexOf(">") + 1);
 		
-		//¡¾ÕÕÆ¬ÆÀÂÛÊı¡¿
+		//ã€ç…§ç‰‡è¯„è®ºæ•°ã€‘
 		String commentTatolStartIndexStr = "<a href=\"https://www.douban.com/online/" + onlineId + "/photo/" + imageId + "/#comments\">";
 		int commentTatolStartIndex = source.indexOf(commentTatolStartIndexStr);
 		Integer commentTatol = null;
 		if (commentTatolStartIndex != -1) {
-			//¡°3»ØÓ¦¡±
+			//â€œ3å›åº”â€
 			String s = source.substring(commentTatolStartIndex + commentTatolStartIndexStr.length(), source.indexOf("</a>",commentTatolStartIndex));
-			commentTatol = Integer.valueOf(s.replace("»ØÓ¦", ""));
+			commentTatol = Integer.valueOf(s.replace("å›åº”", ""));
 		}
 		
 		
-		//¡¾ÕÕÆ¬¡¿
-		imageURL = imageURL.replace("thumb", "photo").trim();	//thumb¡ª¡ª>photo£ºËõÂÔÍ¼¡ª¡ª>´óÍ¼
+		//ã€ç…§ç‰‡ã€‘
+		imageURL = imageURL.replace("thumb", "photo").trim();	//thumbâ€”â€”>photoï¼šç¼©ç•¥å›¾â€”â€”>å¤§å›¾
 		desc = desc.replace("\\t\\n","").trim();
 		if (!map.containsKey(imageURL)) {
 			BGImage bgImage = new BGImage(desc, imageURL, commentTatol);
@@ -144,29 +144,29 @@ public class OnlineAlbumHandler extends AlbumHandler {
 			map.put(bgImage.getUrl(), bgImage);
 		}
 		List<String> keyList = new ArrayList<String>(map.keySet());
-		//ÅÅĞò
+		//æ’åº
 		Collections.sort(keyList,new ImageListComparator());
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(album.getPath() +  "/" + Common.DEFAULT_DOC_NAME));
-			//Êä³öÏà²áµØÖ·
+			//è¾“å‡ºç›¸å†Œåœ°å€
 			bw.write(URLUtils.charset + " " + album.getUrl() + " " +album.getDate().getTime() + " -");
 			bw.newLine();
-			//Êä³öÕÕÆ¬µØÖ·ºÍÃèÊö
+			//è¾“å‡ºç…§ç‰‡åœ°å€å’Œæè¿°
 			for (int i = 0; i < keyList.size(); i++) {
 				BGImage bgImage = map.get(keyList.get(i));
 				Integer commentTotal = bgImage.getCommentTotal();
 				String commentTotalStr = commentTotal==null?"-":String.valueOf(commentTotal);
 				bw.write((i + 1) + " " + keyList.get(i) + " " + commentTotalStr + " " + bgImage.getDesc());
 				bw.newLine();
-				//»î¶¯Ïà²á£¬Êä³öÓÃ»§Ãû&Ö÷Ò³µØÖ·
+				//æ´»åŠ¨ç›¸å†Œï¼Œè¾“å‡ºç”¨æˆ·å&ä¸»é¡µåœ°å€
 				bw.write(bgImage.getOwnerURL() + " " + bgImage.getOwnerName());
 				bw.newLine();					
 			}
 			bw.flush();
 			bw.close();
-			Console.print("Éú³ÉÃèÊöÎÄµµ£º³É¹¦");
+			Console.print("ç”Ÿæˆæè¿°æ–‡æ¡£ï¼šæˆåŠŸ");
 		} catch (IOException e) {
-			Console.print("Éú³ÉÃèÊöÎÄµµ£ºÊ§°Ü");
+			Console.print("ç”Ÿæˆæè¿°æ–‡æ¡£ï¼šå¤±è´¥");
 			e.printStackTrace();
 		}
 	}
@@ -183,19 +183,19 @@ public class OnlineAlbumHandler extends AlbumHandler {
 			if (line == 0) {
 				line++;
 			}else{
-				//0ĞĞÎªÏà²á&Ò³ÃæĞÅÏ¢£¬ÆæÊıĞĞÕÕÆ¬ĞÅÏ¢£¬Å¼ÊıĞĞÓÃ»§ĞÅÏ¢
+				//0è¡Œä¸ºç›¸å†Œ&é¡µé¢ä¿¡æ¯ï¼Œå¥‡æ•°è¡Œç…§ç‰‡ä¿¡æ¯ï¼Œå¶æ•°è¡Œç”¨æˆ·ä¿¡æ¯
 				if (line%2 == 1) {
 					String[] info = str.split(" ",4);
-					//info[0],info[1],info[2],info[3]·Ö±ğÎªÕÕÆ¬±àºÅ¡¢Ô­Ê¼URLµØÖ·¡¢ÆÀÂÛÊı¡¢ÕÕÆ¬ÃèÊö
+					//info[0],info[1],info[2],info[3]åˆ†åˆ«ä¸ºç…§ç‰‡ç¼–å·ã€åŸå§‹URLåœ°å€ã€è¯„è®ºæ•°ã€ç…§ç‰‡æè¿°
 					tempBGImage = new BGImage(info[0],info[1],info[3]);
-					//ÆÀÂÛÊı
+					//è¯„è®ºæ•°
 					if (!info[2].equals("-")) {
 						tempBGImage.setCommentTotal(Integer.valueOf(info[2]));
 					}
 					line++;
 				}else{
 					String[] info = str.split(" ",2);
-					//info[0],info[1]·Ö±ğÎªÓÃ»§Ê×Ò³URL¡¢ÓÃ»§Ãû
+					//info[0],info[1]åˆ†åˆ«ä¸ºç”¨æˆ·é¦–é¡µURLã€ç”¨æˆ·å
 					BGImage bgImage = tempBGImage;
 					bgImage.setOwnerURL(info[0]);
 					bgImage.setOwnerName(info[1]);
@@ -210,7 +210,7 @@ public class OnlineAlbumHandler extends AlbumHandler {
 
 	@Override
 	public String getCommentURL(Album album, BGImage image) {
-		//ÆÀÂÛµØÖ·
+		//è¯„è®ºåœ°å€
 //		http://www.douban.com/online/11127307/album/72416214/
 //		http://www.douban.com/online/11127307/photo/1573338563/
 		return album.getUrl().substring(0, album.getUrl().indexOf("/album/")) + "/photo/" + image.getId();

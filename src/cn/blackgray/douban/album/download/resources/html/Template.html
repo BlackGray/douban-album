@@ -4,7 +4,7 @@
 		<title>${title}</title>
 		<meta http-equiv="keywords" content="">
 		<meta http-equiv="description" content="by BlackGray">
-		<meta http-equiv="content-type" content="text/html; charset=GBK">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<style type="text/css">
 		body {
 			padding: 0px;
@@ -122,7 +122,7 @@
 			text-decoration: none;
 		}  
 		
-		/*¹¤¾ßÀ¸*/
+		/*å·¥å…·æ */
 		#tools {
 			position: fixed;
 			right: 0px;
@@ -167,7 +167,7 @@
 			text-align: center;
 		}
 		
-		/*ËÑË÷¿ò*/
+		/*æœç´¢æ¡†*/
 		#searchDialog{
 			position: fixed;
 			right: 100px;
@@ -195,7 +195,7 @@
 		var orderById = true;
 		var orderByCommentTotal = false;
 		
-		/*´óÍ¼ÀàĞÍ - 1´óÍ¼£¬2´óĞ¡ÏàÍ¬£¬¸ßÖÊÁ¿Î´Ñ¹ËõÍ¼*/
+		/*å¤§å›¾ç±»å‹ - 1å¤§å›¾ï¼Œ2å¤§å°ç›¸åŒï¼Œé«˜è´¨é‡æœªå‹ç¼©å›¾*/
 		var RAW_TYPE_LARGE = 1;
 		var RAW_TYPE_UNCOMPRESSED = 2;
 		
@@ -206,7 +206,7 @@
 		
 		function init(){
 			var image = images[0];
-			/*Èç¹û²»ÊÇ»î¶¯Ïà²á£¬Òş²ØIDºÍêÇ³ÆËÑË÷*/
+			/*å¦‚æœä¸æ˜¯æ´»åŠ¨ç›¸å†Œï¼Œéšè—IDå’Œæ˜µç§°æœç´¢*/
 			if(image.ownerName == null){
 				_hasUserInfo = false;
 				document.getElementById("searchDialog").style.width="260px";
@@ -219,7 +219,7 @@
 			showImage(start, pageSize, orderById, orderByCommentTotal);  
 		}
 		
-		/*³õÊ¼»¯Ò³ÃæÑ¡Ôñ*/
+		/*åˆå§‹åŒ–é¡µé¢é€‰æ‹©*/
 		function initPageSelect(){
 			var count = imageCount/pageSize;	  
 			var pageSelect = document.getElementById("pageSelect");	
@@ -231,7 +231,7 @@
 			}  
 		}
 		
-		/*·­Ò³ºóÉèÖÃµ±Ç°Ò³*/
+		/*ç¿»é¡µåè®¾ç½®å½“å‰é¡µ*/
 		function setPageSelect(){
 			var page = imageCount/pageSize;
 			var value;
@@ -253,14 +253,14 @@
 			}
 		}
 		
-		/*ÏÔÊ¾Í¼Æ¬*/  
+		/*æ˜¾ç¤ºå›¾ç‰‡*/  
 		function showImage(start, pageSize, orderById, orderByCommentTotal){
 			var photosList = document.getElementById("photosList");	 
 			photosList.innerHTML = "";
-			/*»ØÓ¦ÊıÅÅĞò*/
+			/*å›åº”æ•°æ’åº*/
 			if(orderByCommentTotal){
 				var tempArray = images.slice(0);
-				/*Ã°ÅİÅÅĞò*/
+				/*å†’æ³¡æ’åº*/
 				for(var x = 0 ; x < tempArray.length; x++){
 					for(var y = x + 1 ; y < tempArray.length ; y++){
 						var totalX = tempArray[x].commentTotal;
@@ -274,7 +274,7 @@
 						}
 					}
 				}
-				/*ÏÔÊ¾*/
+				/*æ˜¾ç¤º*/
 				for(var i=start; i<(start + pageSize) && i<imageCount; i++ ){
 					var image;
 					if(orderById){
@@ -297,7 +297,7 @@
 			}
 		}   
 		
-		 /*ÉÏÒ»Ò³*/  
+		 /*ä¸Šä¸€é¡µ*/  
 		 function previousPage(){	  
 			 var s = start - pageSize;	  
 			 if(s >= 0){		  
@@ -308,7 +308,7 @@
 			 goTop(20,100);
 		}    
 		 
-		 /*ÏÂÒ»Ò³*/  
+		 /*ä¸‹ä¸€é¡µ*/  
 		 function nextPage(){	  
 			 var s = start + pageSize; 	  
 			 if(s < imageCount){		  
@@ -319,12 +319,12 @@
 			 goTop(20,100);
 		 }    
 		 
-		 /*Ìí¼ÓÍ¼Æ¬*/  
+		 /*æ·»åŠ å›¾ç‰‡*/  
 		 function addImage(div, image, desc, number,commentURL, ownerName, ownerURL, raw, commentTotal){	  
 			 var photosDIV = document.createElement("div");
 			 photosDIV.setAttribute("class","photos");	  	  
 			 
-			 /*ÃèÊö*/	  
+			 /*æè¿°*/	  
 			 var descDIV = document.createElement("div");	  
 			 descDIV.setAttribute("class","desc");	  
 			 if(ownerName != undefined){	  
@@ -334,10 +334,10 @@
 				 ownerA.setAttribute("href",ownerURL);		  
 				 ownerA.appendChild(document.createTextNode(ownerName));		  
 				 descDIV.appendChild(ownerA);		  
-				 descDIV.appendChild(document.createTextNode("£º"));	  
+				 descDIV.appendChild(document.createTextNode("ï¼š"));	  
 			 }	  
 			 descDIV.appendChild(document.createTextNode(desc));
-			 /*»ØÓ¦Êı*/
+			 /*å›åº”æ•°*/
 			 if(commentTotal != undefined){
 				 var commentTotalDIV = document.createElement("div");
 				 commentTotalDIV.setAttribute("class","commentTotalDIV");	 
@@ -345,13 +345,13 @@
 				 commentTotalA.setAttribute("class","commentTotal");		  
 				 commentTotalA.setAttribute("target","_blank");		  
 				 commentTotalA.setAttribute("href",commentURL);	
-				 commentTotalA.appendChild(document.createTextNode("»ØÓ¦£º" + commentTotal + ""));
+				 commentTotalA.appendChild(document.createTextNode("å›åº”ï¼š" + commentTotal + ""));
 				 commentTotalDIV.appendChild(commentTotalA);
 				 descDIV.appendChild(commentTotalDIV);	  
 			 }
 			 photosDIV.appendChild(descDIV);	  	  
 			
-			 /*±àºÅ*/
+			 /*ç¼–å·*/
 			 var numberDIV = document.createElement("div");
 			 /*raw*/
 			 if(raw != undefined){
@@ -371,13 +371,13 @@
 			 }
 			 photosDIV.appendChild(numberDIV);	  	  
 			 
-			 /*Í¼Æ¬*/	  
+			 /*å›¾ç‰‡*/	  
 			 var img = document.createElement("img");
 			 img.setAttribute("src", image);	  	  
 			 if(commentURL == undefined){
 				 photosDIV.appendChild(img);	  
 			 }else{		  
-				 /*ÆÀÂÛ*/		  
+				 /*è¯„è®º*/		  
 				 var commentURLDIV = document.createElement("a");		  
 				 commentURLDIV.setAttribute("target","_blank");
 				 commentURLDIV.setAttribute("href",commentURL);		  
@@ -385,11 +385,11 @@
 				 photosDIV.appendChild(commentURLDIV);	  
 			 }		
 			 
-			 /*ËùÓĞÕß*/      
+			 /*æ‰€æœ‰è€…*/      
 			 div.appendChild(photosDIV);  
 			 }    
 		 
-		 	 /*ĞŞ¸ÄPageSize*/  
+		 	 /*ä¿®æ”¹PageSize*/  
 		 	 function changePageSize(select){	  
 		 		 if(select.value == "ALL"){
 		 			 pageSize = imageCount;	  
@@ -401,7 +401,7 @@
 		 		 initPageSelect();
 			 }  
 		 	 
-		 	 /*Ìø×ª*/
+		 	 /*è·³è½¬*/
 		 	 function jump(select){
 		 		var page = Number(select.value); 
 		 		start = pageSize * (page - 1);
@@ -409,7 +409,7 @@
 		 		goTop(20,100);
 		 	 }
 		 	 
-		 	 /*ÅÅĞò - ID*/
+		 	 /*æ’åº - ID*/
 		 	 function doOrderById(){
 		 		orderById = !orderById;
 		 		start = 0;	  
@@ -417,7 +417,7 @@
 		 		initPageSelect();
 		 		goTop(20,100);
 		 	 }
-		 	 /*ÅÅĞò - »ØÓ¦Êı*/
+		 	 /*æ’åº - å›åº”æ•°*/
 		 	 function doOrderByCommentTotal(){
 		 		orderByCommentTotal = !orderByCommentTotal;
 		 		start = 0;	  
@@ -427,11 +427,11 @@
 		 	 }
 		 	 
 		 	/**
-		 	* »Øµ½Ò³Ãæ¶¥²¿
-		 	* ×÷Õß£ºÎÒÊÇUED £¬
+		 	* å›åˆ°é¡µé¢é¡¶éƒ¨
+		 	* ä½œè€…ï¼šæˆ‘æ˜¯UED ï¼Œ
 		 	* http://www.iamued.com/qianduan/816.html
-		 	* @param acceleration ¼ÓËÙ¶È
-		 	* @param time Ê±¼ä¼ä¸ô (ºÁÃë)
+		 	* @param acceleration åŠ é€Ÿåº¦
+		 	* @param time æ—¶é—´é—´éš” (æ¯«ç§’)
 		 	**/
 		 	function goTop(acceleration, time) {
 			 	acceleration = acceleration || 0.1;
@@ -452,14 +452,14 @@
 			 	}
 			 	var x3 = window.scrollX || 0;
 			 	var y3 = window.scrollY || 0;
-			 	/* ¹ö¶¯Ìõµ½Ò³Ãæ¶¥²¿µÄË®Æ½¾àÀë */
+			 	/* æ»šåŠ¨æ¡åˆ°é¡µé¢é¡¶éƒ¨çš„æ°´å¹³è·ç¦» */
 			 	var x = Math.max(x1, Math.max(x2, x3));
-			 	/* ¹ö¶¯Ìõµ½Ò³Ãæ¶¥²¿µÄ´¹Ö±¾àÀë*/
+			 	/* æ»šåŠ¨æ¡åˆ°é¡µé¢é¡¶éƒ¨çš„å‚ç›´è·ç¦»*/
 			 	var y = Math.max(y1, Math.max(y2, y3));
-			 	/* ¹ö¶¯¾àÀë = Ä¿Ç°¾àÀë / ËÙ¶È, ÒòÎª¾àÀëÔ­À´Ô½Ğ¡, ËÙ¶ÈÊÇ´óÓÚ 1 µÄÊı, ËùÒÔ¹ö¶¯¾àÀë»áÔ½À´Ô½Ğ¡*/
+			 	/* æ»šåŠ¨è·ç¦» = ç›®å‰è·ç¦» / é€Ÿåº¦, å› ä¸ºè·ç¦»åŸæ¥è¶Šå°, é€Ÿåº¦æ˜¯å¤§äº 1 çš„æ•°, æ‰€ä»¥æ»šåŠ¨è·ç¦»ä¼šè¶Šæ¥è¶Šå°*/
 			 	var speed = 1 + acceleration;
 			 	window.scrollTo(Math.floor(x / speed), Math.floor(y / speed));
-			 	/* Èç¹û¾àÀë²»ÎªÁã, ¼ÌĞøµ÷ÓÃµü´ú±¾º¯Êı*/
+			 	/* å¦‚æœè·ç¦»ä¸ä¸ºé›¶, ç»§ç»­è°ƒç”¨è¿­ä»£æœ¬å‡½æ•°*/
 			 	if(x > 0 || y > 0) {
 			 	   var invokeFunction = "goTop(" + acceleration + ", " + time + ")";
 			 	   window.setTimeout(invokeFunction, time);
@@ -473,7 +473,7 @@
 				}
 			}
 			
-		 	/*²éÑ¯*/
+		 	/*æŸ¥è¯¢*/
 		 	function showSearchDialog(){
 		 		var mode = document.getElementById("searchDialog").style.display;
 		 		if(mode == "none"){document.getElementById("searchDialog").style.display = "block";}
@@ -516,19 +516,19 @@
 					}
 				}
 				if(!hasResult){
-					photosList.innerHTML = '<div style="font-size:400px; color: white;" >ÎŞ</div>';
+					photosList.innerHTML = '<div style="font-size:400px; color: white;" >æ— </div>';
 				}
 		 	}
 		 	</script>
 	</head>
 	<body onload="init()">
-		<!-- Ïà²áÃû³Æ -->
+		<!-- ç›¸å†Œåç§° -->
 		<div id="name"><a href="${url}">${name}</a></div>
-		<!-- ÕÕÆ¬ÊıÁ¿ -->
+		<!-- ç…§ç‰‡æ•°é‡ -->
 		<div id="imagesTotal">${imagesTotal}</div>
-		<!-- ÏÂÔØÊ±¼ä -->
+		<!-- ä¸‹è½½æ—¶é—´ -->
 		<div id="downloadTime">${downloadTime}</div>
-		<!-- Ïà²áÃèÊö -->
+		<!-- ç›¸å†Œæè¿° -->
 		<div id="albumDesc">${albumDesc}</div>
 		<!-- PHOTO -->
 		<div id="photosList">
@@ -543,8 +543,8 @@
 		<div id="tools">
 			<ul>
 				<li><a id="topA" href="javascript:goTop(20,100);">TOP</a></li>
-				<li><a id="previousPage" href="javascript:previousPage();">¡ü</a></li>
-				<li><a id="nextPage" href="javascript:nextPage();">¡ı</a></li>
+				<li><a id="previousPage" href="javascript:previousPage();">â†‘</a></li>
+				<li><a id="nextPage" href="javascript:nextPage();">â†“</a></li>
 				<li><select id="pageSelect" onchange="jump(this)"></select></li>
 				<li>
 					<select id="pageSizeSelect" onchange="changePageSize(this)">
@@ -562,11 +562,11 @@
 			</ul>
 		</div>
 		<div id="searchDialog" style="display: none;">
-			<span id="userIdSpan">ID£º</span><input id="userId" type="text" onkeypress="searchKeyPress(event)"> 
-			<span id="userNameSpan">ÓÃ»§Ãû£º</span><input id="userName" type="text" onkeypress="searchKeyPress(event)">
-			<span>ÃèÊö£º</span><input id="userDesc" type="text" onkeypress="searchKeyPress(event)">  
-			<input type="button" onclick="search()" value="ËÑË÷"> 
-			<input type="button" onclick="canncelSearch()" value="È¡Ïû"> 
+			<span id="userIdSpan">IDï¼š</span><input id="userId" type="text" onkeypress="searchKeyPress(event)"> 
+			<span id="userNameSpan">ç”¨æˆ·åï¼š</span><input id="userName" type="text" onkeypress="searchKeyPress(event)">
+			<span>æè¿°ï¼š</span><input id="userDesc" type="text" onkeypress="searchKeyPress(event)">  
+			<input type="button" onclick="search()" value="æœç´¢"> 
+			<input type="button" onclick="canncelSearch()" value="å–æ¶ˆ"> 
 		</div>
 	</body>
 </html>

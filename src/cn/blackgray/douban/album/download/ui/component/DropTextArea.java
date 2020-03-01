@@ -21,7 +21,7 @@ import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.ui.MainFrame;
 
 /**
- * ÍÏ·ÅÎÄ±¾Óò¿Ø¼ş
+ * æ‹–æ”¾æ–‡æœ¬åŸŸæ§ä»¶
  * @author BlackGray
  */
 public class DropTextArea extends JPopupTextArea implements DropTargetListener{
@@ -63,10 +63,10 @@ public class DropTextArea extends JPopupTextArea implements DropTargetListener{
 				List<File> list = (List<File>) dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
 				for (File file : list) {
 					if (file.isDirectory()) {
-						//»ñÈ¡Ä¿Â¼µØÖ·
+						//è·å–ç›®å½•åœ°å€
 						File dir = new File(file.getAbsolutePath());
 						if (dir.isDirectory()) {
-							File doc = new File(dir.getAbsolutePath() + "/ÃèÊö.txt");
+							File doc = new File(dir.getAbsolutePath() + "/æè¿°.txt");
 							if (doc.exists()) {
 								try {
 									BufferedReader br = new BufferedReader(new FileReader(doc));
@@ -74,7 +74,7 @@ public class DropTextArea extends JPopupTextArea implements DropTargetListener{
 									br.close();
 									if (str != null && str.length() != 0) {
 										if (str.split(" ").length >= 2) {
-											//ÔİÊ±Ö»Ö§³Öµ¥¸öÏà²á¸üĞÂ
+											//æš‚æ—¶åªæ”¯æŒå•ä¸ªç›¸å†Œæ›´æ–°
 											this.setText(str.split(" ")[1]);
 											Common.PATH_DOWNLOAD = dir.getParent();
 											Common.IS_UPDATE = true;
@@ -86,7 +86,7 @@ public class DropTextArea extends JPopupTextArea implements DropTargetListener{
 									e.printStackTrace();
 								}
 							} else {
-								JOptionPane.showMessageDialog(MainFrame.getInstance(),"ËùĞèÒªµÄÃèÊöÎÄµµ²»´æÔÚ£¬ÎŞ·¨¸üĞÂ£¬T^T");
+								JOptionPane.showMessageDialog(MainFrame.getInstance(),"æ‰€éœ€è¦çš„æè¿°æ–‡æ¡£ä¸å­˜åœ¨ï¼Œæ— æ³•æ›´æ–°ï¼ŒT^T");
 							}
 						}
 					}

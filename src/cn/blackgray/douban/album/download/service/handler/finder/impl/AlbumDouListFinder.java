@@ -12,14 +12,14 @@ import cn.blackgray.douban.album.download.common.utils.URLUtils;
 import cn.blackgray.douban.album.download.service.handler.finder.IAlbumURLFinder;
 
 /**
- * Ïà²áURL»ñÈ¡Æ÷ÊµÏÖ - ¸ù¾İ¶¹ÁĞ»ñÈ¡Ïà²á
+ * ç›¸å†ŒURLè·å–å™¨å®ç° - æ ¹æ®è±†åˆ—è·å–ç›¸å†Œ
  * @author BlackGray
  */
 public class AlbumDouListFinder implements IAlbumURLFinder{
 
 //	http://www.douban.com/doulist/3353890/;
 //	http://www.douban.com/doulist/3353890/?start=25&filter=undo
-	private static final int PAGE_SIZE_ALBUM = 25;			//Ïà²á·ÖÒ³´óĞ¡(Ò»Ò³25¸öÏà²á)
+	private static final int PAGE_SIZE_ALBUM = 25;			//ç›¸å†Œåˆ†é¡µå¤§å°(ä¸€é¡µ25ä¸ªç›¸å†Œ)
 
 		
 	@Override
@@ -27,28 +27,28 @@ public class AlbumDouListFinder implements IAlbumURLFinder{
 		if (!url.endsWith("/")) {
 			url = url + "/";
 		}
-		Console.print("É¨ÃèÏà²á¶¹ÁĞÊ×Ò³£º" + url);
-		//¡¾µÃµ½ËùÓĞÏà²á·ÖÒ³£¨Ã¿Ò³25¸öÏà²á£©¡¿
+		Console.print("æ‰«æç›¸å†Œè±†åˆ—é¦–é¡µï¼š" + url);
+		//ã€å¾—åˆ°æ‰€æœ‰ç›¸å†Œåˆ†é¡µï¼ˆæ¯é¡µ25ä¸ªç›¸å†Œï¼‰ã€‘
 		List<String> pageURLList = new ArrayList<String>();
 		String source = URLUtils.readSource(url);
 		String regex = url + "\\?start=\\d+";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(source);
-		//²éÕÒ³öÒ³ÃæÖĞËùÓĞ·ÖÒ³Á¬½Ó
+		//æŸ¥æ‰¾å‡ºé¡µé¢ä¸­æ‰€æœ‰åˆ†é¡µè¿æ¥
 		int maxStartNum = 0;
 		while (m.find()) {
 			String u = m.group();
 			int num = Integer.parseInt(u.substring(u.lastIndexOf("=") + 1));
 			maxStartNum = num > maxStartNum ? num : maxStartNum;
 		}
-		//¸ù¾İ×î´óÆğÊ¼Êı×Ö£¬Éú³ÉÒ³ÃæµØÖ·
+		//æ ¹æ®æœ€å¤§èµ·å§‹æ•°å­—ï¼Œç”Ÿæˆé¡µé¢åœ°å€
 		for (int i = 0; i <= maxStartNum; i += PAGE_SIZE_ALBUM) {
 			String u = url + "?start=" + i;
 			pageURLList.add(u);
-			Console.print("»ñÈ¡Ïà²á·ÖÒ³µØÖ·£º" + u);
+			Console.print("è·å–ç›¸å†Œåˆ†é¡µåœ°å€ï¼š" + u);
 		}
 
-		//¡¾µÃµ½ËùÓĞÏà²á¡¿
+		//ã€å¾—åˆ°æ‰€æœ‰ç›¸å†Œã€‘
 		Set<String> albumURLSet = new TreeSet<String>();
 		for (int i = 0; i < pageURLList.size(); i++) {
 			source = URLUtils.readSource(pageURLList.get(i));

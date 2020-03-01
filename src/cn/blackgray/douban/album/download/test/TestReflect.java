@@ -17,7 +17,7 @@ public class TestReflect {
 		String NORMAL_METHOD = "waitequalsnotifynotifyAlltoStringhashCodegetClass";
 		List<String[]> a = new ArrayList<String[]>();
 		try {
-			// Í¨¹ıjarFile ºÍJarEntryµÃµ½ËùÓĞµÄÀà
+			// é€šè¿‡jarFile å’ŒJarEntryå¾—åˆ°æ‰€æœ‰çš„ç±»
 			JarFile jar = new JarFile(jarFile);// "D:/sip-test.jar"
 			Enumeration<?> e = jar.entries();
 
@@ -37,13 +37,13 @@ public class TestReflect {
 					if (sName.indexOf(".class") < 0) {
 						sName = sName.substring(0, sName.length() - 1);
 					} else {
-						// Í¨¹ıURLClassLoader.loadClass·½·¨µÃµ½¾ßÌåÄ³¸öÀà
+						// é€šè¿‡URLClassLoader.loadClassæ–¹æ³•å¾—åˆ°å…·ä½“æŸä¸ªç±»
 						URL url1 = new URL("file:D:\\sip-test.jar");
 						URLClassLoader myClassLoader = new URLClassLoader(new URL[] { url1 }, Thread.currentThread().getContextClassLoader());
 						String ppName = sName.replace("/", ".").replace(".class", "");
 						System.out.println("ppName:" + ppName);
 						Class<?> myClass = myClassLoader.loadClass(ppName);
-						// Í¨¹ıgetMethodsµÃµ½ÀàÖĞ°üº¬µÄ·½·¨
+						// é€šè¿‡getMethodså¾—åˆ°ç±»ä¸­åŒ…å«çš„æ–¹æ³•
 						Method m[] = myClass.getMethods();
 						for (int i = 0; i < m.length; i++) {
 							String sm = m[i].getName();

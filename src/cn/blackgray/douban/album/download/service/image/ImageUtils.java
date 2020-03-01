@@ -12,15 +12,15 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
 /**
- * Í¼Æ¬¹¤¾ßÀà
+ * å›¾ç‰‡å·¥å…·ç±»
  * @author BlackGray
  */
 public class ImageUtils {
 
 	/**
-	 * »ñÈ¡Í¼Æ¬³ß´çĞÅÏ¢
-	 * Í¨¹ıImageReader»ñÈ¡Í¼Æ¬³ß´ç
-	 * Ğ§ÂÊ¸ßÓÚBufferedImage
+	 * è·å–å›¾ç‰‡å°ºå¯¸ä¿¡æ¯
+	 * é€šè¿‡ImageReaderè·å–å›¾ç‰‡å°ºå¯¸
+	 * æ•ˆç‡é«˜äºBufferedImage
 	 * @param path
 	 */
 	public static ImageInfo getImageSize(String path){
@@ -33,9 +33,9 @@ public class ImageUtils {
 			reader.setInput(iis, true);
 			return new ImageInfo(reader.getWidth(0), reader.getHeight(0));
 		} catch (IOException e) {
-			//Èç¹û³öÏÖÒì³££¬Ê¹ÓÃ±¸ÓÃ·½·¨»ñÈ¡³ß´ç
+			//å¦‚æœå‡ºç°å¼‚å¸¸ï¼Œä½¿ç”¨å¤‡ç”¨æ–¹æ³•è·å–å°ºå¯¸
 			//javax.imageio.IIOException: Not a JPEG file: starts with 0x89 0x50
-			//ÉÏÊöÒì³£±íÊÇÍ¼Æ¬ÎªPNG¸ñÊ½£¬ºó×ºÎªJPG
+			//ä¸Šè¿°å¼‚å¸¸è¡¨æ˜¯å›¾ç‰‡ä¸ºPNGæ ¼å¼ï¼Œåç¼€ä¸ºJPG
 			return getImageSizeByBufferedImage(path);
 		}
 	}
@@ -51,7 +51,7 @@ public class ImageUtils {
 		} catch (IOException e) {
 			//e.printStackTrace();
 			//javax.imageio.IIOException: Error reading PNG image data
-			throw new RuntimeException("Í¼Æ¬ÎÄ¼ş³ß´ç»ñÈ¡Òì³££º" + e.getMessage());
+			throw new RuntimeException("å›¾ç‰‡æ–‡ä»¶å°ºå¯¸è·å–å¼‚å¸¸ï¼š" + e.getMessage());
 		}
 		return null;
 	}
@@ -60,22 +60,22 @@ public class ImageUtils {
 	
 	public static void main(String[] args) {
 		
-		//¡¾TEST - Í¼Æ¬´óĞ¡ĞÅÏ¢»ñÈ¡¶Ô±È²âÊÔ¡¿
+		//ã€TEST - å›¾ç‰‡å¤§å°ä¿¡æ¯è·å–å¯¹æ¯”æµ‹è¯•ã€‘
 		String path = "D:\\raw";
 		File dir = new File(path);
-		//1.Í¨¹ıImageReader»ñÈ¡Í¼Æ¬³ß´ç
+		//1.é€šè¿‡ImageReaderè·å–å›¾ç‰‡å°ºå¯¸
 		long begin = System.currentTimeMillis();
 		for (File picture : dir.listFiles()) {
 			getImageSize(picture.getPath());
 		};
-		System.out.println("¡¾getImageSize¡¿" + (System.currentTimeMillis() - begin));
+		System.out.println("ã€getImageSizeã€‘" + (System.currentTimeMillis() - begin));
 		
-		//2.Í¨¹ıBufferedImage»ñÈ¡Í¼Æ¬³ß´ç
+		//2.é€šè¿‡BufferedImageè·å–å›¾ç‰‡å°ºå¯¸
 		begin = System.currentTimeMillis();
 		for (File picture : dir.listFiles()) {
 			getImageSizeByBufferedImage(picture.getPath());
 		};
-		System.out.println("¡¾getImageSizeByBufferedImage¡¿" + (System.currentTimeMillis() - begin));
+		System.out.println("ã€getImageSizeByBufferedImageã€‘" + (System.currentTimeMillis() - begin));
 		
 		
 		

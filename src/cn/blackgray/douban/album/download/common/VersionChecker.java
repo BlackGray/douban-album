@@ -5,20 +5,20 @@ import cn.blackgray.douban.album.download.common.utils.URLUtils;
 
 
 /**
- * °æ±¾¼ì²éÆ÷
- * ÓÃÓÚ¼ì²éÏà²áÏÂÔØÆ÷ÊÇ·ñÎª×îĞÂ°æ±¾
+ * ç‰ˆæœ¬æ£€æŸ¥å™¨
+ * ç”¨äºæ£€æŸ¥ç›¸å†Œä¸‹è½½å™¨æ˜¯å¦ä¸ºæœ€æ–°ç‰ˆæœ¬
  * @author BlackGray
  *
  */
 public class VersionChecker {
 	
 	/**
-	 * »ñÈ¡°æ±¾ĞÅÏ¢
+	 * è·å–ç‰ˆæœ¬ä¿¡æ¯
 	 * @return
 	 */
 	public static boolean haveNewVersion(){
 		String note = URLUtils.readSource(Common.URL_HELP);
-		int begin = note.indexOf("×îĞÂ°æ±¾£º");
+		int begin = note.indexOf("æœ€æ–°ç‰ˆæœ¬ï¼š");
 		int end = note.indexOf("<br>", begin);
 		String version = note.substring(begin + 5 ,end);
 		if (Common.VERSION.equals(version)) {

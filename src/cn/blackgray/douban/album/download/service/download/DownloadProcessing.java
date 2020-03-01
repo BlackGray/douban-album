@@ -24,46 +24,46 @@ import cn.blackgray.douban.album.download.service.handler.PageAnalyzer;
 import cn.blackgray.douban.album.download.ui.MainFrame;
 
 /**
- * ÏÂÔØ´¦Àí¹¤¾ßÀà
+ * ä¸‹è½½å¤„ç†å·¥å…·ç±»
  * @author BlackGray
  */
 public class DownloadProcessing {
 
 	private static MainFrame mainFrame = MainFrame.getInstance();
 
-	private static JProgressBar processUnitProgressBar = mainFrame.processUnitProgressBar;	//´¦Àíµ¥Ôª½ø¶ÈÌõ
-	private static JLabel processUnitCountLabel = mainFrame.processUnitCountLabel;			//´¦Àíµ¥Ôª½ø¶ÈÌõ
+	private static JProgressBar processUnitProgressBar = mainFrame.processUnitProgressBar;	//å¤„ç†å•å…ƒè¿›åº¦æ¡
+	private static JLabel processUnitCountLabel = mainFrame.processUnitCountLabel;			//å¤„ç†å•å…ƒè¿›åº¦æ¡
 
 
 	
 	/**
-	 * ¸ù¾İÏà²áÄ£ĞÍÏÂÔØÏà²á
+	 * æ ¹æ®ç›¸å†Œæ¨¡å‹ä¸‹è½½ç›¸å†Œ
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
 	public static void downloadAlbum(Album album){
 
-		//µ¥Ïà²áÏÂÔØÊ±¼ä
+		//å•ç›¸å†Œä¸‹è½½æ—¶é—´
 		long albumDownloadTime = System.currentTimeMillis();
-		//¸üĞÂÍ³¼Æ
+		//æ›´æ–°ç»Ÿè®¡
 		int updateCount = 0;	
 
-		Map<String,BGImage> imageMap = new HashMap<String,BGImage>();	//¡¾µ¥Ïà²áÈ«ÕÕÆ¬¼¯ºÏ¡¿
+		Map<String,BGImage> imageMap = new HashMap<String,BGImage>();	//ã€å•ç›¸å†Œå…¨ç…§ç‰‡é›†åˆã€‘
 
-		//¡¾´´½¨Ä¿Â¼¡¿
+		//ã€åˆ›å»ºç›®å½•ã€‘
 		DirUtils.createDir(album);
 
-		//¡¾Æô¶¯´¦Àíµ¥Ôª¡¿
-		//´¦Àíµ¥Ôª×ÜÊı
+		//ã€å¯åŠ¨å¤„ç†å•å…ƒã€‘
+		//å¤„ç†å•å…ƒæ€»æ•°
 		int processUnitMax = new Double(Math.ceil((double)album.getPageURLLsit().size()/Common.PROCESS_UNIT_SIZE)).intValue();
-		int processUnitNumber = 0;	//´¦Àíµ¥Ôª¼ÆÊı
+		int processUnitNumber = 0;	//å¤„ç†å•å…ƒè®¡æ•°
 		processUnitProgressBar.setMaximum(processUnitMax);
 		processUnitProgressBar.setValue(0);
 		processUnitCountLabel.setText("0/" + processUnitMax + " ");
 		for (int j = 0; j < processUnitMax; j++) {
-			//´¦Àíµ¥ÔªºÄÊ±
+			//å¤„ç†å•å…ƒè€—æ—¶
 			long processUnitTime = System.currentTimeMillis();
-			//È¡³ö¹æ¶¨ÌõÊı¼ÇÂ¼£¬Ö´ĞĞ´¦Àíµ¥Ôª
+			//å–å‡ºè§„å®šæ¡æ•°è®°å½•ï¼Œæ‰§è¡Œå¤„ç†å•å…ƒ
 			List<String> pageURLList = new ArrayList<String>();
 			int start = processUnitNumber * Common.PROCESS_UNIT_SIZE;
 			int end = start + Common.PROCESS_UNIT_SIZE;
@@ -73,30 +73,30 @@ public class DownloadProcessing {
 			for (int k = start; k < end; k++) {
 				pageURLList.add(album.getPageURLLsit().get(k));
 			}
-			//´¦Àí - ·µ»Ø¸üĞÂĞÅÏ¢
+			//å¤„ç† - è¿”å›æ›´æ–°ä¿¡æ¯
 			updateCount += processUnit(album,imageMap,pageURLList);
 
-			//´¦Àíµ¥Ôª¼ÆÊı+1
+			//å¤„ç†å•å…ƒè®¡æ•°+1
 			processUnitNumber++;
 			processUnitProgressBar.setValue(j + 1);
 			processUnitCountLabel.setText((j + 1) + "/" + processUnitMax + " ");
-			//¡¾ÅĞ¶ÏÆô¶¯ĞİÃß¡¿
-			//´¦Àíµ¥ÔªÊı´óÓÚ1£¬²¢ÇÒ²»ÊÇ×îºóÒ»´Î´¦Àí²ÅÖ´ĞĞĞİÃßÅĞ¶Ï
+			//ã€åˆ¤æ–­å¯åŠ¨ä¼‘çœ ã€‘
+			//å¤„ç†å•å…ƒæ•°å¤§äº1ï¼Œå¹¶ä¸”ä¸æ˜¯æœ€åä¸€æ¬¡å¤„ç†æ‰æ‰§è¡Œä¼‘çœ åˆ¤æ–­
 			if (processUnitMax > 1 && (j + 1) != processUnitMax) {
 				long t = System.currentTimeMillis() - processUnitTime;
-				Console.print("´¦Àíµ¥ÔªºÄÊ±£º" + t);
+				Console.print("å¤„ç†å•å…ƒè€—æ—¶ï¼š" + t);
 				if (t < Common.TIME_PROCESS_MIN) {
-					Console.print("¶ÌÊ±¼ä·ÃÎÊÒ³Ãæ´ÎÊı¹ı¶à£¬Æô¶¯ĞİÃß~");
-					Console.print("(£ş¦Å(#£ş)¡î¨t¨ro(£şÃó£ş///)");
+					Console.print("çŸ­æ—¶é—´è®¿é—®é¡µé¢æ¬¡æ•°è¿‡å¤šï¼Œå¯åŠ¨ä¼‘çœ ~");
+					Console.print("(ï¿£Îµ(#ï¿£)â˜†â•°â•®o(ï¿£çš¿ï¿£///)");
 					long c = Common.TIME_PROCESS_SLEEP;
 					while (true) {
 						if (c <= 0) {
-							Console.print("[]~(£ş¨Œ£ş)~* ");
+							Console.print("[]~(ï¿£â–½ï¿£)~* ");
 							break;
 						}
 						try {
 							Thread.sleep(1000);
-							Console.print("ĞİÃßµ¹¼ÆÊ±£º" + c + "\t (££¡ã§¥¡ã)\"");
+							Console.print("ä¼‘çœ å€’è®¡æ—¶ï¼š" + c + "\t (ï¼ƒÂ°Ğ”Â°)\"");
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -105,62 +105,62 @@ public class DownloadProcessing {
 				}
 			}
 		}
-		//µ¥Ïà²á´¦ÀíÍê³É£¬map¸³Öµ£¬Ìá¹©ºóĞø²Ù×÷Ê¹ÓÃ
+		//å•ç›¸å†Œå¤„ç†å®Œæˆï¼Œmapèµ‹å€¼ï¼Œæä¾›åç»­æ“ä½œä½¿ç”¨
 		album.setPhotosList(new ArrayList<BGImage>(imageMap.values()));
 
-		//ºóĞø²Ù×÷
+		//åç»­æ“ä½œ
 		if (album.getPhotosList().size() != 0) {
-			//¡¾Éú³ÉÃèÊöÎÄ¼ş¡¿
+			//ã€ç”Ÿæˆæè¿°æ–‡ä»¶ã€‘
 			album.createDescDoc();
-			//¡¾Êä³öÍ³¼ÆĞÅÏ¢¡¿
-			Console.print("Ïà²áÏÂÔØÍê³É - " + album.getName());
-			Console.print(" ÊıÁ¿£º" + album.getPhotosList().size());
+			//ã€è¾“å‡ºç»Ÿè®¡ä¿¡æ¯ã€‘
+			Console.print("ç›¸å†Œä¸‹è½½å®Œæˆ - " + album.getName());
+			Console.print(" æ•°é‡ï¼š" + album.getPhotosList().size());
 			if (album.isUpdate()) {
-				Console.print(" ĞÂÔö:" + updateCount + "(ÕÅ)");
+				Console.print(" æ–°å¢:" + updateCount + "(å¼ )");
 			}
-			Console.print(" µ¥Ïà²áºÄÊ±:" + (System.currentTimeMillis() - albumDownloadTime)/1000 + "s");
+			Console.print(" å•ç›¸å†Œè€—æ—¶:" + (System.currentTimeMillis() - albumDownloadTime)/1000 + "s");
 		}else{
-			Console.print("ÌáÊ¾£ºÊ§°Ü»òÒ³ÃæÎŞÍ¼Ïñ¡£");
+			Console.print("æç¤ºï¼šå¤±è´¥æˆ–é¡µé¢æ— å›¾åƒã€‚");
 		}
 
 	}
 
 	
 	/**
-	 * ´¦Àíµ¥Ôª
+	 * å¤„ç†å•å…ƒ
 	 * @param album
 	 * @param imageMap
 	 * @param pageURLList
 	 * @param processUnitMax
 	 * @param processUnitNumber
-	 * @return Í¼Æ¬¸üĞÂÊı
+	 * @return å›¾ç‰‡æ›´æ–°æ•°
 	 */
 	private static int processUnit(Album album, Map<String,BGImage> imageMap,List<String> pageURLList){
 		int update = 0;
-		//¡¾ĞÅÏ¢»ñÈ¡¡¿
-		Console.print("´¦Àíµ¥Ôª£ºÆô¶¯ĞÅÏ¢»ñÈ¡");
+		//ã€ä¿¡æ¯è·å–ã€‘
+		Console.print("å¤„ç†å•å…ƒï¼šå¯åŠ¨ä¿¡æ¯è·å–");
 		Set<String> imageURLSet = infoProcess(album, imageMap, pageURLList);
-		//¡¾ÏÂÔØÍ¼Æ¬¡¿
-		Console.print("´¦Àíµ¥Ôª£º¿ªÊ¼ÏÂÔØ£º" + album.getName() + "(" + imageURLSet.size() + "ÕÅ)");
+		//ã€ä¸‹è½½å›¾ç‰‡ã€‘
+		Console.print("å¤„ç†å•å…ƒï¼šå¼€å§‹ä¸‹è½½ï¼š" + album.getName() + "(" + imageURLSet.size() + "å¼ )");
 		update = DownloadManager.downloadImage(new ArrayList<String>(imageURLSet),album.getPath());
 
-		//¡¾ÏÂÔØ´óÍ¼¡¿
+		//ã€ä¸‹è½½å¤§å›¾ã€‘
 		AlbumHandler albumHandler = album.getAlbumHandler();
 		if (Common.IS_DOWNLOAD_RAW && albumHandler.hasRaw()) {
-			Console.print("´¦Àíµ¥Ôª£º¼ì²â²¢ÏÂÔØ´óÍ¼");
-			//´´½¨Ä¿Â¼
+			Console.print("å¤„ç†å•å…ƒï¼šæ£€æµ‹å¹¶ä¸‹è½½å¤§å›¾");
+			//åˆ›å»ºç›®å½•
 			String path = album.getPath() + File.separatorChar + "raw";
 			File file = new File(path);
 			if (!file.exists()) {
 				file.mkdir();
 			}
-			//¡¾»ñÈ¡µØÖ·¡¿
-			//Ğ¡Õ¾´óÍ¼
+			//ã€è·å–åœ°å€ã€‘
+			//å°ç«™å¤§å›¾
 			List<String> list = new ArrayList<String>();
 			for (String url : imageURLSet) {
 				list.add(albumHandler.getRawURL(url));
 			}
-			//Ö´ĞĞÏÂÔØ
+			//æ‰§è¡Œä¸‹è½½
 			update += DownloadManager.downloadImage(list,path);			
 		}
 		return update;
@@ -168,7 +168,7 @@ public class DownloadProcessing {
 
 	
 	/**
-	 * ÕÕÆ¬ĞÅÏ¢´¦Àí
+	 * ç…§ç‰‡ä¿¡æ¯å¤„ç†
 	 * @param imageMap
 	 * @param pageURLList
 	 * @param processUnitMax
@@ -177,11 +177,11 @@ public class DownloadProcessing {
 	 */
 	private static Set<String> infoProcess(Album album, Map<String,BGImage> imageMap,List<String> pageURLList){
 
-		Set<String> imageURLSet = new HashSet<String>();	//ĞèÒªÏÂÔØµÄÍ¼Æ¬ - µ¥´¦Àíµ¥Ôª
+		Set<String> imageURLSet = new HashSet<String>();	//éœ€è¦ä¸‹è½½çš„å›¾ç‰‡ - å•å¤„ç†å•å…ƒ
 
 		for (int i = 0; i < pageURLList.size(); i++) {
-			Console.print("·ÖÎöÒ³Ãæ(" + (i + 1) + "/" + pageURLList.size() + ")£º" + pageURLList.get(i));
-			//²éÑ¯µ¥Ò³ËùÓĞÕÕÆ¬µØÖ·ºÍÃèÊö,¿ÉÄÜ»á³öÏÖ´íÎó£¬Èç¹û³ö´í£¬³¢ÊÔÖØĞÂ·ÖÎöÒ»´Î
+			Console.print("åˆ†æé¡µé¢(" + (i + 1) + "/" + pageURLList.size() + ")ï¼š" + pageURLList.get(i));
+			//æŸ¥è¯¢å•é¡µæ‰€æœ‰ç…§ç‰‡åœ°å€å’Œæè¿°,å¯èƒ½ä¼šå‡ºç°é”™è¯¯ï¼Œå¦‚æœå‡ºé”™ï¼Œå°è¯•é‡æ–°åˆ†æä¸€æ¬¡
 			Map<String, BGImage> map = new HashMap<String, BGImage>();
 			try {
 				map = PageAnalyzer.findImageURLAndDesc(album, pageURLList.get(i));
@@ -189,41 +189,41 @@ public class DownloadProcessing {
 				try {
 					map = PageAnalyzer.findImageURLAndDesc(album, pageURLList.get(i));	
 				} catch (Exception e2) {
-					Console.print("Ò³Ãæ·ÖÎö´íÎó£¬ÏÂÔØÊ§°Ü£º" + pageURLList.get(i));
+					Console.print("é¡µé¢åˆ†æé”™è¯¯ï¼Œä¸‹è½½å¤±è´¥ï¼š" + pageURLList.get(i));
 				}
 				e.printStackTrace();
 			}
 
-			//±£´æÕÕÆ¬µØÖ·ºÍÃèÊöĞÅÏ¢
+			//ä¿å­˜ç…§ç‰‡åœ°å€å’Œæè¿°ä¿¡æ¯
 			for (Entry<String, BGImage> entry : map.entrySet()) {
 				if (!imageMap.containsKey(entry.getKey())) {
 					imageMap.put(entry.getKey(), entry.getValue());
 					imageURLSet.add(entry.getKey());
 				}else{
-					//¡ùÃ¿¸öÒ³Ãæ¶¼ÓĞÏà²á·âÃæÕÕÆ¬µÄÁ´½Ó£¬É¨ÃèÕÕÆ¬µØÖ·Ê±£¬ÓĞ¿ÉÄÜÃ¿´Î¶¼¶ÔÕâÕÅÕÕÆ¬½øĞĞ´¦Àí
-					//·âÃæÕÕÆ¬¿ÉÄÜÔÚÈÎÒâÒ»Ò³ÖĞ£¬»ñÈ¡ÃèÊöĞÅÏ¢Ê±£¬³ıÁËËùÔÚÒ³¿ÉÒÔµÃµ½ÃèÊöÍâ£¬ÆäËûÒ³µÄÃèÊö¶¼Îª¿Õ
-					//ÕâÀïÅĞ¶ÏÃ¿Ò³Í¼Æ¬ÊÇ·ñ´æÔÚ½»¼¯£¬´æÔÚ£¬ËµÃ÷¸ÃÍ¼ÊÇ·âÃæÕÕÆ¬
-					//¸ù¾İÍ¼Æ¬ÊÇ·ñÓĞÃèÊö£¬¿ÉÒÔÈ·¶¨Í¼Æ¬ÊÇ·ñÔÚ¸ÃÒ³
+					//â€»æ¯ä¸ªé¡µé¢éƒ½æœ‰ç›¸å†Œå°é¢ç…§ç‰‡çš„é“¾æ¥ï¼Œæ‰«æç…§ç‰‡åœ°å€æ—¶ï¼Œæœ‰å¯èƒ½æ¯æ¬¡éƒ½å¯¹è¿™å¼ ç…§ç‰‡è¿›è¡Œå¤„ç†
+					//å°é¢ç…§ç‰‡å¯èƒ½åœ¨ä»»æ„ä¸€é¡µä¸­ï¼Œè·å–æè¿°ä¿¡æ¯æ—¶ï¼Œé™¤äº†æ‰€åœ¨é¡µå¯ä»¥å¾—åˆ°æè¿°å¤–ï¼Œå…¶ä»–é¡µçš„æè¿°éƒ½ä¸ºç©º
+					//è¿™é‡Œåˆ¤æ–­æ¯é¡µå›¾ç‰‡æ˜¯å¦å­˜åœ¨äº¤é›†ï¼Œå­˜åœ¨ï¼Œè¯´æ˜è¯¥å›¾æ˜¯å°é¢ç…§ç‰‡
+					//æ ¹æ®å›¾ç‰‡æ˜¯å¦æœ‰æè¿°ï¼Œå¯ä»¥ç¡®å®šå›¾ç‰‡æ˜¯å¦åœ¨è¯¥é¡µ
 					if (imageMap.get(entry.getKey()).getDesc().equals("")) {
-						//Èç¹ûÖ®Ç°Ìí¼ÓµÄÕâÕÅÍ¼Ã»ÓĞÃèÊö£¬²¢ÇÒµ±Ç°Í¼ÓĞÃèÊö£¬ÉèÖÃÃèÊöĞÅÏ¢£¬²¢Ìí¼ÓÊ×Ò³Í¼Æ¬±êÊ¶£¬·ñÔò²»Ö´ĞĞÈÎºÎ²Ù×÷
+						//å¦‚æœä¹‹å‰æ·»åŠ çš„è¿™å¼ å›¾æ²¡æœ‰æè¿°ï¼Œå¹¶ä¸”å½“å‰å›¾æœ‰æè¿°ï¼Œè®¾ç½®æè¿°ä¿¡æ¯ï¼Œå¹¶æ·»åŠ é¦–é¡µå›¾ç‰‡æ ‡è¯†ï¼Œå¦åˆ™ä¸æ‰§è¡Œä»»ä½•æ“ä½œ
 						if (entry.getValue().getDesc().equals("")) {
-							//Èç¹û²»¼Óphoto.getValue().equals("")ÅĞ¶Ï£¬¿ÉÄÜ³öÏÖµÄÇé¿ö£º
+							//å¦‚æœä¸åŠ photo.getValue().equals("")åˆ¤æ–­ï¼Œå¯èƒ½å‡ºç°çš„æƒ…å†µï¼š
 							//1 false 	""
-							//2 false 	""		-> ¡ù
-							//3 true	"DESC"  -> ¡ù
+							//2 false 	""		-> â€»
+							//3 true	"DESC"  -> â€»
 							BGImage image = imageMap.get(entry.getKey());
-							image.setDesc("¡ù" + entry.getValue().getDesc());
+							image.setDesc("â€»" + entry.getValue().getDesc());
 							imageMap.put(entry.getKey(), image);
 						}else{
 							imageMap.put(entry.getKey(), entry.getValue());
 						}
 					}else {
-						//Èç¹ûÖ®Ç°Ìí¼ÓµÄÍ¼ÓĞÃèÊö£¬Ìí¼ÓÊ×Ò³Í¼Æ¬±êÊ¶
+						//å¦‚æœä¹‹å‰æ·»åŠ çš„å›¾æœ‰æè¿°ï¼Œæ·»åŠ é¦–é¡µå›¾ç‰‡æ ‡è¯†
 						BGImage bgImage = imageMap.get(entry.getKey());
-						String desc = ("¡ù" + bgImage.getDesc()).replaceAll("¡ù+", "¡ù");
-						if (desc.equals("¡ù")) {
+						String desc = ("â€»" + bgImage.getDesc()).replaceAll("â€»+", "â€»");
+						if (desc.equals("â€»")) {
 							bgImage = entry.getValue();
-							bgImage.setDesc("¡ù" + bgImage.getDesc());
+							bgImage.setDesc("â€»" + bgImage.getDesc());
 						}else{
 							bgImage.setDesc(desc);							
 						}

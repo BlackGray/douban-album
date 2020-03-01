@@ -7,7 +7,7 @@ import cn.blackgray.douban.album.download.service.handler.finder.IAlbumURLFinder
 
 
 /**
- * Ïà²áURL»ñÈ¡Æ÷ÊµÏÖ - ¸ù¾İÓ°ÈËÊ×Ò³»ñÈ¡Ïà²á
+ * ç›¸å†ŒURLè·å–å™¨å®ç° - æ ¹æ®å½±äººé¦–é¡µè·å–ç›¸å†Œ
  */
 public class CelebrityIndexFinder implements IAlbumURLFinder{
 

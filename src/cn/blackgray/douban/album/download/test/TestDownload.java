@@ -16,12 +16,12 @@ public class TestDownload {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			HttpURLConnection.setFollowRedirects(false);
 			
-			conn.setConnectTimeout(10*1000);	//ÉèÖÃÁ¬½Ó³¬Ê±
-			conn.setReadTimeout(10*1000);		//ÉèÖÃ¶ÁÈ¡³¬Ê±
-			conn.setDoInput(true);				//Ä¬ÈÏÎªtrue
+			conn.setConnectTimeout(10*1000);	//è®¾ç½®è¿æ¥è¶…æ—¶
+			conn.setReadTimeout(10*1000);		//è®¾ç½®è¯»å–è¶…æ—¶
+			conn.setDoInput(true);				//é»˜è®¤ä¸ºtrue
 			conn.connect();
-			System.out.println("¡¾getContentLength¡¿" + conn.getContentLength());
-			System.out.println("¡¾getContentType¡¿" + conn.getContentType());
+			System.out.println("ã€getContentLengthã€‘" + conn.getContentLength());
+			System.out.println("ã€getContentTypeã€‘" + conn.getContentType());
 			InputStream in = conn.getInputStream();
 			
 			

@@ -8,11 +8,11 @@ import cn.blackgray.douban.album.download.model.BGImage;
 import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 
 /**
- * ¸öÈËÏà²á´¦ÀíÆ÷
+ * ä¸ªäººç›¸å†Œå¤„ç†å™¨
  */
 public class UserAlbumHandler extends AlbumHandler {
 
-	public static final int PAGE_SIZE_IMAGES = 18;			//ÕÕÆ¬·ÖÒ³´óĞ¡£¨Ò»Ò³18ÕÅÍ¼£©
+	public static final int PAGE_SIZE_IMAGES = 18;			//ç…§ç‰‡åˆ†é¡µå¤§å°ï¼ˆä¸€é¡µ18å¼ å›¾ï¼‰
 	public static final String PAGE_TAG = "m_start";
 	public static final String IMAGE_NAME_REGEX = "p\\d+.(" + Common.IMAGE_TYPE + ")";
 	public static final String ALBUM_URL_REGEX = "(http|https)://www.douban.com/photos/album/\\d+/";
@@ -54,16 +54,16 @@ public class UserAlbumHandler extends AlbumHandler {
 
 	@Override
 	public String getRawURL(String imageURL) {
-		//ÒÑÊ§Ğ§
-		//http://img3.douban.com/view/photo/photo/public/p1932887553.jpg - Ğ¡Í¼
-		//http://img3.douban.com/view/photo/large/public/p1932887553.jpg - ´óÍ¼
+		//å·²å¤±æ•ˆ
+		//http://img3.douban.com/view/photo/photo/public/p1932887553.jpg - å°å›¾
+		//http://img3.douban.com/view/photo/large/public/p1932887553.jpg - å¤§å›¾
 		
 		//2017-11-06
-		//Ğ¡Í¼
+		//å°å›¾
 		//https://img1.doubanio.com/view/photo/m/public/p2504126549.webp
-		//´óÍ¼
+		//å¤§å›¾
 		//https://img3.doubanio.com/view/photo/l/public/p2504126600.webp
-		//Ô­Ê¼Í¼
+		//åŸå§‹å›¾
 		//https://img3.doubanio.com/view/photo/large/public/p2504126600.jpg
 		
 		return imageURL.replace("photo/l", "photo/raw").trim();
@@ -74,7 +74,7 @@ public class UserAlbumHandler extends AlbumHandler {
 
 		String imageId = imageURL.substring(imageURL.lastIndexOf("/p") + 2,imageURL.lastIndexOf("."));
 		
-		//ÕÕÆ¬ÃèÊö
+		//ç…§ç‰‡æè¿°
 		String descStartIndexStr = "<a href=\"https://www.douban.com/photos/photo/" + imageId + "/\" class=\"photolst_photo\" title=\"";
 		int descStartIndex = source.indexOf(descStartIndexStr);
 		String desc;
@@ -83,18 +83,18 @@ public class UserAlbumHandler extends AlbumHandler {
 		}else{
 			desc = "";
 		}
-		//ÕÕÆ¬ÆÀÂÛ
+		//ç…§ç‰‡è¯„è®º
 		String commentTatolStartIndexStr = "<a href=\"https://www.douban.com/photos/photo/" + imageId + "/#comments\">";
 		int commentTatolStartIndex = source.indexOf(commentTatolStartIndexStr);
 		Integer commentTatol = null;
 		if (commentTatolStartIndex != -1) {
-			//¡°3»ØÓ¦¡±
+			//â€œ3å›åº”â€
 			String s = source.substring(commentTatolStartIndex + commentTatolStartIndexStr.length(), source.indexOf("</a>",commentTatolStartIndex));
-			commentTatol = Integer.valueOf(s.replace("»ØÓ¦", ""));
+			commentTatol = Integer.valueOf(s.replace("å›åº”", ""));
 		}
 		
-		//Ìí¼Óµ½¼¯ºÏ
-		//m¡ª¡ª>l£ºËõÂÔÍ¼¡ª¡ª>´óÍ¼
+		//æ·»åŠ åˆ°é›†åˆ
+		//mâ€”â€”>lï¼šç¼©ç•¥å›¾â€”â€”>å¤§å›¾
 		imageURL = imageURL.replace("photo/m", "photo/l").trim();	
 		desc = desc.replace("\\t\\n","").trim();
 		if (!map.containsKey(imageURL)) {
@@ -104,7 +104,7 @@ public class UserAlbumHandler extends AlbumHandler {
 			if (bgImage.getCommentTotal()!=null && commentTatol==null) {
 				commentTatol = bgImage.getCommentTotal();
 			}
-			map.put(imageURL, new BGImage("¡ù" + bgImage.getDesc(), imageURL, commentTatol));
+			map.put(imageURL, new BGImage("â€»" + bgImage.getDesc(), imageURL, commentTatol));
 		}
 	}
 	
@@ -127,8 +127,8 @@ public class UserAlbumHandler extends AlbumHandler {
 		if (source.indexOf(startTag) != -1) {
 			int startIndex = source.indexOf(startTag) + startTag.length();
 			String desc = source.substring(startIndex,source.indexOf("\"", startIndex)).replace("\\t\\n","").trim();
-			if (desc.indexOf("¡¾") != -1) {
-				desc = desc.substring(desc.lastIndexOf("¡¿") + 1);
+			if (desc.indexOf("ã€") != -1) {
+				desc = desc.substring(desc.lastIndexOf("ã€‘") + 1);
 			}
 			return desc;
 		}else{

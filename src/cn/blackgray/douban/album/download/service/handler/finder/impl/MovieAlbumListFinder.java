@@ -6,16 +6,16 @@ import java.util.List;
 import cn.blackgray.douban.album.download.service.handler.finder.IAlbumURLFinder;
 
 /**
- * Ïà²áURL»ñÈ¡Æ÷ÊµÏÖ - ¸ù¾İµçÓ°Ïà²áÁĞ±í»ñÈ¡Ïà²á
+ * ç›¸å†ŒURLè·å–å™¨å®ç° - æ ¹æ®ç”µå½±ç›¸å†Œåˆ—è¡¨è·å–ç›¸å†Œ
  */
 public class MovieAlbumListFinder implements IAlbumURLFinder{
 
 	@Override
 	public List<String> findAlbumURL(String url) {
-		//Ê×Ò³ http://movie.douban.com/subject/3652297/all_photos
-		//Ïà²á http://movie.douban.com/subject/3652297/photos?type=S
-		//Ïà²á http://movie.douban.com/subject/3652297/photos?type=R
-		//Ïà²á http://movie.douban.com/subject/3652297/photos?type=W
+		//é¦–é¡µ http://movie.douban.com/subject/3652297/all_photos
+		//ç›¸å†Œ http://movie.douban.com/subject/3652297/photos?type=S
+		//ç›¸å†Œ http://movie.douban.com/subject/3652297/photos?type=R
+		//ç›¸å†Œ http://movie.douban.com/subject/3652297/photos?type=W
 		url = url.substring(0,url.lastIndexOf("all_photos"));
 		List<String> list = new ArrayList<String>();
 		list.add(url + "photos?type=S");

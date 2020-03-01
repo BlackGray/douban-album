@@ -21,14 +21,14 @@ import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 import cn.blackgray.douban.album.download.service.image.ImageListComparator;
 
 /**
- * Ğ¡Õ¾¹«¹²Ïà²á´¦ÀíÆ÷
+ * å°ç«™å…¬å…±ç›¸å†Œå¤„ç†å™¨
  */
 public class SitePublicAlbumHandler extends AlbumHandler {
 
 //	http://site.douban.com/127530/widget/public_album/7152314/
 //	http://site.douban.com/127530/widget/public_album/7152314/?start=30
 		
-	public static final int PAGE_SIZE_IMAGES_SITE = 30;		//Ğ¡Õ¾¹«¹²Ïà²áÕÕÆ¬·ÖÒ³´óĞ¡£¨Ò»Ò³30ÕÅÍ¼£©
+	public static final int PAGE_SIZE_IMAGES_SITE = 30;		//å°ç«™å…¬å…±ç›¸å†Œç…§ç‰‡åˆ†é¡µå¤§å°ï¼ˆä¸€é¡µ30å¼ å›¾ï¼‰
 	public static final String PAGE_TAG = "start";
 	public static final String IMAGE_NAME_REGEX = "p\\d+.(" + Common.IMAGE_TYPE + ")";
 	public static final String ALBUM_URL_REGEX = "(http|https)://site.douban.com/\\d+/widget/public_album/\\d+/";
@@ -80,19 +80,19 @@ public class SitePublicAlbumHandler extends AlbumHandler {
 
 //		<li>
 //		    <div class="photo-item">
-//		    <a href="http://site.douban.com/127530/widget/public_album/7152314/photo/1781015133/" title="ÖÜ×¯" alt="ÖÜ×¯" class="album_photo" id="p1781015133"><img src="http://img3.douban.com/view/photo/thumb/public/p1781015133.jpg" ></a>
+//		    <a href="http://site.douban.com/127530/widget/public_album/7152314/photo/1781015133/" title="å‘¨åº„" alt="å‘¨åº„" class="album_photo" id="p1781015133"><img src="http://img3.douban.com/view/photo/thumb/public/p1781015133.jpg" ></a>
 //		    <div class="desc">
 //		    
-//		    <p>ÖÜ×¯</p>
-//		    À´×Ô <a href="http://www.douban.com/people/48218002/">È°¾ıÄª´òÄñ</a>
-//		        <a href="http://site.douban.com/127530/widget/public_album/7152314/photo/1781015133/#comments">1»ØÓ¦</a>
+//		    <p>å‘¨åº„</p>
+//		    æ¥è‡ª <a href="http://www.douban.com/people/48218002/">åŠå›è«æ‰“é¸Ÿ</a>
+//		        <a href="http://site.douban.com/127530/widget/public_album/7152314/photo/1781015133/#comments">1å›åº”</a>
 //		    </div>
 //		    </div>
 //	    </li>
 		
 		String imageId = imageURL.substring(imageURL.lastIndexOf("/p") + 2,imageURL.lastIndexOf("."));
 		String siteAlbumId = pageURL.substring(pageURL.indexOf("public_album/") + 13, pageURL.lastIndexOf("/"));
-		//¡¾ÃèÊö¡¿
+		//ã€æè¿°ã€‘
 //		<a href="http://site.douban.com/127530/widget/public_album/7152314/photo/1781015133/" title="
 		String startIndexStr = pageURL.substring(0,pageURL.indexOf(siteAlbumId)) + siteAlbumId + "/photo/" + imageId + "/\" title=\"";
 		int descStartIndex = source.indexOf(startIndexStr);
@@ -103,21 +103,21 @@ public class SitePublicAlbumHandler extends AlbumHandler {
 		}else{
 			desc = "";
 		}
-		//¡¾ÕÕÆ¬ÆÀÂÛÊı¡¿
-		//<a href="http://site.douban.com/127530/widget/public_album/7152314/photo/1781015133/#comments">1»ØÓ¦</a>
+		//ã€ç…§ç‰‡è¯„è®ºæ•°ã€‘
+		//<a href="http://site.douban.com/127530/widget/public_album/7152314/photo/1781015133/#comments">1å›åº”</a>
 		String commentTatolStartIndexStr = pageURL.substring(0,pageURL.indexOf(siteAlbumId)) + siteAlbumId + "/photo/" + imageId + "/#comments\">";
 		int commentTatolStartIndex = source.indexOf(commentTatolStartIndexStr);
 		Integer commentTatol = null;
 		if (commentTatolStartIndex != -1) {
-			//¡°3»ØÓ¦¡±
+			//â€œ3å›åº”â€
 			String s = source.substring(commentTatolStartIndex + commentTatolStartIndexStr.length(), source.indexOf("</a>",commentTatolStartIndex));
-			commentTatol = Integer.valueOf(s.replace("»ØÓ¦", ""));
+			commentTatol = Integer.valueOf(s.replace("å›åº”", ""));
 		}
-		//¡¾ËùÓĞÕßID&Ö÷Ò³¡¿
+		//ã€æ‰€æœ‰è€…ID&ä¸»é¡µã€‘
 		String ownerURL = null;
 		String ownerName = null;
 		if (descStartIndex != -1) {
-			String ownerStartStr = "À´×Ô <a href=\"";
+			String ownerStartStr = "æ¥è‡ª <a href=\"";
 			int ownerStartIndex = source.indexOf(ownerStartStr,descStartIndex);
 			String ownerA = source.substring(ownerStartIndex + 12, source.indexOf("</a>", ownerStartIndex));
 			try {
@@ -132,9 +132,9 @@ public class SitePublicAlbumHandler extends AlbumHandler {
 			}
 			ownerName = ownerA.substring(ownerA.indexOf(">") + 1);
 		}
-		//¡¾ÕÕÆ¬¡¿
+		//ã€ç…§ç‰‡ã€‘
 		//http://img3.douban.com/view/photo/thumb/public/p1748477871.jpg
-		imageURL = imageURL.replace("thumb", "photo").trim();		//thumb¡ª¡ª>photo£ºËõÂÔÍ¼¡ª¡ª>´óÍ¼
+		imageURL = imageURL.replace("thumb", "photo").trim();		//thumbâ€”â€”>photoï¼šç¼©ç•¥å›¾â€”â€”>å¤§å›¾
 		desc = desc.replace("\\t\\n","").trim();
 		if (!map.containsKey(imageURL) || (map.containsKey(imageURL) && (map.get(imageURL).getOwnerURL()==null && ownerURL!=null))) {
 			BGImage bgImage = new BGImage(desc, imageURL, commentTatol);
@@ -164,8 +164,8 @@ public class SitePublicAlbumHandler extends AlbumHandler {
 		if (source.indexOf(startTag) != -1) {
 			int startIndex = source.indexOf(startTag) + startTag.length();
 			String desc = source.substring(startIndex,source.indexOf("\"", startIndex)).replace("\\t\\n","").trim();
-			if (desc.indexOf("¡¾") != -1) {
-				desc = desc.substring(desc.lastIndexOf("¡¿") + 1);
+			if (desc.indexOf("ã€") != -1) {
+				desc = desc.substring(desc.lastIndexOf("ã€‘") + 1);
 			}
 			return desc;
 		}else{
@@ -181,29 +181,29 @@ public class SitePublicAlbumHandler extends AlbumHandler {
 			map.put(bgImage.getUrl(), bgImage);
 		}
 		List<String> keyList = new ArrayList<String>(map.keySet());
-		//ÅÅĞò
+		//æ’åº
 		Collections.sort(keyList,new ImageListComparator());
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(album.getPath() +  "/" + Common.DEFAULT_DOC_NAME));
-			//Êä³öÏà²áµØÖ·
+			//è¾“å‡ºç›¸å†Œåœ°å€
 			bw.write(URLUtils.charset + " " + album.getUrl() + " " +album.getDate().getTime() + " -");
 			bw.newLine();
-			//Êä³öÕÕÆ¬µØÖ·ºÍÃèÊö
+			//è¾“å‡ºç…§ç‰‡åœ°å€å’Œæè¿°
 			for (int i = 0; i < keyList.size(); i++) {
 				BGImage bgImage = map.get(keyList.get(i));
 				Integer commentTotal = bgImage.getCommentTotal();
 				String commentTotalStr = commentTotal==null?"-":String.valueOf(commentTotal);
 				bw.write((i + 1) + " " + keyList.get(i) + " " + commentTotalStr + " " + bgImage.getDesc());
 				bw.newLine();
-				//»î¶¯Ïà²á£¬Êä³öÓÃ»§Ãû&Ö÷Ò³µØÖ·
+				//æ´»åŠ¨ç›¸å†Œï¼Œè¾“å‡ºç”¨æˆ·å&ä¸»é¡µåœ°å€
 				bw.write(bgImage.getOwnerURL() + " " + bgImage.getOwnerName());
 				bw.newLine();					
 			}
 			bw.flush();
 			bw.close();
-			Console.print("Éú³ÉÃèÊöÎÄµµ£º³É¹¦");
+			Console.print("ç”Ÿæˆæè¿°æ–‡æ¡£ï¼šæˆåŠŸ");
 		} catch (IOException e) {
-			Console.print("Éú³ÉÃèÊöÎÄµµ£ºÊ§°Ü");
+			Console.print("ç”Ÿæˆæè¿°æ–‡æ¡£ï¼šå¤±è´¥");
 			e.printStackTrace();
 		}
 	}
@@ -220,19 +220,19 @@ public class SitePublicAlbumHandler extends AlbumHandler {
 			if (line == 0) {
 				line++;
 			}else{
-				//0ĞĞÎªÏà²á&Ò³ÃæĞÅÏ¢£¬ÆæÊıĞĞÕÕÆ¬ĞÅÏ¢£¬Å¼ÊıĞĞÓÃ»§ĞÅÏ¢
+				//0è¡Œä¸ºç›¸å†Œ&é¡µé¢ä¿¡æ¯ï¼Œå¥‡æ•°è¡Œç…§ç‰‡ä¿¡æ¯ï¼Œå¶æ•°è¡Œç”¨æˆ·ä¿¡æ¯
 				if (line%2 == 1) {
 					String[] info = str.split(" ",4);
-					//info[0],info[1],info[2],info[3]·Ö±ğÎªÕÕÆ¬±àºÅ¡¢Ô­Ê¼URLµØÖ·¡¢ÆÀÂÛÊı¡¢ÕÕÆ¬ÃèÊö
+					//info[0],info[1],info[2],info[3]åˆ†åˆ«ä¸ºç…§ç‰‡ç¼–å·ã€åŸå§‹URLåœ°å€ã€è¯„è®ºæ•°ã€ç…§ç‰‡æè¿°
 					tempBGImage = new BGImage(info[0],info[1],info[3]);
-					//ÆÀÂÛÊı
+					//è¯„è®ºæ•°
 					if (!info[2].equals("-")) {
 						tempBGImage.setCommentTotal(Integer.valueOf(info[2]));
 					}
 					line++;
 				}else{
 					String[] info = str.split(" ",2);
-					//info[0],info[1]·Ö±ğÎªÓÃ»§Ê×Ò³URL¡¢ÓÃ»§Ãû
+					//info[0],info[1]åˆ†åˆ«ä¸ºç”¨æˆ·é¦–é¡µURLã€ç”¨æˆ·å
 					BGImage bgImage = tempBGImage;
 					bgImage.setOwnerURL(info[0]);
 					bgImage.setOwnerName(info[1]);

@@ -19,7 +19,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
- * ·´Éä¹¤¾ßÀà
+ * åå°„å·¥å…·ç±»
  * @author BlackGray
  */
 public class ReflectUtils {
@@ -28,9 +28,9 @@ public class ReflectUtils {
 	public static Integer PARA_TYPE_EXCLUDE = 1;
 
 	/**
-	 * Í¨¹ı·´Éä»ñÈ¡¶ÔÏóµÄËùÓĞÊôĞÔ
-	 * ·µ»ØMAP¼¯ºÏ
-	 * ¼üÖµÎª¶ÔÏóÊôĞÔÃû³Æ
+	 * é€šè¿‡åå°„è·å–å¯¹è±¡çš„æ‰€æœ‰å±æ€§
+	 * è¿”å›MAPé›†åˆ
+	 * é”®å€¼ä¸ºå¯¹è±¡å±æ€§åç§°
 	 * @param obj
 	 * @return
 	 * @throws IllegalArgumentException
@@ -42,7 +42,7 @@ public class ReflectUtils {
 	}
 
 	public static Map<String,Object> getFieldValues(Object obj,Integer paraType, Object... paras) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException{
-		//Èç¹ûÓĞ²ÎÊı£¬ÅĞ¶Ï²ÎÊıÀàĞÍ²¢´¦Àí
+		//å¦‚æœæœ‰å‚æ•°ï¼Œåˆ¤æ–­å‚æ•°ç±»å‹å¹¶å¤„ç†
 		Set<String> feildNameSet = new HashSet<String>();
 		if (paraType != null) {
 			if (paraType == PARA_TYPE_INCLUDE || paraType == PARA_TYPE_EXCLUDE) {
@@ -56,7 +56,7 @@ public class ReflectUtils {
 		for (int i = 0; i < methods.length; i++) {
 			String methodName = methods[i].getName();
 			if (methodName.startsWith("get") || methodName.startsWith("is")) {
-				//ÅĞ¶Ï·µ»ØÖµÀàĞÍ£¬»ñÈ¡±äÁ¿Ãû
+				//åˆ¤æ–­è¿”å›å€¼ç±»å‹ï¼Œè·å–å˜é‡å
 				Class<?> returnTypeClass = methods[i].getReturnType();
 				String feildName;
 				if(returnTypeClass.equals(boolean.class) || returnTypeClass.equals(Boolean.class)){
@@ -72,7 +72,7 @@ public class ReflectUtils {
 					flag = !feildNameSet.contains(feildName);
 				}
 				if (flag) {
-					//»ñÈ¡±äÁ¿ÀàĞÍ
+					//è·å–å˜é‡ç±»å‹
 					//Type type = methods[i].getGenericReturnType();
 					map.put(feildName, methods[i].invoke(obj));	
 				}
@@ -82,12 +82,12 @@ public class ReflectUtils {
 	}
 
 	/**
-	 * ¸ù¾İ°ü»ñÈ¡ËùÓĞÀà
+	 * æ ¹æ®åŒ…è·å–æ‰€æœ‰ç±»
 	 * @param pkg
 	 * @return
 	 */
 	public static List<Class<?>> getClassWithPackage(String pkg){
-		//ÅĞ¶Ï»·¾³&//»ñÈ¡JAR°ü
+		//åˆ¤æ–­ç¯å¢ƒ&//è·å–JARåŒ…
 		try {
 			String jarPath = URLDecoder.decode(ReflectUtils.class.getProtectionDomain().getCodeSource().getLocation().getPath(),"utf-8");
 			File file = new File(jarPath);
@@ -108,14 +108,14 @@ public class ReflectUtils {
 	}
 
 	/**
-	 * ´ÓJarÖĞ¼ÓÔØÀàÎÄ¼ş - ÔËĞĞ»·¾³ÖĞÊ¹ÓÃ
+	 * ä»Jarä¸­åŠ è½½ç±»æ–‡ä»¶ - è¿è¡Œç¯å¢ƒä¸­ä½¿ç”¨
 	 * @param pkg
 	 * @return
 	 * @throws IOException 
 	 * @throws ClassNotFoundException 
 	 */
 	private static List<Class<?>> getClassWithPackageFromJar(JarFile jar,String pkg) throws IOException, ClassNotFoundException{
-		//»ñÈ¡ËùÓĞÖ¸¶¨°üÄÚµÄÀà
+		//è·å–æ‰€æœ‰æŒ‡å®šåŒ…å†…çš„ç±»
 		String pakageName = pkg.replaceAll("\\.", "/"); 
 		List<Class<?>> list = new ArrayList<Class<?>>();
 		ClassLoader loader = ReflectUtils.class.getClassLoader();
@@ -131,7 +131,7 @@ public class ReflectUtils {
 	}
 
 	/**
-	 * ´ÓÄ¿Â¼ÖĞ¼ÓÔØÀàÎÄ¼ş - ¿ª·¢»·¾³ÖĞÊ¹ÓÃ
+	 * ä»ç›®å½•ä¸­åŠ è½½ç±»æ–‡ä»¶ - å¼€å‘ç¯å¢ƒä¸­ä½¿ç”¨
 	 * @param pkg
 	 * @return
 	 * @throws UnsupportedEncodingException 

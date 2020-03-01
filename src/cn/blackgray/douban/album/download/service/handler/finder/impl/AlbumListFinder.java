@@ -12,11 +12,11 @@ import cn.blackgray.douban.album.download.common.utils.URLUtils;
 import cn.blackgray.douban.album.download.service.handler.finder.IAlbumURLFinder;
 
 /**
- * Ïà²áURL»ñÈ¡Æ÷ÊµÏÖ - ¸ù¾İÏà²áÁĞ±í»ñÈ¡Ïà²á
+ * ç›¸å†ŒURLè·å–å™¨å®ç° - æ ¹æ®ç›¸å†Œåˆ—è¡¨è·å–ç›¸å†Œ
  */
 public class AlbumListFinder implements IAlbumURLFinder{
 
-	private static final int PAGE_SIZE_ALBUM = 16;			//Ïà²á·ÖÒ³´óĞ¡(Ò»Ò³16¸öÏà²á)
+	private static final int PAGE_SIZE_ALBUM = 16;			//ç›¸å†Œåˆ†é¡µå¤§å°(ä¸€é¡µ16ä¸ªç›¸å†Œ)
 	
 
 	@Override
@@ -24,30 +24,30 @@ public class AlbumListFinder implements IAlbumURLFinder{
 		if (albumListURL.endsWith("/")) {
 			albumListURL = albumListURL.substring(0,albumListURL.length() - 1);
 		}
-		Console.print("É¨ÃèÏà²áÁĞ±íÊ×Ò³£º" + albumListURL);
+		Console.print("æ‰«æç›¸å†Œåˆ—è¡¨é¦–é¡µï¼š" + albumListURL);
 		//		http://www.douban.com/people/BlackGray/photos
 		//		http://www.douban.com/photos/album/xxxxx
-		//¡¾µÃµ½ËùÓĞÏà²á·ÖÒ³£¨Ã¿Ò³16¸öÏà²á£©¡¿
+		//ã€å¾—åˆ°æ‰€æœ‰ç›¸å†Œåˆ†é¡µï¼ˆæ¯é¡µ16ä¸ªç›¸å†Œï¼‰ã€‘
 		List<String> pageURLList = new ArrayList<String>();
 		String source = URLUtils.readSource(albumListURL);
 		String regex = albumListURL + "\\?\\w+=\\d+";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(source);
-		//²éÕÒ³öÒ³ÃæÖĞËùÓĞ·ÖÒ³Á¬½Ó
+		//æŸ¥æ‰¾å‡ºé¡µé¢ä¸­æ‰€æœ‰åˆ†é¡µè¿æ¥
 		int maxStartNum = 0;
 		while (m.find()) {
 			String url = m.group();
 			int num = Integer.parseInt(url.substring(url.lastIndexOf("=") + 1));
 			maxStartNum = num > maxStartNum ? num : maxStartNum;
 		}
-		//¸ù¾İ×î´óÆğÊ¼Êı×Ö£¬Éú³ÉÒ³ÃæµØÖ·
+		//æ ¹æ®æœ€å¤§èµ·å§‹æ•°å­—ï¼Œç”Ÿæˆé¡µé¢åœ°å€
 		for (int i = 0; i <= maxStartNum; i += PAGE_SIZE_ALBUM) {
 			String u = albumListURL + "?start=" + i;
 			pageURLList.add(u);
-			Console.print("»ñÈ¡Ïà²á·ÖÒ³µØÖ·£º" + u);
+			Console.print("è·å–ç›¸å†Œåˆ†é¡µåœ°å€ï¼š" + u);
 		}
 
-		//¡¾µÃµ½ËùÓĞÏà²á¡¿
+		//ã€å¾—åˆ°æ‰€æœ‰ç›¸å†Œã€‘
 		Set<String> albumURLSet = new TreeSet<String>();
 		for (int i = 0; i < pageURLList.size(); i++) {
 			source = URLUtils.readSource(pageURLList.get(i));

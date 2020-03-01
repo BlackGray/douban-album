@@ -8,11 +8,11 @@ import cn.blackgray.douban.album.download.model.BGImage;
 import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
 
 /**
- * Ó°ÈËÏà²á´¦ÀíÆ÷
+ * å½±äººç›¸å†Œå¤„ç†å™¨
  */
 public class CelebrityAlbumHandler extends AlbumHandler {
 
-	public static final int PAGE_SIZE_IMAGES_CELEBRITY = 30;//Ó°ÈËÕÕÆ¬·ÖÒ³´óĞ¡£¨Ò»Ò³40ÕÅÍ¼£©
+	public static final int PAGE_SIZE_IMAGES_CELEBRITY = 30;//å½±äººç…§ç‰‡åˆ†é¡µå¤§å°ï¼ˆä¸€é¡µ40å¼ å›¾ï¼‰
 	public static final String PAGE_TAG = "start";
 	public static final String IMAGE_NAME_REGEX = "p\\d+.(" + Common.IMAGE_TYPE + ")";
 	public static final String ALBUM_URL_REGEX = "(http|https)://movie.douban.com/celebrity/\\d+/photos/";
@@ -24,15 +24,15 @@ public class CelebrityAlbumHandler extends AlbumHandler {
 	
 	@Override
 	public String albumNameProcess(String name) {
-		return name = "Ó°ÈË-" + super.albumNameProcess(name);
+		return name = "å½±äºº-" + super.albumNameProcess(name);
 	}
 
 	@Override
 	public String getPageRegex() {
-		//Ó°ÈËÏà²á·ÖÒ³º¬ÓĞ¶à¸ö²ÎÊı
+		//å½±äººç›¸å†Œåˆ†é¡µå«æœ‰å¤šä¸ªå‚æ•°
 		//http://movie.douban.com/celebrity/1040543/photos/?type=C&start=0&sortby=all&size=a&subtype=a
 		//http://movie.douban.com/celebrity/1040543/photos/?type=C&start=40&sortby=all&size=a&subtype=a
-		//http://movie.douban.com/celebrity/1040543/photos/?type=C&amp;start=0&amp;sortby=all&amp;size=a&amp;subtype=a - htmlÏÔÊ¾Ğ§¹û
+		//http://movie.douban.com/celebrity/1040543/photos/?type=C&amp;start=0&amp;sortby=all&amp;size=a&amp;subtype=a - htmlæ˜¾ç¤ºæ•ˆæœ
 		return getAlbumURL() + "\\?(\\w+=\\w+&*(amp;)*)+";
 	}
 	
@@ -72,7 +72,7 @@ public class CelebrityAlbumHandler extends AlbumHandler {
 
 	@Override
 	public void createBGImage(String source, String pageURL, String imageURL, Map<String, BGImage> map) {
-//		===============Í¼Æ¬ÃèÊö===============
+//		===============å›¾ç‰‡æè¿°===============
 //        <li>
 //        <div class="cover">
 //            <a href="http://movie.douban.com/celebrity/1040543/photo/1261122420/" class="">
@@ -84,13 +84,13 @@ public class CelebrityAlbumHandler extends AlbumHandler {
 //            465x640
 //        </div>
 //            <div class="name">
-//        ½¿ÄÛÓûµÎ~
-//                    <a href="http://movie.douban.com/celebrity/1040543/photo/1261122420/#comments">29»ØÓ¦</a>
+//        å¨‡å«©æ¬²æ»´~
+//                    <a href="http://movie.douban.com/celebrity/1040543/photo/1261122420/#comments">29å›åº”</a>
 //            </div>
 //    </li>
 		String imageId = imageURL.substring(imageURL.lastIndexOf("/p") + 2,imageURL.lastIndexOf("."));
 		String celebrityId = pageURL.substring(pageURL.indexOf("celebrity/") + 10, pageURL.indexOf("/photos"));
-		//¡¾ÃèÊö¡¿
+		//ã€æè¿°ã€‘
 		String startIndexStr = "<a href=\"https://movie.douban.com/celebrity/" + celebrityId + "/photo/" + imageId + "/\" class=\"";
 		int descStartIndex = source.indexOf(startIndexStr);
 		String desc;
@@ -101,18 +101,18 @@ public class CelebrityAlbumHandler extends AlbumHandler {
 		}else{
 			desc = "";
 		}
-		//¡¾ÕÕÆ¬ÆÀÂÛÊı¡¿
-		//<a href="http://movie.douban.com/celebrity/1040543/photo/1261122420/#comments">29»ØÓ¦</a>
+		//ã€ç…§ç‰‡è¯„è®ºæ•°ã€‘
+		//<a href="http://movie.douban.com/celebrity/1040543/photo/1261122420/#comments">29å›åº”</a>
 		String commentTatolStartIndexStr = "<a href=\"https://movie.douban.com/celebrity/" + celebrityId + "/photo/" + imageId + "/#comments\">";
 		int commentTatolStartIndex = source.indexOf(commentTatolStartIndexStr);
 		Integer commentTatol = null;
 		if (commentTatolStartIndex != -1) {
-			//¡°3»ØÓ¦¡±
+			//â€œ3å›åº”â€
 			String s = source.substring(commentTatolStartIndex + commentTatolStartIndexStr.length(), source.indexOf("</a>",commentTatolStartIndex));
-			commentTatol = Integer.valueOf(s.replace("»ØÓ¦", ""));
+			commentTatol = Integer.valueOf(s.replace("å›åº”", ""));
 		}
-		//¡¾ÕÕÆ¬¡¿
-		imageURL = imageURL.replace("photo/m", "photo/l").trim();	//thumb¡ª¡ª>photo£ºËõÂÔÍ¼¡ª¡ª>´óÍ¼
+		//ã€ç…§ç‰‡ã€‘
+		imageURL = imageURL.replace("photo/m", "photo/l").trim();	//thumbâ€”â€”>photoï¼šç¼©ç•¥å›¾â€”â€”>å¤§å›¾
 		desc = desc.replace("\\t\\n","").trim();
 		if (!map.containsKey(imageURL)) {
 			BGImage bgImage = new BGImage(desc, imageURL, commentTatol);

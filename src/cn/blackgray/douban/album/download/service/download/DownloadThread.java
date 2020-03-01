@@ -19,14 +19,14 @@ import cn.blackgray.douban.album.download.common.Console;
 import cn.blackgray.douban.album.download.common.utils.URLUtils;
 
 /**
- * ÏÂÔØÏß³Ì
+ * ä¸‹è½½çº¿ç¨‹
  * @author BlackGray
  */
 public class DownloadThread extends Thread{
 
 	private List<String> imageURLList;
-	private String path;	//±£´æÂ·¾¶
-	private String url;		//ÕıÔÚ´¦ÀíÖĞµÄÍ¼Æ¬url
+	private String path;	//ä¿å­˜è·¯å¾„
+	private String url;		//æ­£åœ¨å¤„ç†ä¸­çš„å›¾ç‰‡url
 	private int imageCount;
 	private JProgressBar mainProgressBar;
 	
@@ -77,7 +77,7 @@ public class DownloadThread extends Thread{
 		while (true) {
 			int listSize;
 			synchronized (imageURLList) {
-				//ÅĞ¶ÏÊÇ·ñÓĞÍ¼Æ¬ĞèÒªÏÂÔØ
+				//åˆ¤æ–­æ˜¯å¦æœ‰å›¾ç‰‡éœ€è¦ä¸‹è½½
 				if (imageURLList.size() != 0) {
 					url = imageURLList.get(0);
 					listSize = imageURLList.size() - 1;
@@ -89,20 +89,20 @@ public class DownloadThread extends Thread{
 			try {
 				int c = downloadImage(url, path, false);
 				if (c == Common.IMAGE_DOWNLOAD_STATUS_EXISTS) {
-					Console.print(this.getName() + " - Í¼Æ¬ÒÑ´æÔÚ(" + (imageCount - listSize) + "/" + imageCount + ")£º" + url);
+					Console.print(this.getName() + " - å›¾ç‰‡å·²å­˜åœ¨(" + (imageCount - listSize) + "/" + imageCount + ")ï¼š" + url);
 				}
 				if(c == Common.IMAGE_DOWNLOAD_STATUS_FINISH){
-					Console.print(this.getName() + " - Í¼Æ¬ÏÂÔØÍê³É(" + (imageCount - listSize) + "/" + imageCount + ")£º" + url);					
+					Console.print(this.getName() + " - å›¾ç‰‡ä¸‹è½½å®Œæˆ(" + (imageCount - listSize) + "/" + imageCount + ")ï¼š" + url);					
 				}
 				if(c == Common.IMAGE_DOWNLOAD_STATUS_URL_NOT_EXISTS){
-					Console.print(this.getName() + " - Í¼Æ¬²»´æÔÚ(" + (imageCount - listSize) + "/" + imageCount + ")£º" + url);					
+					Console.print(this.getName() + " - å›¾ç‰‡ä¸å­˜åœ¨(" + (imageCount - listSize) + "/" + imageCount + ")ï¼š" + url);					
 				}
 				synchronized (DownloadManager.updateCount) {
 					DownloadManager.updateCount += c;
 				}
 			} catch (Exception e) {
 				if (!e.getClass().equals(FileNotFoundException.class)) {
-					Console.print("Í¼Æ¬ÏÂÔØÊ§°Ü£º" + url + " - " + e.getMessage());
+					Console.print("å›¾ç‰‡ä¸‹è½½å¤±è´¥ï¼š" + url + " - " + e.getMessage());
 					synchronized (Common.failFileMap) {
 						if (!Common.failFileMap.containsKey(url)) {
 							Common.failFileMap.put(url,path);
@@ -110,7 +110,7 @@ public class DownloadThread extends Thread{
 					}
 					e.printStackTrace();
 				}else{
-					Console.print("Í¼Æ¬²»´æÔÚ£º" + url + " - " + e.getMessage());
+					Console.print("å›¾ç‰‡ä¸å­˜åœ¨ï¼š" + url + " - " + e.getMessage());
 					e.printStackTrace();
 				}
 			}finally{
@@ -122,7 +122,7 @@ public class DownloadThread extends Thread{
 	}
 	
 	/**
-	 * ÏÂÔØÍ¼Æ¬
+	 * ä¸‹è½½å›¾ç‰‡
 	 * @param url
 	 * @param filePath
 	 * @throws MalformedURLException
@@ -133,27 +133,27 @@ public class DownloadThread extends Thread{
 		if (URLUtils.exists(url)) {
 			String fileName = url.substring(url.lastIndexOf('/'));
 			File file = new File(filePath + File.separatorChar + fileName);
-			//Èç¹ûÎÄ¼ş´æÔÚ£¬É¾³ıÎÄ¼ş
+			//å¦‚æœæ–‡ä»¶å­˜åœ¨ï¼Œåˆ é™¤æ–‡ä»¶
 			if (isDeleteOldFile) {
 				if (file.exists()) {
 					file.delete();
 				}
 			}
 			
-			//ÅäÖÃÍøÂç×ÊÔ´
+			//é…ç½®ç½‘ç»œèµ„æº
 			URL image = new URL(url);
 			HttpURLConnection conn = (HttpURLConnection) image.openConnection();
 			
-			//2016-03-16 Èç²»¼ÓrefererĞÅÏ¢£¬ÏÂÔØÓ°ÈËÏà²áÊ±£¬´óÍ¼¼à²â·µ»Ø403Òì³£
+			//2016-03-16 å¦‚ä¸åŠ refererä¿¡æ¯ï¼Œä¸‹è½½å½±äººç›¸å†Œæ—¶ï¼Œå¤§å›¾ç›‘æµ‹è¿”å›403å¼‚å¸¸
 			conn.setRequestProperty("referer", "https://www.douban.com/");
 			
-			conn.setConnectTimeout(10*1000);	//ÉèÖÃÁ¬½Ó³¬Ê±
-			conn.setReadTimeout(10*1000);		//ÉèÖÃ¶ÁÈ¡³¬Ê±
-			conn.setDoInput(true);				//Ä¬ÈÏÎªtrue
+			conn.setConnectTimeout(10*1000);	//è®¾ç½®è¿æ¥è¶…æ—¶
+			conn.setReadTimeout(10*1000);		//è®¾ç½®è¯»å–è¶…æ—¶
+			conn.setDoInput(true);				//é»˜è®¤ä¸ºtrue
 			conn.connect();
 			InputStream in = conn.getInputStream();
 			
-			//Ö´ĞĞÏÂÔØ
+			//æ‰§è¡Œä¸‹è½½
 			if (!file.exists()) {
 				inputStream = new BufferedInputStream(in);
 				outputStream = new BufferedOutputStream(new FileOutputStream(file));

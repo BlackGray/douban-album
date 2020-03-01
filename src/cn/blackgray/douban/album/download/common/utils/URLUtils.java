@@ -14,7 +14,7 @@ import cn.blackgray.douban.album.download.common.Console;
 
 
 /**
- * ÍøÂç×ÊÔ´Ïà¹Ø¹¤¾ßÀà
+ * ç½‘ç»œèµ„æºç›¸å…³å·¥å…·ç±»
  * @author BlackGray
  */
 public class URLUtils {
@@ -24,17 +24,17 @@ public class URLUtils {
 	
 	
 	/**
-	 * »ñÈ¡Ò³ÃæÔ´Âë
+	 * è·å–é¡µé¢æºç 
 	 * @param url
 	 * @return
 	 */
 	public static String readSource(String url){
 
-		//»ñÈ¡Ò³ÃæÔ´Âë
+		//è·å–é¡µé¢æºç 
 		StringBuffer sb = new StringBuffer();
 		try {
 			URL u = new URL(url);
-			//´úÀí
+			//ä»£ç†
 //			SocketAddress add = new InetSocketAddress("203.66.187.246", 81);
 //			Proxy p = new Proxy(Proxy.Type.HTTP , add);
 //			HttpURLConnection connection = (HttpURLConnection) u.openConnection(p);
@@ -44,7 +44,7 @@ public class URLUtils {
 			
 			HttpURLConnection connection = (HttpURLConnection) u.openConnection();
 			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36");
-			//Ä¬ÈÏUTF-8¶ÁÈ¡
+			//é»˜è®¤UTF-8è¯»å–
 			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),charset));
 			String str;
 			while ((str = reader.readLine()) != null) {
@@ -61,11 +61,11 @@ public class URLUtils {
 
 		String result = sb.toString();
 		if (result.trim().length() == 0) {
-			Console.print("Ô´Âë»ñÈ¡Ê§°Ü£º" + url);
+			Console.print("æºç è·å–å¤±è´¥ï¼š" + url);
 			return result;
 		}else{
 			String charsetCheck = charset;
-			//ÅĞ¶Ï×Ö·û¼¯
+			//åˆ¤æ–­å­—ç¬¦é›†
 			if (result.indexOf(Common.CHARTSET_GBK) != -1) {
 				charsetCheck = Common.CHARTSET_GBK;
 			}else if(result.indexOf(Common.CHARTSET_GB2312) != -1){
@@ -76,7 +76,7 @@ public class URLUtils {
 				charsetCheck = Common.CHARTSET_UTF8;
 			}
 			if (!charsetCheck.equals(charset)) {
-				Console.print("×Ö·û¼¯£º" + charset + " -> " + charsetCheck);
+				Console.print("å­—ç¬¦é›†ï¼š" + charset + " -> " + charsetCheck);
 				charset = charsetCheck;
 				return readSource(url);
 			}else{
@@ -88,7 +88,7 @@ public class URLUtils {
 	
 	
 	/**
-	 * ÅĞ¶ÏURL×ÊÔ´ÊÇ·ñ´æÔÚ
+	 * åˆ¤æ–­URLèµ„æºæ˜¯å¦å­˜åœ¨
 	 * @param url
 	 * @return
 	 * @throws MalformedURLException
@@ -98,17 +98,17 @@ public class URLUtils {
 	public static boolean exists(String url) throws MalformedURLException, ProtocolException, IOException{
 		URL u = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) u.openConnection();
-		//ÔÊĞíÖØ¶¨Ïò£¬·ñÔò²¿·ÖÍ¼Æ¬ÎŞ·¨ÏÂÔØ
+		//å…è®¸é‡å®šå‘ï¼Œå¦åˆ™éƒ¨åˆ†å›¾ç‰‡æ— æ³•ä¸‹è½½
 		HttpURLConnection.setFollowRedirects(true);
 		conn.setInstanceFollowRedirects(true);
-		/* ÉèÖÃ URL ÇëÇóµÄ·½·¨£¬ GET POST HEAD OPTIONS PUT DELETE TRACE ÒÔÉÏ·½·¨Ö®Ò»ÊÇºÏ·¨µÄ£¬¾ßÌåÈ¡¾öÓÚĞ­ÒéµÄÏŞÖÆ¡£*/
+		/* è®¾ç½® URL è¯·æ±‚çš„æ–¹æ³•ï¼Œ GET POST HEAD OPTIONS PUT DELETE TRACE ä»¥ä¸Šæ–¹æ³•ä¹‹ä¸€æ˜¯åˆæ³•çš„ï¼Œå…·ä½“å–å†³äºåè®®çš„é™åˆ¶ã€‚*/
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36");
 		
-		//2016-03-16 Èç²»¼ÓrefererĞÅÏ¢£¬ÏÂÔØÓ°ÈËÏà²áÊ±£¬´óÍ¼¼à²â·µ»Ø403Òì³£
+		//2016-03-16 å¦‚ä¸åŠ refererä¿¡æ¯ï¼Œä¸‹è½½å½±äººç›¸å†Œæ—¶ï¼Œå¤§å›¾ç›‘æµ‹è¿”å›403å¼‚å¸¸
 		conn.setRequestProperty("referer", "https://www.douban.com/");
 		
-		//=======ĞÅÏ¢=======
+		//=======ä¿¡æ¯=======
 //		Map<String, List<String>> map = conn.getHeaderFields();
 //		for (Entry<String, List<String>> element : map.entrySet()) {
 //			System.out.println(element.getKey() + " = " + element.getValue());	
@@ -121,7 +121,7 @@ public class URLUtils {
 //		System.out.println("getExpiration = " + conn.getExpiration());
 //		System.out.println("getResponseCode = " + conn.getResponseCode());
 //		System.out.println("getResponseMessage = " + conn.getResponseMessage());
-		//=======/ĞÅÏ¢=======
+		//=======/ä¿¡æ¯=======
 		System.out.println("ResponseCode:" + conn.getResponseCode());
 		if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 			return true;
@@ -132,14 +132,14 @@ public class URLUtils {
 	
 
 	public static void main(String[] args) throws MalformedURLException, ProtocolException, IOException {
-//		//×ÊÔ´ÑéÖ¤
+//		//èµ„æºéªŒè¯
 //		System.out.println(URLUtils.exists("http://img5.douban.com/view/photo/photo/public/p814563030.jpg"));
 //		System.out.println("==========");
 //		System.out.println(URLUtils.exists("http://img5.douban.com/view/photo/large/public/p814563030.jpg"));
 //		System.out.println("==========");
 //		System.out.println(URLUtils.exists("http://img5.douban.com/view/photo/large/public/p814563030.jpgx"));
 		
-		//»ñÈ¡Ò³ÃæÔ´Âë
+		//è·å–é¡µé¢æºç 
 //		System.out.println(readSource("http://www.douban.com/photos/album/67952443/"));
 //		System.out.println(readSource("https://www.douban.com/photos/album/120012756/"));
 		
