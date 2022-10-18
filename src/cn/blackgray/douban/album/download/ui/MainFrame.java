@@ -597,10 +597,19 @@ public class MainFrame extends javax.swing.JFrame {
 				if (CommonUtils.isMacOS()) {
 					JTextArea albumTextArea = frame.albumTextArea;
 					int MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+					
+					//相册地址控件设置快捷键
 					albumTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A, MASK), "select-all");
 					albumTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, MASK), "copy");
 					albumTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_X, MASK), "cut");
 					albumTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_V, MASK), "paste");
+					
+					//日志输出控件设置快捷键
+					JTextArea infoTextArea = frame.infoTextArea;
+					infoTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A, MASK), "select-all");
+					infoTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, MASK), "copy");
+					infoTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_X, MASK), "cut");
+					infoTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_V, MASK), "paste");
 				}
 				
 				frame.setVisible(true);
