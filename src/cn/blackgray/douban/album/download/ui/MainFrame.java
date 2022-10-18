@@ -25,6 +25,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
+import cn.blackgray.douban.album.download.common.utils.CommonUtils;
 import cn.blackgray.douban.album.download.service.DownloadService;
 import cn.blackgray.douban.album.download.service.creator.HtmlCreator;
 import cn.blackgray.douban.album.download.ui.component.DropTextArea;
@@ -593,9 +594,8 @@ public class MainFrame extends javax.swing.JFrame {
 				MainFrame frame = MainFrame.getInstance();
 				
 				//设置macos下快捷键
-				JTextArea albumTextArea = frame.albumTextArea;
-				String osName = System.getProperty("os.name").toLowerCase();
-				if (osName.indexOf("mac") >= 0) {
+				if (CommonUtils.isMacOS()) {
+					JTextArea albumTextArea = frame.albumTextArea;
 					int MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 					albumTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A, MASK), "select-all");
 					albumTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, MASK), "copy");
