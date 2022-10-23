@@ -16,7 +16,7 @@ import javax.swing.JProgressBar;
 
 import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
-import cn.blackgray.douban.album.download.common.utils.DirUtils;
+import cn.blackgray.douban.album.download.common.utils.FileUtils;
 import cn.blackgray.douban.album.download.model.Album;
 import cn.blackgray.douban.album.download.model.BGImage;
 import cn.blackgray.douban.album.download.service.handler.AlbumHandler;
@@ -50,9 +50,6 @@ public class DownloadProcessing {
 
 		Map<String,BGImage> imageMap = new HashMap<String,BGImage>();	//【单相册全照片集合】
 
-		//【创建目录】
-		DirUtils.createDir(album);
-
 		//【启动处理单元】
 		//处理单元总数
 		int processUnitMax = new Double(Math.ceil((double)album.getPageURLLsit().size()/Common.PROCESS_UNIT_SIZE)).intValue();
@@ -74,7 +71,7 @@ public class DownloadProcessing {
 				pageURLList.add(album.getPageURLLsit().get(k));
 			}
 			//处理 - 返回更新信息
-			updateCount += processUnit(album,imageMap,pageURLList);
+			updateCount += processUnit(processUnitNumber, album, imageMap, pageURLList);
 
 			//处理单元计数+1
 			processUnitNumber++;
@@ -84,7 +81,7 @@ public class DownloadProcessing {
 			//处理单元数大于1，并且不是最后一次处理才执行休眠判断
 			if (processUnitMax > 1 && (j + 1) != processUnitMax) {
 				long t = System.currentTimeMillis() - processUnitTime;
-				Console.print("处理单元耗时：" + t);
+				Console.print("处理单元耗时：" + (t/1000) + "s");
 				if (t < Common.TIME_PROCESS_MIN) {
 					Console.print("短时间访问页面次数过多，启动休眠~");
 					Console.print("(￣ε(#￣)☆╰╮o(￣皿￣///)");
@@ -120,7 +117,9 @@ public class DownloadProcessing {
 			}
 			Console.print(" 单相册耗时:" + (System.currentTimeMillis() - albumDownloadTime)/1000 + "s");
 		}else{
-			Console.print("提示：失败或页面无图像。");
+			Console.print("提示：失败或页面无图片，取消下载。");
+			Console.print("提示：可能触发豆瓣反爬虫机制被禁IP，数小时后或第二天可恢复。");
+			Console.print("提示：切勿打开多个软件同时下载，勿短时间内下载大量图片，容易被禁。");
 		}
 
 	}
@@ -135,33 +134,42 @@ public class DownloadProcessing {
 	 * @param processUnitNumber
 	 * @return 图片更新数
 	 */
-	private static int processUnit(Album album, Map<String,BGImage> imageMap,List<String> pageURLList){
+	private static int processUnit(int processUnitNumber, Album album, Map<String,BGImage> imageMap,List<String> pageURLList){
 		int update = 0;
 		//【信息获取】
-		Console.print("处理单元：启动信息获取");
+		Console.print("处理单元[" + processUnitNumber + "]：启动信息获取");
 		Set<String> imageURLSet = infoProcess(album, imageMap, pageURLList);
 		//【下载图片】
-		Console.print("处理单元：开始下载：" + album.getName() + "(" + imageURLSet.size() + "张)");
-		update = DownloadManager.downloadImage(new ArrayList<String>(imageURLSet),album.getPath());
+		if(imageURLSet.size() == 0) {
+			Console.print("处理单元[" + processUnitNumber + "]：页面未检测到图片");
+		}else {
+			//【创建目录】
+			if(processUnitNumber == 0) {
+				FileUtils.createDir(album);
+			}
+			
+			Console.print("处理单元[" + processUnitNumber + "]：开始下载：" + album.getName() + "(" + imageURLSet.size() + "张)");
+			update = DownloadManager.downloadImage(new ArrayList<String>(imageURLSet),album.getPath());
 
-		//【下载大图】
-		AlbumHandler albumHandler = album.getAlbumHandler();
-		if (Common.IS_DOWNLOAD_RAW && albumHandler.hasRaw()) {
-			Console.print("处理单元：检测并下载大图");
-			//创建目录
-			String path = album.getPath() + File.separatorChar + "raw";
-			File file = new File(path);
-			if (!file.exists()) {
-				file.mkdir();
+			//【下载大图】
+			AlbumHandler albumHandler = album.getAlbumHandler();
+			if (Common.IS_DOWNLOAD_RAW && albumHandler.hasRaw()) {
+				Console.print("处理单元[" + processUnitNumber + "]：检测并下载大图");
+				//创建目录
+				String path = album.getPath() + File.separatorChar + "raw";
+				File file = new File(path);
+				if (!file.exists()) {
+					file.mkdir();
+				}
+				//【获取地址】
+				//小站大图
+				List<String> list = new ArrayList<String>();
+				for (String url : imageURLSet) {
+					list.add(albumHandler.getRawURL(url));
+				}
+				//执行下载
+				update += DownloadManager.downloadImage(list,path);			
 			}
-			//【获取地址】
-			//小站大图
-			List<String> list = new ArrayList<String>();
-			for (String url : imageURLSet) {
-				list.add(albumHandler.getRawURL(url));
-			}
-			//执行下载
-			update += DownloadManager.downloadImage(list,path);			
 		}
 		return update;
 	}
@@ -230,6 +238,13 @@ public class DownloadProcessing {
 						imageMap.put(entry.getKey(), bgImage);	
 					};
 				};
+			}
+			
+			try {
+				//睡眠一定时间
+				Thread.sleep(Common.TIME_ONE_PAGE_INFO_PROCESS_SLEEP);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 		return imageURLSet;

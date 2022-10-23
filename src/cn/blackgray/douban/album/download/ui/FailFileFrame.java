@@ -6,13 +6,17 @@
 
 package cn.blackgray.douban.album.download.ui;
 
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Map.Entry;
 
-import cn.blackgray.douban.album.download.common.Common;
+import javax.swing.KeyStroke;
+
 import cn.blackgray.douban.album.download.common.Console;
+import cn.blackgray.douban.album.download.common.utils.CommonUtils;
 import cn.blackgray.douban.album.download.service.creator.HtmlCreator;
-import cn.blackgray.douban.album.download.service.download.DownloadManager;
+import cn.blackgray.douban.album.download.service.download.DownloadFailManager;
 
 /**
  * 失败文件下载界面
@@ -33,14 +37,24 @@ public class FailFileFrame extends javax.swing.JFrame {
 	 * 初始化
 	 */
 	private void init() {
+		//设置macos下快捷键
+		if (CommonUtils.isMacOS()) {
+			int MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+			//控件设置快捷键
+			failFileInfoTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A, MASK), "select-all");
+			failFileInfoTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, MASK), "copy");
+			failFileInfoTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_X, MASK), "cut");
+			failFileInfoTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_V, MASK), "paste");
+		}
+		
 		//显示失败文件列表
 		failFileInfoTextArea.setText("");
-		for (Entry<String, String> image : Common.failFileMap.entrySet()) {
+		for (Entry<String, String> image : DownloadFailManager.getFailFileMap().entrySet()) {
 			failFileInfoTextArea.append("下载失败：" + image.getKey() + " ——> "
 					+ image.getValue() + "\r\n");
 		}
 		//显示文件个数
-		countLabel.setText(String.valueOf(Common.failFileMap.size()));
+		countLabel.setText(String.valueOf(DownloadFailManager.getFailSize()));
 	}
 
 	private static FailFileFrame instance = null;
@@ -183,10 +197,18 @@ public class FailFileFrame extends javax.swing.JFrame {
 	 * 关闭后执行网页文档创建操作
 	 */
 	private void closeWindow(){
-		Common.failFileMap.clear();
 		this.setVisible(false);
+		//生成下载失败记录文件
+		createFailFileDoc();
 		//生成网页
 		createAlbumHTML();
+		
+		//清空失败文件集合
+		DownloadFailManager.clearAll();
+		//重置已完成下载的相册的路径集合
+		FailFileFrame.finishedAlbumPathList = null;
+		
+		Console.print("【FINISH】");
 	}
 	
 	/**
@@ -197,13 +219,29 @@ public class FailFileFrame extends javax.swing.JFrame {
 		if (FailFileFrame.finishedAlbumPathList != null && FailFileFrame.finishedAlbumPathList.size() != 0) {
 			Console.print("【正在生成HTML文档,请稍等...】");
 			HtmlCreator.createAlbumHTML(finishedAlbumPathList);
-			FailFileFrame.finishedAlbumPathList = null;
-			Console.print("【FINISH】");
+			Console.print("【HTML文档生成成功】");
 			//设置界面下载按钮可用
 			MainFrame.getInstance().downloadBtn.setEnabled(true);
 		}
 	}
 	
+	/**
+	 * 生成下载失败记录文件
+	 */
+	private void createFailFileDoc(){
+		//若关闭窗口、取消下载时，仍有失败文件，生成下载失败记录文档
+		if (DownloadFailManager.getFailSize() != 0) {
+			Console.print("【正在生成下载失败图片记录文档...】");
+			DownloadFailManager.createAlbumFailFileDoc(finishedAlbumPathList, DownloadFailManager.getFailFileMap());
+			Console.print("【下载失败图片记录文档生成成功】");
+		}
+		
+	}
+	
+	/**
+	 * 重试下载失败文件
+	 * @param evt
+	 */
 	private void reloadBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		new Thread(new Runnable() {
 
@@ -211,15 +249,18 @@ public class FailFileFrame extends javax.swing.JFrame {
 			public void run() {
 				//重新下载
 				FailFileFrame.getInstance().setVisible(false);
-				int flag = DownloadManager.downloadFailFile();
-				if (flag == 0) {
-					FailFileFrame.getInstance().init();
-					FailFileFrame.getInstance().setVisible(true);	
-				}else{
+				boolean success = DownloadFailManager.downloadFailFile();
+				if (success) {
+					//全部下载成功，生成网页、界面重置
 					//生成网页
 					createAlbumHTML();
 					//设置界面下载按钮可用
-					MainFrame.getInstance().downloadBtn.setEnabled(true);					
+					MainFrame.getInstance().downloadBtn.setEnabled(true);
+					Console.print("【FINISH】");
+				}else{
+					//未全部下载，重新显示失败文件下载界面
+					FailFileFrame.getInstance().init();
+					FailFileFrame.getInstance().setVisible(true);		
 				}
 			}
 		}).start();

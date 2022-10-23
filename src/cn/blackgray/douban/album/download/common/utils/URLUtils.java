@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Random;
 
 import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
@@ -33,7 +34,6 @@ public class URLUtils {
 		//获取页面源码
 		StringBuffer sb = new StringBuffer();
 		try {
-			URL u = new URL(url);
 			//代理
 //			SocketAddress add = new InetSocketAddress("203.66.187.246", 81);
 //			Proxy p = new Proxy(Proxy.Type.HTTP , add);
@@ -42,8 +42,10 @@ public class URLUtils {
 //			String headerValue = "Basic " + Base64.encode(user+":"+password);  
 //			conn.setRequestProperty(headerKey, headerValue);  
 			
+			URL u = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) u.openConnection();
-			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36");
+			connection.setRequestProperty("User-Agent", randomUserAgentStr());
+			
 			//默认UTF-8读取
 			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),charset));
 			String str;
@@ -84,6 +86,34 @@ public class URLUtils {
 			}
 		}
 
+	}
+	
+	
+	/**
+	 * 随机生成user-agent字符串
+	 */
+	public static String randomUserAgentStr() {
+
+		Random r = new Random();
+		Integer chromeVesionFirstNum = r.nextInt(43) + 60;
+		Integer chromeVesionThirdNum = r.nextInt(3800);
+		Integer chromeVesionFourthNum = r.nextInt(140);
+		
+		String[] osTypeArray = new String[] {
+			"(Windows NT 6.1; WOW64) ",
+			"(Windows NT 10.0; WOW64) ",
+			"(X11; Linux x86_64) ",
+			"(Macintosh; Intel Mac OS X 10_15_7) "
+		};
+		
+		String result = "";
+		result += "Mozilla/5.0 " ;
+		result += osTypeArray[r.nextInt(3)] ;
+		result += "AppleWebKit/537.36 (KHTML, like Gecko) ";
+		result += "Chrome/" + chromeVesionFirstNum + ".0." + chromeVesionThirdNum + "." + chromeVesionFourthNum + " ";
+		result += "Safari/537.36";
+		    		
+		return result;
 	}
 	
 	
@@ -142,19 +172,25 @@ public class URLUtils {
 		//获取页面源码
 //		System.out.println(readSource("http://www.douban.com/photos/album/67952443/"));
 //		System.out.println(readSource("https://www.douban.com/photos/album/120012756/"));
+		System.out.println(readSource("https://movie.douban.com/celebrity/1138320/photos/?start=0"));
 		
-		try {
-			System.out.println(URLUtils.exists("https://img1.doubanio.com/view/photo/raw/public/p2321685527.jpg"));
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			System.out.println(URLUtils.exists("https://img1.doubanio.com/view/photo/raw/public/p2321685527.jpg"));
+//		} catch (MalformedURLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ProtocolException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		//此前默认user-agent
+		System.out.println("Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36");
+		//随机生成user-agent
+		System.out.println(randomUserAgentStr());
 		
 	}
 

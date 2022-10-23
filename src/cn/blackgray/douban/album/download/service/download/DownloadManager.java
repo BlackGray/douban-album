@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import javax.swing.JProgressBar;
 
@@ -27,12 +26,19 @@ public class DownloadManager {
 	public static Integer updateCount = 0;
 	private static final Integer TIMEOUT = 10;	//单图片下载超时时间
 	
+	/**
+	 * 批量下载图片
+	 * @param imageURLList
+	 * @param path
+	 * @return
+	 */
 	public static int downloadImage(List<String> imageURLList,String path) {
 		
 		mainProgressBar.setMaximum(imageURLList.size());	//进度条设置 - 最大值
 		mainProgressBar.setValue(0);						//进度条设置 - 初始值
 		List<DownloadThread> threadList = new ArrayList<DownloadThread>();
 		int imageSize = imageURLList.size();
+		//创建多个线程，开始批量下载图片
 		for (int i = 0; i < Common.DOWNLOAD_THREAD; i++) {
 			String threadName = "线程0";
 			if (i < 10) {
@@ -45,8 +51,10 @@ public class DownloadManager {
 			threadList.add(thread);
 		}
 		Map<DownloadThread,Integer> waitThreadMap = new HashMap<DownloadThread,Integer>();
+		//循环中每隔1s判断下载完成情况
 		while (true) {
 			try {
+				//睡眠1s
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -64,12 +72,11 @@ public class DownloadManager {
 						if (waitThreadMap.get(thread) > TIMEOUT) {
 							//中断线程
 							try {
-								Console.print("下载超时,中断线程,请稍等.. - " + thread.getName() + " - " + thread.getUrl());
+								String url = thread.getUrl();
+								Console.print("下载超时,中断线程,请稍等.. - " + thread.getName() + " - " + url);
 								thread.closeStream();
 								//添加至错误集合
-								if (!Common.failFileMap.containsKey(thread.getUrl())) {
-									Common.failFileMap.put(thread.getUrl(), thread.getPath());
-								};
+								DownloadFailManager.add(url, path);
 							} catch (IOException e) {
 								Console.print("线程中断操作异常：" + e.getMessage());
 								e.printStackTrace();
@@ -103,44 +110,10 @@ public class DownloadManager {
 		return updateCount;
 	}
 	
-	public static int downloadFailFile(){
-		int num = 1;
-		int size = Common.failFileMap.size();
-		JProgressBar progressBar = MainFrame.getInstance().progressBar;
-		progressBar.setMaximum(size);
-		progressBar.setValue(0);
-		Console.print("=====================================");
-		Console.print("下载图片上次失败图片：" + size + "(张)");
-		Map<String, String> failMap = new TreeMap<String, String>();
-		for (Entry<String, String> element : Common.failFileMap.entrySet()) {
-			try {
-				//下载
-				Console.print("下载图片(" + num + "/" + size + ")：" + element.getKey());
-				DownloadThread downloadThread = new DownloadThread();
-				downloadThread.downloadImage(element.getKey(), element.getValue(), true);
-			} catch (IOException e) {
-				Console.print("图片下载失败：" + element.getKey());
-				failMap.put(element.getKey(), element.getValue());
-			}
-			progressBar.setValue(num);
-			num++;
-		}
-		Common.failFileMap.clear();
-		if (failMap.size() > 0) {
-			Console.print("【FINISH】成功：" + (size - failMap.size()) + "，失败" + failMap.size());
-			Common.failFileMap.putAll(failMap);
-			return 0;
-		} else {
-			Console.print("【FINISH】成功：" + size + "，失败" + 0);
-			return 1;
-		}
-	}
-	
-	
 	
 	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException {
 		System.out.println("START");
-		new DownloadThread().downloadImage("http://img3.douban.com/view/photo/photo/public/p1105635956.jpg","D:\\", true);
+		new DownloadThread().downloadImage("http://img3.douban.com/view/photo/photo/public/p1105635956.jpg","D:\\");
 		System.out.println("FINISH");
 	}
 

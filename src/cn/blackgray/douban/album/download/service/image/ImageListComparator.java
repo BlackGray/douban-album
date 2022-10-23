@@ -18,7 +18,13 @@ public class ImageListComparator implements Comparator<String>{
 		if (p1.matches(regex) && p2.matches(regex)) {
 			long i1 = Long.parseLong(p1.substring(1,p1.lastIndexOf(".")));	//1473298817
 			long i2 = Long.parseLong(p2.substring(1,p2.lastIndexOf(".")));
-			return (int) (i2 - i1);
+			if(i1 < i2) {
+				return 1;
+			}else if(i1 == i2){
+				return 0;
+			}else {
+				return -1;
+			}
 		}else{
 			return p1.compareTo(p2);
 		}

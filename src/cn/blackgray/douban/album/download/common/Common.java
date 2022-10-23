@@ -9,8 +9,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -23,30 +21,38 @@ import cn.blackgray.douban.album.download.common.utils.CommonUtils;
  */
 public class Common {
 	
-	public static String VERSION = "v0.5.13";
+	public static String VERSION = "v0.5.14";
 	
 	public static final String DEFAULT_DOC_NAME = "描述.txt";
+	public static final String DEFAULT_FAIL_FILE_DOC_NAME = "下载失败图片记录.txt";
 	public static final String DEFAULT_HTML_NAME = "index.html";
 	public static final String DEFAULT_HTML_RESOURCE_DIR = "resource";
 	public static final String DEFAULT_RAW_DIR = "raw";
+	public static final String DEFAULT_ALBUM_ROOT_PATH_STR = "跟目录";	//相册默认跟目录占位符
 	
 	//时间格式化
 	public static SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	//图片下载结果&状态
+	/** 图片下载结果&状态 - 图片已存在 */
 	public static final int IMAGE_DOWNLOAD_STATUS_EXISTS = 0;
+	/** 图片下载结果&状态 - 下载完成 */
 	public static final int IMAGE_DOWNLOAD_STATUS_FINISH = 1;
+	/** 图片下载结果&状态 - 图片网络资源不存在 */
 	public static final int IMAGE_DOWNLOAD_STATUS_URL_NOT_EXISTS = 2;
+	/** 图片下载结果&状态 - 图片下载异常，已下载文件小于网络资源大小 */
+	public static final int IMAGE_DOWNLOAD_STATUS_DOWNLOAD_FAIL = 3;
 	
 //	public static int albumType;	//相册类型 - 普通、豆瓣相册、豆瓣活动
 	 
 	public static final String URL_HELP = "http://www.douban.com/note/206320326/";
 	public static final String URL_DOUPIC = "http://www.douban.com/group/doupic/";
 	
-	public static final long TIME_PROCESS_MIN = 1*60*1000;	//边界时间 - 单位毫秒
-	public static final long TIME_PROCESS_SLEEP = 60;		//休眠时间 - 单位秒
+	public static final long TIME_PROCESS_MIN = 1*60*1000;				//边界时间 - 单位毫秒
+	public static final long TIME_PROCESS_SLEEP = 60;					//休眠时间 - 单位秒
+	public static final long TIME_ONE_PAGE_INFO_PROCESS_SLEEP = 500;	//单页面图片信息处理间隔时间 - 单位毫秒
 	
-	public static final int PROCESS_UNIT_SIZE = 50;	//处理单元大小
+	public static final int PROCESS_UNIT_SIZE = 20;	//处理单元大小
 	
 	public static final String CHARTSET_UTF8 = "utf-8";
 	public static final String CHARTSET_GBK = "gbk";
@@ -61,8 +67,7 @@ public class Common {
 	
 	public static final String IMAGE_TYPE = "gif|jpg|png";
 	
-	public static Map<String,String> failFileMap = new TreeMap<String, String>();;		//下载失败的文件集合
-	public static final Integer AUTO_DOWNLOAD_FAIL_FILE = 5;							//自动下载错误文件次数
+	public static final Integer AUTO_DOWNLOAD_FAIL_FILE = 10;							//自动下载错误文件次数
 	
 	public static final String HTML_TEMPLATE_PAGE;
 	public static final String HTML_TEMPLATE_IMAGE;

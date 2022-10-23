@@ -29,10 +29,10 @@ public class DownloadThread extends Thread{
 	private String url;		//正在处理中的图片url
 	private int imageCount;
 	private JProgressBar mainProgressBar;
-	
+
 	private BufferedInputStream inputStream;
 	private BufferedOutputStream outputStream;
-	
+
 	public DownloadThread() {
 		super();
 	}
@@ -44,7 +44,7 @@ public class DownloadThread extends Thread{
 		this.mainProgressBar = mainProgressBar;
 		this.setName(name);
 	}
-	
+
 	public void closeStream() throws IOException {
 		if (inputStream != null) {
 			inputStream.close();
@@ -63,11 +63,11 @@ public class DownloadThread extends Thread{
 	public String getUrl() {
 		return url;
 	}
-	
+
 	public BufferedInputStream getInputStream() {
 		return inputStream;
 	}
-	
+
 	public BufferedOutputStream getOutputStream() {
 		return outputStream;
 	}
@@ -87,27 +87,29 @@ public class DownloadThread extends Thread{
 				}
 			}
 			try {
-				int c = downloadImage(url, path, false);
-				if (c == Common.IMAGE_DOWNLOAD_STATUS_EXISTS) {
+				int state = downloadImage(url, path);
+				if (state == Common.IMAGE_DOWNLOAD_STATUS_EXISTS) {
 					Console.print(this.getName() + " - 图片已存在(" + (imageCount - listSize) + "/" + imageCount + ")：" + url);
 				}
-				if(c == Common.IMAGE_DOWNLOAD_STATUS_FINISH){
+				if(state == Common.IMAGE_DOWNLOAD_STATUS_FINISH){
 					Console.print(this.getName() + " - 图片下载完成(" + (imageCount - listSize) + "/" + imageCount + ")：" + url);					
 				}
-				if(c == Common.IMAGE_DOWNLOAD_STATUS_URL_NOT_EXISTS){
+				if(state == Common.IMAGE_DOWNLOAD_STATUS_URL_NOT_EXISTS){
 					Console.print(this.getName() + " - 图片不存在(" + (imageCount - listSize) + "/" + imageCount + ")：" + url);					
 				}
+				if (state == Common.IMAGE_DOWNLOAD_STATUS_DOWNLOAD_FAIL) {
+					Console.print(this.getName() + " - 图片下载异常，已下载文件小于网络资源大小(" + (imageCount - listSize) + "/" + imageCount + ")：" + url);
+					//加入下载异常集合，待重试
+					DownloadFailManager.add(url, path);
+				}
 				synchronized (DownloadManager.updateCount) {
-					DownloadManager.updateCount += c;
+					DownloadManager.updateCount += 1;
 				}
 			} catch (Exception e) {
 				if (!e.getClass().equals(FileNotFoundException.class)) {
 					Console.print("图片下载失败：" + url + " - " + e.getMessage());
-					synchronized (Common.failFileMap) {
-						if (!Common.failFileMap.containsKey(url)) {
-							Common.failFileMap.put(url,path);
-						};
-					}
+					//删除下载失败图片，并将图片信息加入失败文件集合
+					DownloadFailManager.add(url, path);
 					e.printStackTrace();
 				}else{
 					Console.print("图片不存在：" + url + " - " + e.getMessage());
@@ -120,7 +122,7 @@ public class DownloadThread extends Thread{
 			}
 		}
 	}
-	
+
 	/**
 	 * 下载图片
 	 * @param url
@@ -129,32 +131,33 @@ public class DownloadThread extends Thread{
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public int downloadImage(String url,String filePath, boolean isDeleteOldFile) throws MalformedURLException, FileNotFoundException, IOException{
-		if (URLUtils.exists(url)) {
-			String fileName = url.substring(url.lastIndexOf('/'));
-			File file = new File(filePath + File.separatorChar + fileName);
-			//如果文件存在，删除文件
-			if (isDeleteOldFile) {
-				if (file.exists()) {
-					file.delete();
-				}
-			}
-			
-			//配置网络资源
-			URL image = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection) image.openConnection();
-			
-			//2016-03-16 如不加referer信息，下载影人相册时，大图监测返回403异常
-			conn.setRequestProperty("referer", "https://www.douban.com/");
-			
-			conn.setConnectTimeout(10*1000);	//设置连接超时
-			conn.setReadTimeout(10*1000);		//设置读取超时
-			conn.setDoInput(true);				//默认为true
-			conn.connect();
-			InputStream in = conn.getInputStream();
-			
-			//执行下载
-			if (!file.exists()) {
+	public int downloadImage(String url,String filePath) throws MalformedURLException, FileNotFoundException, IOException{
+		
+		String fileName = url.substring(url.lastIndexOf('/'));
+		File file = new File(filePath + File.separatorChar + fileName);
+		if(file.exists()) {
+			//如果本地文件已存在，不执行下载，返回已存在标识
+			return Common.IMAGE_DOWNLOAD_STATUS_EXISTS;
+		}else {
+			//如果本地图不存在，执行下载
+			//判断网络资源是否存在
+			if (URLUtils.exists(url)) {
+				//执行下载
+				//配置网络资源
+				URL image = new URL(url);
+				HttpURLConnection conn = (HttpURLConnection) image.openConnection();
+
+				//2016-03-16 如不加referer信息，下载影人相册时，大图监测返回403异常
+				conn.setRequestProperty("referer", "https://www.douban.com/");
+				
+				conn.setConnectTimeout(10*1000);	//设置连接超时
+				conn.setReadTimeout(10*1000);		//设置读取超时
+				conn.setDoInput(true);				//默认为true
+				conn.connect();
+				//获取网络资源文件大小
+				long contentLength = conn.getContentLengthLong();
+				
+				InputStream in = conn.getInputStream();
 				inputStream = new BufferedInputStream(in);
 				outputStream = new BufferedOutputStream(new FileOutputStream(file));
 				byte[] data = new byte[2048];
@@ -167,13 +170,20 @@ public class DownloadThread extends Thread{
 				inputStream.close();
 				outputStream.close();
 				conn.disconnect();
-				return Common.IMAGE_DOWNLOAD_STATUS_FINISH;
+				
+				//验证文件大小
+				if(file.length() < contentLength) {
+					// 图片下载异常，已下载文件小于网络资源大小
+					return Common.IMAGE_DOWNLOAD_STATUS_DOWNLOAD_FAIL;
+				}else {
+					// 下载完成
+					return Common.IMAGE_DOWNLOAD_STATUS_FINISH;
+				}
 			}else{
-				return Common.IMAGE_DOWNLOAD_STATUS_EXISTS;
+				return Common.IMAGE_DOWNLOAD_STATUS_URL_NOT_EXISTS;
 			}
-		}else{
-			return Common.IMAGE_DOWNLOAD_STATUS_URL_NOT_EXISTS;
+			
 		}
 	}
-	
+
 }
