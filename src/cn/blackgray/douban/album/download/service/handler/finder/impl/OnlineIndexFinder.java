@@ -41,4 +41,9 @@ public class OnlineIndexFinder implements IAlbumURLFinder{
 		return "(http|https)://www.douban.com/online/\\d+/";
 	}
 
+	@Override
+	public String getFindFailMsg() {
+		return null;
+	}
+
 }

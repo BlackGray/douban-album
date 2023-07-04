@@ -25,5 +25,10 @@ public class MusicianIndexFinder implements IAlbumURLFinder{
 		return "(http|https)://music.douban.com/musician/\\d+/";
 	}
 
+	@Override
+	public String getFindFailMsg() {
+		return null;
+	}
+
 }
 

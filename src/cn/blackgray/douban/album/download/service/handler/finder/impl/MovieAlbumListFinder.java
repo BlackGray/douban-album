@@ -37,4 +37,9 @@ public class MovieAlbumListFinder implements IAlbumURLFinder{
 		System.out.println(finder.findAlbumURL(url));
 	}
 
+	@Override
+	public String getFindFailMsg() {
+		return null;
+	}
+
 }

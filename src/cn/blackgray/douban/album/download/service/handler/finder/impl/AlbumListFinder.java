@@ -70,4 +70,9 @@ public class AlbumListFinder implements IAlbumURLFinder{
 		return "(http|https)://www.douban.com/people/\\w+/photos/";
 	}
 
+	@Override
+	public String getFindFailMsg() {
+		return "相册获取失败，因豆瓣改版“用户相册首页”只支持登录后访问，程序无权限。";
+	}
+
 }

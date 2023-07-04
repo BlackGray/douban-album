@@ -44,7 +44,7 @@ public class DownloadService {
 		//----------设置进度条&标签-----------
 		albumListProgressBar.setMaximum(albums.size());
 		albumListProgressBar.setValue(0);
-		albumListCountLabel.setText("0/" + albums.size() + " ");
+		albumListCountLabel.setText("[0/" + albums.size() + "] ");
 		//-----------------------------------
 		
 		//【执行处理】

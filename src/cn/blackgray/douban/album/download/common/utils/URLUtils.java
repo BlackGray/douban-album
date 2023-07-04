@@ -46,6 +46,8 @@ public class URLUtils {
 			HttpURLConnection connection = (HttpURLConnection) u.openConnection();
 			connection.setRequestProperty("User-Agent", randomUserAgentStr());
 			
+			//connection.setRequestProperty("referer", "https://www.douban.com/");
+			
 			//默认UTF-8读取
 			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),charset));
 			String str;
@@ -95,7 +97,7 @@ public class URLUtils {
 	public static String randomUserAgentStr() {
 
 		Random r = new Random();
-		Integer chromeVesionFirstNum = r.nextInt(43) + 60;
+		Integer chromeVesionFirstNum = r.nextInt(14) + 100;
 		Integer chromeVesionThirdNum = r.nextInt(3800);
 		Integer chromeVesionFourthNum = r.nextInt(140);
 		
@@ -172,7 +174,9 @@ public class URLUtils {
 		//获取页面源码
 //		System.out.println(readSource("http://www.douban.com/photos/album/67952443/"));
 //		System.out.println(readSource("https://www.douban.com/photos/album/120012756/"));
-		System.out.println(readSource("https://movie.douban.com/celebrity/1138320/photos/?start=0"));
+//		System.out.println(readSource("https://movie.douban.com/celebrity/1138320/photos/?start=0"));
+		//2023-07-05：因豆瓣改版“用户相册首页”只支持登录后访问，程序无权限，无法获取相册清单。
+		System.out.println(readSource("https://www.douban.com/people/BlackGray/photos"));
 		
 //		try {
 //			System.out.println(URLUtils.exists("https://img1.doubanio.com/view/photo/raw/public/p2321685527.jpg"));
@@ -188,9 +192,9 @@ public class URLUtils {
 //		}
 		
 		//此前默认user-agent
-		System.out.println("Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36");
+//		System.out.println("Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36");
 		//随机生成user-agent
-		System.out.println(randomUserAgentStr());
+//		System.out.println(randomUserAgentStr());
 		
 	}
 

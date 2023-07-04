@@ -21,5 +21,13 @@ public interface IAlbumURLFinder {
 	 * @return
 	 */
 	public List<String> findAlbumURL(String url);
+	
+	/**
+	 * 获取相册地址失败提醒消息
+	 * 部分相册随豆瓣改版影响，可能无法访问，暂时保留相关查询类
+	 * 但此方法若返回值不为null，认为无法解析获取，并在界面显示提醒文字
+	 * @return
+	 */
+	public String getFindFailMsg();
 
 }

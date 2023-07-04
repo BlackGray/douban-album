@@ -70,5 +70,10 @@ public class AlbumDouListFinder implements IAlbumURLFinder{
 	public String getURLRegex() {
 		return "(http|https)://www.douban.com/doulist/\\d+/";
 	}
+
+	@Override
+	public String getFindFailMsg() {
+		return null;
+	}
 	
 }

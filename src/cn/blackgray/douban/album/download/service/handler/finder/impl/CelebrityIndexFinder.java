@@ -25,5 +25,10 @@ public class CelebrityIndexFinder implements IAlbumURLFinder{
 		return "(http|https)://movie.douban.com/celebrity/\\d+/";
 	}
 
+	@Override
+	public String getFindFailMsg() {
+		return null;
+	}
+
 }
 

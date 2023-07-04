@@ -62,15 +62,24 @@ public class AlbumHandlerFactory {
 		for (Entry<String, IAlbumURLFinder> element : albumURLFinderMap.entrySet()) {
 			if (url.matches(element.getKey())) {
 				IAlbumURLFinder albumURLFinder = element.getValue();
-				List<String> albumURLs = albumURLFinder.findAlbumURL(url);
-				for (String u : albumURLs) {
-					if(isPrintLog){
-						Console.print("获取相册地址：" + u);
+				if (albumURLFinder.getFindFailMsg() != null) {
+					//提示相册地址解析失败
+					Console.print("地址：" + url);
+					Console.print(albumURLFinder.getFindFailMsg());
+					hasFinder = true;
+					break;
+				}else {
+					//正常获取相册地址
+					List<String> albumURLs = albumURLFinder.findAlbumURL(url);
+					for (String u : albumURLs) {
+						if(isPrintLog){
+							Console.print("获取相册地址：" + u);
+						}
 					}
+					albumURLList.addAll(albumURLs);
+					hasFinder = true;
+					break;
 				}
-				albumURLList.addAll(albumURLs);
-				hasFinder = true;
-				break;
 			}
 		}
 		if (hasFinder == false) {

@@ -33,4 +33,9 @@ public class MovieIndexFinder implements IAlbumURLFinder{
 		System.out.println(new MovieAlbumListFinder().findAlbumURL("(http|https)://movie.douban.com/subject/3652297/"));;
 	}
 
+	@Override
+	public String getFindFailMsg() {
+		return null;
+	}
+
 }
