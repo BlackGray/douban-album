@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import cn.blackgray.douban.album.download.common.utils.CommonUtils;
+
 /**
  * 公共变量
  * @author BlackGray
@@ -99,16 +101,16 @@ public class Common {
 			jarPath = URLDecoder.decode(Common.class.getProtectionDomain().getCodeSource().getLocation().getPath(),"utf-8");
 			//配置文件路径
 			PATH_DOWNLOAD = jarPath.substring(1, jarPath.lastIndexOf("/"));
-//			//设置默认下载路径为程序所在目录
-//			PATH_DOWNLOAD = jarPath;
-//			if (CommonUtils.isWindows()) {
-//				//如果是Windows系统，若路径首字符为/，去除
-//				if(PATH_DOWNLOAD.startsWith("/")) {
-//					PATH_DOWNLOAD = jarPath.substring(1, jarPath.lastIndexOf("/"));
-//				}
-//			}else {
-//				PATH_DOWNLOAD = jarPath.substring(0, jarPath.lastIndexOf("/"));
-//			}
+			//设置默认下载路径为程序所在目录
+			PATH_DOWNLOAD = jarPath;
+			if (CommonUtils.isWindows()) {
+				//如果是Windows系统，若路径首字符为/，去除
+				if(PATH_DOWNLOAD.startsWith("/")) {
+					PATH_DOWNLOAD = jarPath.substring(1, jarPath.lastIndexOf("/"));
+				}
+			}else {
+				PATH_DOWNLOAD = jarPath.substring(0, jarPath.lastIndexOf("/"));
+			}
 //			//程序所在目录
 			PATH_APP = PATH_DOWNLOAD;
 		} catch (UnsupportedEncodingException e) {
