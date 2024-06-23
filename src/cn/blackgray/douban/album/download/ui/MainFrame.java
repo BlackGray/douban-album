@@ -559,6 +559,14 @@ public class MainFrame extends javax.swing.JFrame {
 				} else {
 					urlList.add(url + "/");
 				}
+				/**
+				 * 2024-06-23 去除地址中多余斜杠：使用豆瓣早期影人、音乐人相册地址访问，跳转后URL地址错误，会多出斜杠，需去除，否则无法正常识别相册类型
+				 * 如，访问：https://movie.douban.com/celebrity/1322172/photos/
+				 * 会自动跳转：https://www.douban.com/personage/27503633//photos/
+				 * photos前多了一个斜杠。
+				 */
+				int fid = url.indexOf("//") + 2;
+				url = url.substring(0, fid) + url.substring(fid, url.length()).replace("//", "/");
 				System.out.println(url);
 			}
 		}
