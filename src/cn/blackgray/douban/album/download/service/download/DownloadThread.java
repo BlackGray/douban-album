@@ -148,7 +148,7 @@ public class DownloadThread extends Thread{
 				//2016-03-16 如不加referer信息，下载影人相册时，大图监测返回403异常
 				conn.setRequestProperty("referer", "https://www.douban.com/");
 				//2024-06-23 新增参数，不加会报403
-				conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36");
+				conn.setRequestProperty("User-Agent", URLUtils.randomUserAgentStr());
 
 				conn.setConnectTimeout(10*1000);	//设置连接超时
 				conn.setReadTimeout(10*1000);		//设置读取超时
