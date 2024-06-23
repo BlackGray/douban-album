@@ -13,15 +13,13 @@ import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import cn.blackgray.douban.album.download.common.utils.CommonUtils;
-
 /**
  * 公共变量
  * @author BlackGray
  */
 public class Common {
 	
-	public static String VERSION = "v0.5.14";
+	public static String VERSION = "v20240623";
 	
 	public static final String DEFAULT_DOC_NAME = "描述.txt";
 	public static final String DEFAULT_FAIL_FILE_DOC_NAME = "下载失败图片记录.txt";
@@ -99,15 +97,19 @@ public class Common {
 		String jarPath;
 		try {
 			jarPath = URLDecoder.decode(Common.class.getProtectionDomain().getCodeSource().getLocation().getPath(),"utf-8");
-			//设置默认下载路径为程序所在目录
-			PATH_DOWNLOAD = jarPath;
-			if (CommonUtils.isWindows()) {
-				//如果是Windows系统，若路径首字符为/，去除
-				if(PATH_DOWNLOAD.startsWith("/")) {
-					PATH_DOWNLOAD = jarPath.substring(1, jarPath.lastIndexOf("/"));
-				}
-			}
-			//程序所在目录
+			//配置文件路径
+			PATH_DOWNLOAD = jarPath.substring(1, jarPath.lastIndexOf("/"));
+//			//设置默认下载路径为程序所在目录
+//			PATH_DOWNLOAD = jarPath;
+//			if (CommonUtils.isWindows()) {
+//				//如果是Windows系统，若路径首字符为/，去除
+//				if(PATH_DOWNLOAD.startsWith("/")) {
+//					PATH_DOWNLOAD = jarPath.substring(1, jarPath.lastIndexOf("/"));
+//				}
+//			}else {
+//				PATH_DOWNLOAD = jarPath.substring(0, jarPath.lastIndexOf("/"));
+//			}
+//			//程序所在目录
 			PATH_APP = PATH_DOWNLOAD;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

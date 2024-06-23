@@ -3,6 +3,7 @@ package cn.blackgray.douban.album.download.service.download;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -111,9 +112,11 @@ public class DownloadManager {
 	}
 	
 	
-	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException {
+	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException, URISyntaxException, InterruptedException {
 		System.out.println("START");
-		new DownloadThread().downloadImage("http://img3.douban.com/view/photo/photo/public/p1105635956.jpg","D:\\");
+		//https://www.douban.com/personage/27503633/photo/1946222503/
+		//https://img3.doubanio.com/view/photo/l/public/p1946222503.jpg
+		new DownloadThread().downloadImage("https://img3.doubanio.com/view/photo/raw/public/p1946222503.jpg", "/Users/blackgray/Documents/temp");
 		System.out.println("FINISH");
 	}
 

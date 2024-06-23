@@ -7,14 +7,14 @@ import cn.blackgray.douban.album.download.service.handler.finder.IAlbumURLFinder
 
 
 /**
- * 相册URL获取器实现 - 音乐人人首页获取相册
+ * 相册URL获取器实现 - 根据人士首页获取相册
  */
-public class MusicianIndexFinder implements IAlbumURLFinder{
+public class PersonageIndexFinder implements IAlbumURLFinder{
 
 	@Override
 	public List<String> findAlbumURL(String url) {
-//		https://music.douban.com/musician/100144/
-//		https://music.douban.com/musician/100144/photos/
+//		https://www.douban.com/personage/27246297/
+//		https://www.douban.com/personage/27246297/photos/
 		List<String> list = new ArrayList<String>();
 		list.add(url + "photos/");
 		return list;
@@ -22,7 +22,7 @@ public class MusicianIndexFinder implements IAlbumURLFinder{
 
 	@Override
 	public String getURLRegex() {
-		return "(http|https)://music.douban.com/musician/\\d+/";
+		return "(http|https)://www.douban.com/personage/\\d+/";
 	}
 
 	@Override

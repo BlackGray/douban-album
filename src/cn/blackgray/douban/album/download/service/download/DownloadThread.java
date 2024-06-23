@@ -102,9 +102,7 @@ public class DownloadThread extends Thread{
 					//加入下载异常集合，待重试
 					DownloadFailManager.add(url, path);
 				}
-				synchronized (DownloadManager.updateCount) {
-					DownloadManager.updateCount += 1;
-				}
+				DownloadManager.updateCount += 1;
 			} catch (Exception e) {
 				if (!e.getClass().equals(FileNotFoundException.class)) {
 					Console.print("图片下载失败：" + url + " - " + e.getMessage());
@@ -131,8 +129,8 @@ public class DownloadThread extends Thread{
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public int downloadImage(String url,String filePath) throws MalformedURLException, FileNotFoundException, IOException{
-		
+	public int downloadImage(String url, String filePath) throws MalformedURLException, FileNotFoundException, IOException{
+
 		String fileName = url.substring(url.lastIndexOf('/'));
 		File file = new File(filePath + File.separatorChar + fileName);
 		if(file.exists()) {
@@ -149,14 +147,16 @@ public class DownloadThread extends Thread{
 
 				//2016-03-16 如不加referer信息，下载影人相册时，大图监测返回403异常
 				conn.setRequestProperty("referer", "https://www.douban.com/");
-				
+				//2024-06-23 新增参数，不加会报403
+				conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36");
+
 				conn.setConnectTimeout(10*1000);	//设置连接超时
 				conn.setReadTimeout(10*1000);		//设置读取超时
 				conn.setDoInput(true);				//默认为true
 				conn.connect();
 				//获取网络资源文件大小
 				long contentLength = conn.getContentLengthLong();
-				
+
 				InputStream in = conn.getInputStream();
 				inputStream = new BufferedInputStream(in);
 				outputStream = new BufferedOutputStream(new FileOutputStream(file));
@@ -170,7 +170,7 @@ public class DownloadThread extends Thread{
 				inputStream.close();
 				outputStream.close();
 				conn.disconnect();
-				
+
 				//验证文件大小
 				if(file.length() < contentLength) {
 					// 图片下载异常，已下载文件小于网络资源大小
@@ -182,7 +182,7 @@ public class DownloadThread extends Thread{
 			}else{
 				return Common.IMAGE_DOWNLOAD_STATUS_URL_NOT_EXISTS;
 			}
-			
+
 		}
 	}
 
