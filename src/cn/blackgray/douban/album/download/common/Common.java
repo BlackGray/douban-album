@@ -28,7 +28,7 @@ public class Common {
 	public static final String DEFAULT_HTML_NAME = "index.html";
 	public static final String DEFAULT_HTML_RESOURCE_DIR = "resource";
 	public static final String DEFAULT_RAW_DIR = "raw";
-	public static final String DEFAULT_ALBUM_ROOT_PATH_STR = "跟目录";	//相册默认跟目录占位符
+	public static final String DEFAULT_ALBUM_ROOT_PATH_STR = "根目录";	//相册默认根目录占位符
 	
 	//时间格式化
 	public static SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
