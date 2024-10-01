@@ -37,6 +37,7 @@ public class Album {
 	private boolean update = false;	//是否为更新
 	
 	private AlbumHandler albumHandler;	//相册处理器
+	private boolean isVisibleToSelf;	//是否仅对自己可见
 	
 	//照片集合
 	private List<BGImage> photosList = new ArrayList<BGImage>();
@@ -177,6 +178,15 @@ public class Album {
 		this.pageURLLsit = pageURLLsit;
 	}
 	
+	
+	public boolean getIsVisibleToSelf() {
+		return isVisibleToSelf;
+	}
+
+	public void setIsVisibleToSelf(boolean isVisibleToSelf) {
+		this.isVisibleToSelf = isVisibleToSelf;
+	}
+
 	/**
 	 * 下载
 	 */
@@ -234,7 +244,7 @@ public class Album {
 		return "Album [name=" + name + ", url=" + url + ", date=" + date
 				+ ", path=" + path + ", charset=" + charset 
 				+ ", update=" + update + ", photosList=" + photosList
-				+ ", pageURLLsit=" + pageURLLsit + "]";
+				+ ", pageURLLsit=" + pageURLLsit + ", isVisibleToSelf=" + isVisibleToSelf + "]";
 	}
 	
 }

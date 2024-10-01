@@ -117,9 +117,14 @@ public class DownloadProcessing {
 			}
 			Console.print(" 单相册耗时:" + (System.currentTimeMillis() - albumDownloadTime)/1000 + "s");
 		}else{
-			Console.print("提示：失败或页面无图片，取消下载。");
-			Console.print("提示：可能触发豆瓣反爬虫机制被禁IP，数小时后或第二天可恢复。");
-			Console.print("提示：切勿打开多个软件同时下载，勿短时间内下载大量图片，容易被禁。");
+			if (album.getIsVisibleToSelf()) {
+				Console.print("提示：此相册已被设为“仅自己可见”，抱歉无法访问，无法下载。");
+				Console.print("提示：若是自身相册，或自己账号具有访问权限，可尝试登陆后下载。");
+			}else {
+				Console.print("提示：失败或页面无图片，取消下载。");
+				Console.print("提示：可能触发豆瓣反爬虫机制被禁IP，数小时后或第二天可恢复。");
+				Console.print("提示：切勿打开多个软件同时下载，勿短时间内下载大量图片，容易被禁。");
+			}
 		}
 
 	}
