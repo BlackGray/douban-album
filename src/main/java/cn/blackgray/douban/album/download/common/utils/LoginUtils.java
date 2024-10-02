@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
 import cn.blackgray.douban.album.download.ui.LoginQrFrame;
 import cn.blackgray.douban.album.download.ui.MainFrame;
@@ -32,12 +33,21 @@ public class LoginUtils {
 	//是否正在执行登陆中
 	public static boolean IS_LOGGING_IN = false;
 
+	
 	/**
-	 * 仅做初始化
+	 * 初始化ChromeDriver
 	 */
-	public static WebDriver onlyInit() {
-		// 设置 chromedirver 的存放位置
-		System.getProperties().setProperty("webdriver.chrome.driver", "/Users/blackgray/Downloads/chromedriver-mac-arm64/chromedriver");
+	public static WebDriver initChromeDriver() {
+		// 获取 chromedirver 的存放位置
+//		String chromedriverPath = "/Users/blackgray/Downloads/chromedriver-mac-arm64/chromedriver";
+		String chromedriverPath = Common.PATH_APP + File.separator + "chromedriver";
+		if (CommonUtils.isWindows()) {
+			chromedriverPath = chromedriverPath + ".exe";
+		}
+		
+		Console.print("加载chromedriver - " + chromedriverPath);
+		System.getProperties().setProperty("webdriver.chrome.driver", chromedriverPath);
+		
 		ChromeOptions chromeOptions = new ChromeOptions();
 
 		chromeOptions.addArguments("--no-sandbox"); // 不使用沙箱
@@ -59,19 +69,7 @@ public class LoginUtils {
 		Console.print("正在准备登陆，请稍等...");
 
 		try {
-			// 设置 chromedirver 的存放位置
-			System.getProperties().setProperty("webdriver.chrome.driver", "/Users/blackgray/Downloads/chromedriver-mac-arm64/chromedriver");
-			ChromeOptions chromeOptions = new ChromeOptions();
-
-			chromeOptions.addArguments("--no-sandbox"); // 不使用沙箱
-			chromeOptions.addArguments("--disable-dev-shm-usage");
-			// chromeOptions.addArguments("blink-settings=imagesEnabled=false"); //不加载图片
-			chromeOptions.addArguments("--disable-gpu"); // 禁用GPU
-			chromeOptions.addArguments("--remote-allow-origins=*");
-
-			// 使用后台打开chrome的方式
-			chromeOptions.addArguments("--headless");
-			CHROME_DRIVER = new ChromeDriver(chromeOptions);
+			CHROME_DRIVER = initChromeDriver();
 
 			// 1.模拟打开登陆页面
 			String url = DOUBAN_LOGIN_URL;
