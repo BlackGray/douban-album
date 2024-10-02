@@ -21,7 +21,7 @@ import cn.blackgray.douban.album.download.common.utils.CommonUtils;
  */
 public class Common {
 	
-	public static String VERSION = "v20240623";
+	public static String VERSION = "v20241003";
 	
 	public static final String DEFAULT_DOC_NAME = "描述.txt";
 	public static final String DEFAULT_FAIL_FILE_DOC_NAME = "下载失败图片记录.txt";

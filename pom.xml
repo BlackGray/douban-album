@@ -5,7 +5,7 @@
 
 	<groupId>com.blackgrays</groupId>
 	<artifactId>douban-album</artifactId>
-	<version>2024.10.02</version>
+	<version>2024.10.03</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
