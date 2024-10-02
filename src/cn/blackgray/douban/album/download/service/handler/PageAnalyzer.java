@@ -133,6 +133,20 @@ public class PageAnalyzer {
 		Map<String,BGImage> result = new HashMap<String,BGImage>();
 		//读取页面源码
 		String source = URLUtils.readSource(pageURL);
+		
+		//判断相册是否仅自己可见
+		boolean isVisibleToOneself = source.indexOf("这个相册已被设为“仅自己可见”，抱歉你无法访问。") > 0;
+		if (isVisibleToOneself) {
+			//状态设置为true，在DownloadProcessing的downloadAlbum方法中做统一提醒输出。
+			album.setIsVisibleToSelf(true);
+		}
+		//判断相册是否仅朋友可见
+		boolean isVisibleToFriend = source.indexOf("这个相册设置为仅朋友可见。你还不是他/她的朋友，所以无法访问。") > 0;
+		if (isVisibleToFriend) {
+			//状态设置为true，在DownloadProcessing的downloadAlbum方法中做统一提醒输出。
+			album.setIsVisibleToFriend(true);
+		}
+		
 
 		//获取单页所有图片地址
 		String regex = "(http|https)://(\\w|\\s|\\.|-|_|/)+[\\.](" + Common.IMAGE_TYPE + ")";
