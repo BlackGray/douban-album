@@ -38,8 +38,11 @@ public class Album {
 	
 	private AlbumHandler albumHandler;	//相册处理器
 	
-	private boolean isVisibleToSelf;	//是否仅对自己可见
-	private boolean isVisibleToFriend;	//是否仅对朋友可见
+	private boolean isVisibleToSelf = false;		//是否仅对自己可见
+	private boolean isVisibleToFriend = false;		//是否仅对朋友可见
+	private boolean isPrivateAlbum = false;			//是否私密相册
+	private long privatePhotoURLAnalyzeTotal = 0;	//私密相册照片URL分析获取总数，用于计数、界面提醒
+	
 	
 	//照片集合
 	private List<BGImage> photosList = new ArrayList<BGImage>();
@@ -180,7 +183,6 @@ public class Album {
 		this.pageURLLsit = pageURLLsit;
 	}
 	
-	
 	public boolean getIsVisibleToSelf() {
 		return isVisibleToSelf;
 	}
@@ -190,13 +192,29 @@ public class Album {
 	}
 
 	
-	
 	public boolean getIsVisibleToFriend() {
 		return isVisibleToFriend;
 	}
 
 	public void setIsVisibleToFriend(boolean isVisibleToFriend) {
 		this.isVisibleToFriend = isVisibleToFriend;
+	}
+	
+	public boolean getIsPrivateAlbum() {
+		return isPrivateAlbum;
+	}
+
+	public void setIsPrivateAlbum(boolean isPrivateAlbum) {
+		this.isPrivateAlbum = isPrivateAlbum;
+	}
+	
+
+	public long getPrivatePhotoURLAnalyzeTotal() {
+		return privatePhotoURLAnalyzeTotal;
+	}
+
+	public void setPrivatePhotoURLAnalyzeTotal(long privatePhotoURLAnalyzeTotal) {
+		this.privatePhotoURLAnalyzeTotal = privatePhotoURLAnalyzeTotal;
 	}
 
 	/**
@@ -257,7 +275,9 @@ public class Album {
 				+ ", path=" + path + ", charset=" + charset 
 				+ ", update=" + update + ", photosList=" + photosList
 				+ ", pageURLLsit=" + pageURLLsit + ", isVisibleToSelf=" + isVisibleToSelf
-				 + ", isVisibleToFriend=" + isVisibleToFriend + "]";
+				+ ", isVisibleToFriend=" + isVisibleToFriend + ", isPrivateAlbum=" + isPrivateAlbum
+				+ ", privatePhotoURLAnalyzeTotal=" + privatePhotoURLAnalyzeTotal
+				+ "]";
 	}
 	
 }

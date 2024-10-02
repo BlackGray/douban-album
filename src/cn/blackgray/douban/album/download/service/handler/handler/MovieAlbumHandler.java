@@ -88,7 +88,7 @@ public class MovieAlbumHandler extends AlbumHandler {
 
 	
 	@Override
-	public boolean hasRaw() {
+	public boolean hasRaw(Album album) {
 		return true;
 	}
 
@@ -98,7 +98,7 @@ public class MovieAlbumHandler extends AlbumHandler {
 	}
 
 	@Override
-	public void createBGImage(String source, String pageURL, String imageURL, Map<String, BGImage> map) {
+	public void createBGImage(Album album, String source, String pageURL, String imageURL, Map<String, BGImage> map) {
 //        <li data-id="2158663965">
 //        <div class="cover">
 //                <a href="http://movie.douban.com/photos/photo/2158663965/">

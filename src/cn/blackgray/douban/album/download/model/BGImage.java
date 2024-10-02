@@ -47,6 +47,8 @@ public class BGImage {
 		String name = this.getName();
 		if (name.matches("p\\d+.(" + Common.IMAGE_TYPE + ")")) {
 			return name.substring(name.indexOf("p") + 1,name.lastIndexOf("."));
+		}else if(name.matches("x\\d+.(" + Common.IMAGE_TYPE + ")")) {
+			return name.substring(name.indexOf("x") + 1,name.lastIndexOf("."));
 		}else{
 			return null;
 		}

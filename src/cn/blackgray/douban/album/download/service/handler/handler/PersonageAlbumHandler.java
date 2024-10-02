@@ -65,7 +65,7 @@ public class PersonageAlbumHandler extends AlbumHandler {
 
 	
 	@Override
-	public boolean hasRaw() {
+	public boolean hasRaw(Album album) {
 		return true;
 	}
 
@@ -78,7 +78,7 @@ public class PersonageAlbumHandler extends AlbumHandler {
 	}
 
 	@Override
-	public void createBGImage(String source, String pageURL, String imageURL, Map<String, BGImage> map) {
+	public void createBGImage(Album album, String source, String pageURL, String imageURL, Map<String, BGImage> map) {
 //		===============图片描述===============
 //		<li>
 //        <a href="/personage/27503633/photo/2374131186" target="_blank">

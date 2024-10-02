@@ -99,7 +99,7 @@ public abstract class AlbumHandler{
 	 * 是否有大图
 	 * @return
 	 */
-	public boolean hasRaw(){
+	public boolean hasRaw(Album album){
 		return false;
 	}
 	
@@ -135,7 +135,7 @@ public abstract class AlbumHandler{
 	 * @param imageURL2 
 	 * @return
 	 */
-	public abstract void createBGImage(String source,String pageURL, String imageURL, Map<String, BGImage> map);
+	public abstract void createBGImage(Album album, String source,String pageURL, String imageURL, Map<String, BGImage> map);
 	
 	/**
 	 * 大图地址处理

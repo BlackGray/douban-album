@@ -9,6 +9,9 @@ package cn.blackgray.douban.album.download.ui;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
@@ -26,6 +30,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
 import cn.blackgray.douban.album.download.common.utils.CommonUtils;
+import cn.blackgray.douban.album.download.common.utils.LoginUtils;
 import cn.blackgray.douban.album.download.service.DownloadService;
 import cn.blackgray.douban.album.download.service.creator.HtmlCreator;
 import cn.blackgray.douban.album.download.ui.component.DropTextArea;
@@ -242,6 +247,15 @@ public class MainFrame extends javax.swing.JFrame {
 				jMenuItem1ActionPerformed(evt);
 			}
 		});
+		
+		JMenuItem jMenuItemForLogin = new JMenuItem("扫码登录豆瓣 - 用于下载私密相册");
+		jMenuItemForLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				jMenuItemForLoginActionPerformed(e);
+			}
+		});
+		jMenuItemForLogin.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_DOWN_MASK));
+		jMenu1.add(jMenuItemForLogin);
 		jMenu1.add(jMenuItem1);
 
 		jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
@@ -468,7 +482,21 @@ public class MainFrame extends javax.swing.JFrame {
 			}
 		}).start();
 	}
-
+	
+	/**
+	 * 登陆菜单点击后执行方法
+	 * @param evt
+	 */
+	private void jMenuItemForLoginActionPerformed(java.awt.event.ActionEvent evt) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				//执行登陆
+				LoginUtils.login();
+			}
+		}).start();
+	}
+	
 	private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {
 		openDir();
 	}
@@ -644,7 +672,7 @@ public class MainFrame extends javax.swing.JFrame {
 	// Variables declaration - do not modify
 	public javax.swing.JLabel albumListCountLabel;
 	public javax.swing.JProgressBar albumListProgressBar;
-	javax.swing.JTextArea albumTextArea;
+	public javax.swing.JTextArea albumTextArea;
 	javax.swing.JButton changePathBtn;
 	public javax.swing.JButton downloadBtn;
 	javax.swing.JTextArea infoTextArea;

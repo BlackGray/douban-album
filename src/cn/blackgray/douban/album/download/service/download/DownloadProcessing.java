@@ -157,11 +157,11 @@ public class DownloadProcessing {
 			}
 			
 			Console.print("处理单元[" + processUnitNumber + "]：开始下载：" + album.getName() + "(" + imageURLSet.size() + "张)");
-			update = DownloadManager.downloadImage(new ArrayList<String>(imageURLSet),album.getPath());
+			update = DownloadManager.downloadImage(album, new ArrayList<String>(imageURLSet),album.getPath());
 
 			//【下载大图】
 			AlbumHandler albumHandler = album.getAlbumHandler();
-			if (Common.IS_DOWNLOAD_RAW && albumHandler.hasRaw()) {
+			if (Common.IS_DOWNLOAD_RAW && albumHandler.hasRaw(album)) {
 				Console.print("处理单元[" + processUnitNumber + "]：检测并下载大图");
 				//创建目录
 				String path = album.getPath() + File.separatorChar + "raw";
@@ -176,7 +176,7 @@ public class DownloadProcessing {
 					list.add(albumHandler.getRawURL(url));
 				}
 				//执行下载
-				update += DownloadManager.downloadImage(list,path);			
+				update += DownloadManager.downloadImage(album, list,path);			
 			}
 		}
 		return update;

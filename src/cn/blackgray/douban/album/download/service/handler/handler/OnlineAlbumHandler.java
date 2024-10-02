@@ -66,7 +66,7 @@ public class OnlineAlbumHandler extends AlbumHandler {
 	}
 
 	@Override
-	public void createBGImage(String source, String pageURL, String imageURL, Map<String, BGImage> map) {
+	public void createBGImage(Album album, String source, String pageURL, String imageURL, Map<String, BGImage> map) {
 		
 //	    <div class="photo_wrap">
 //	    <a href="http://www.douban.com/online/11127307/photo/1573338563/" title="我的近照" alt="我的近照">

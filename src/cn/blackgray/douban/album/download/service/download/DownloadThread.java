@@ -11,12 +11,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JProgressBar;
 
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.WebDriver;
+
 import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
+import cn.blackgray.douban.album.download.common.utils.LoginUtils;
 import cn.blackgray.douban.album.download.common.utils.URLUtils;
+import cn.blackgray.douban.album.download.model.Album;
 
 /**
  * 下载线程
@@ -24,6 +30,7 @@ import cn.blackgray.douban.album.download.common.utils.URLUtils;
  */
 public class DownloadThread extends Thread{
 
+	private Album album;
 	private List<String> imageURLList;
 	private String path;	//保存路径
 	private String url;		//正在处理中的图片url
@@ -37,12 +44,13 @@ public class DownloadThread extends Thread{
 		super();
 	}
 
-	public DownloadThread(String name, List<String> imageURLList,int imageCount , String path,JProgressBar mainProgressBar) {
+	public DownloadThread(Album album, String threadName, List<String> imageURLList,int imageCount , String path,JProgressBar mainProgressBar) {
+		this.album = album;
 		this.imageURLList = imageURLList;
 		this.path = path.trim();
 		this.imageCount = imageCount;
 		this.mainProgressBar = mainProgressBar;
-		this.setName(name);
+		this.setName(threadName);
 	}
 
 	public void closeStream() throws IOException {
@@ -71,6 +79,10 @@ public class DownloadThread extends Thread{
 	public BufferedOutputStream getOutputStream() {
 		return outputStream;
 	}
+	
+	public Album getAlbum() {
+		return album;
+	}
 
 	@Override
 	public void run() {
@@ -87,7 +99,7 @@ public class DownloadThread extends Thread{
 				}
 			}
 			try {
-				int state = downloadImage(url, path);
+				int state = downloadImage(url, path, album.getIsPrivateAlbum(), LoginUtils.IS_LOGIN);
 				if (state == Common.IMAGE_DOWNLOAD_STATUS_EXISTS) {
 					Console.print(this.getName() + " - 图片已存在(" + (imageCount - listSize) + "/" + imageCount + ")：" + url);
 				}
@@ -122,6 +134,20 @@ public class DownloadThread extends Thread{
 	}
 
 	/**
+	 * 下载图片 - 是否私有相册、是否登陆默认值为false
+	 * @param url
+	 * @param filePath
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public int downloadImage(String url, String filePath) throws MalformedURLException, FileNotFoundException, IOException{
+		return downloadImage(url, filePath, false, false);
+	}
+	
+	
+	/**
 	 * 下载图片
 	 * @param url
 	 * @param filePath
@@ -129,8 +155,29 @@ public class DownloadThread extends Thread{
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public int downloadImage(String url, String filePath) throws MalformedURLException, FileNotFoundException, IOException{
-
+	public int downloadImage(String url, String filePath, boolean isPrivateAlbum, boolean isLogin) throws MalformedURLException, FileNotFoundException, IOException{
+		
+		//私密相册，且已登录，生成请求所需的Cookie信息
+		String cookieStr = null;
+		if (isPrivateAlbum && isLogin) {
+			WebDriver driver = LoginUtils.CHROME_DRIVER;
+			
+			//访问获取图片
+			driver.get(url);
+			//睡眠3秒，加载图片
+			try {
+				Thread.sleep(3*1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			
+			Set<Cookie> cookies = driver.manage().getCookies();
+			cookieStr = convertCookiesToString(cookies);
+//			System.out.println("【CookiesStr】" + cookieStr);
+		}
+			
+		//相册下载处理
 		String fileName = url.substring(url.lastIndexOf('/'));
 		File file = new File(filePath + File.separatorChar + fileName);
 		if(file.exists()) {
@@ -139,16 +186,20 @@ public class DownloadThread extends Thread{
 		}else {
 			//如果本地图不存在，执行下载
 			//判断网络资源是否存在
-			if (URLUtils.exists(url)) {
+			if (URLUtils.exists(url, cookieStr)) {
 				//执行下载
 				//配置网络资源
 				URL image = new URL(url);
 				HttpURLConnection conn = (HttpURLConnection) image.openConnection();
-
+				
 				//2016-03-16 如不加referer信息，下载影人相册时，大图监测返回403异常
 				conn.setRequestProperty("referer", "https://www.douban.com/");
 				//2024-06-23 新增参数，不加会报403
 				conn.setRequestProperty("User-Agent", URLUtils.randomUserAgentStr());
+				//2024-10-02 设置通过selenium模拟登陆后获取的Cookie值
+				if (cookieStr != null) {
+					conn.setRequestProperty("Cookie", cookieStr);
+				}
 
 				conn.setConnectTimeout(10*1000);	//设置连接超时
 				conn.setReadTimeout(10*1000);		//设置读取超时
@@ -182,8 +233,43 @@ public class DownloadThread extends Thread{
 			}else{
 				return Common.IMAGE_DOWNLOAD_STATUS_URL_NOT_EXISTS;
 			}
-
 		}
+		
+	}
+	
+	/**
+	 * Cookie集合转为字符串
+	 * @param cookies
+	 * @return
+	 */
+	private static String convertCookiesToString(Set<Cookie> cookies) {
+        StringBuilder cookieBuilder = new StringBuilder();
+        for (Cookie cookie : cookies) {
+            if (cookieBuilder.length() > 0) {
+                cookieBuilder.append("; ");
+            }
+            cookieBuilder.append(cookie.getName()).append("=").append(cookie.getValue());
+        }
+        return cookieBuilder.toString();
+    }
+	
+	
+	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException {
+		//免登陆图片下载测试
+//		WebDriver driver = LoginUtils.onlyInit();
+//		LoginUtils.CHROME_DRIVER = driver;
+//		DownloadThread thread = new DownloadThread();
+//		
+//		String url = "https://img9.doubanio.com/view/photo/l/public/p881707594.jpg";
+//		thread.downloadImage(url, "/Users/blackgray/Downloads/selenium/", true, true);
+		
+		
+		//登陆后图片下载测试
+		LoginUtils.login();
+		DownloadThread thread = new DownloadThread();
+		
+		String url = "https://simg.douban.com/view/photo/m/tKu8-lZS3kZdc5E9Fgcrww/2745512/x2196275895.jpg";
+		thread.downloadImage(url, "/Users/blackgray/Downloads/selenium/", true, true);
 	}
 
 }

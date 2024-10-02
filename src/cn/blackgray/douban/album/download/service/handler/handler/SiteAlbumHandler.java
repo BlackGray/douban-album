@@ -49,7 +49,7 @@ public class SiteAlbumHandler extends AlbumHandler {
 
 
 	@Override
-	public boolean hasRaw() {
+	public boolean hasRaw(Album album) {
 		return true;
 	}
 
@@ -61,7 +61,7 @@ public class SiteAlbumHandler extends AlbumHandler {
 	}
 
 	@Override
-	public void createBGImage(String source, String pageURL, String imageURL, Map<String, BGImage> map) {
+	public void createBGImage(Album album, String source, String pageURL, String imageURL, Map<String, BGImage> map) {
 
 		//			=================旧
 		//			http://site.douban.com/widget/photos/1803367/

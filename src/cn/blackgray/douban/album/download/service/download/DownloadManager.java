@@ -14,6 +14,7 @@ import javax.swing.JProgressBar;
 
 import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
+import cn.blackgray.douban.album.download.model.Album;
 import cn.blackgray.douban.album.download.ui.MainFrame;
 
 /**
@@ -33,7 +34,7 @@ public class DownloadManager {
 	 * @param path
 	 * @return
 	 */
-	public static int downloadImage(List<String> imageURLList,String path) {
+	public static int downloadImage(Album album, List<String> imageURLList,String path) {
 		
 		mainProgressBar.setMaximum(imageURLList.size());	//进度条设置 - 最大值
 		mainProgressBar.setValue(0);						//进度条设置 - 初始值
@@ -47,7 +48,7 @@ public class DownloadManager {
 			}else{
 				threadName = "线程" + String.valueOf(i);
 			}
-			DownloadThread thread = new DownloadThread(threadName,imageURLList, imageSize, path, mainProgressBar);
+			DownloadThread thread = new DownloadThread(album, threadName,imageURLList, imageSize, path, mainProgressBar);
 			thread.start();
 			threadList.add(thread);
 		}
@@ -116,7 +117,7 @@ public class DownloadManager {
 		System.out.println("START");
 		//https://www.douban.com/personage/27503633/photo/1946222503/
 		//https://img3.doubanio.com/view/photo/l/public/p1946222503.jpg
-		new DownloadThread().downloadImage("https://img3.doubanio.com/view/photo/raw/public/p1946222503.jpg", "/Users/blackgray/Documents/temp");
+		new DownloadThread().downloadImage("https://img3.doubanio.com/view/photo/raw/public/p1946222503.jpg", "/Users/blackgray/Documents/temp", false, false);
 		System.out.println("FINISH");
 	}
 

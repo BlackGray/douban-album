@@ -120,7 +120,7 @@ public class HtmlCreator {
 		
 		//【如果是小站&个人相册，获取raw目录下文件列表】
 		Set<String> rawSet = new HashSet<String>();
-		if (albumHandler.hasRaw()) {
+		if (albumHandler.hasRaw(album)) {
 			File dir = new File(album.getPath() + File.separatorChar + "raw");
 			if (dir.exists()) {
 				for (File file : dir.listFiles()) {
@@ -168,7 +168,7 @@ public class HtmlCreator {
 			
 			
 			//【检查raw目录】
-			if (albumHandler.hasRaw()) {
+			if (albumHandler.hasRaw(album)) {
 				if (rawSet.contains(image.getName())) {
 					try {
 						//判断图片大小，如果大小相同

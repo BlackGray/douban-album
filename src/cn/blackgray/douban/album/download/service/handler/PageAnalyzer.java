@@ -160,7 +160,7 @@ public class PageAnalyzer {
 			//分析并创建图片对象
 			String imageNameRegex = albumHandler.getImageNameRegex();
 			if (imageNameRegex == null || (imageNameRegex != null && imageName.matches(imageNameRegex))) {
-				albumHandler.createBGImage(source, pageURL, imageURL, result);
+				albumHandler.createBGImage(album, source, pageURL, imageURL, result);
 			}
 		}
 		

@@ -53,7 +53,7 @@ public class DefaultAlbumHandler extends AlbumHandler {
 
 
 	@Override
-	public void createBGImage(String source, String pageURL, String imageURL,Map<String, BGImage> map) {
+	public void createBGImage(Album album, String source, String pageURL, String imageURL,Map<String, BGImage> map) {
 		map.put(imageURL, new BGImage("", imageURL));
 	}
 

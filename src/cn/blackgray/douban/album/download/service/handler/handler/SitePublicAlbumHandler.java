@@ -66,7 +66,7 @@ public class SitePublicAlbumHandler extends AlbumHandler {
 
 
 	@Override
-	public boolean hasRaw() {
+	public boolean hasRaw(Album album) {
 		return false;
 	}
 
@@ -76,7 +76,7 @@ public class SitePublicAlbumHandler extends AlbumHandler {
 	}
 
 	@Override
-	public void createBGImage(String source, String pageURL, String imageURL, Map<String, BGImage> map) {
+	public void createBGImage(Album album, String source, String pageURL, String imageURL, Map<String, BGImage> map) {
 
 //		<li>
 //		    <div class="photo-item">

@@ -10,6 +10,8 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Random;
 
+import org.openqa.selenium.WebDriver;
+
 import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
 
@@ -23,44 +25,67 @@ public class URLUtils {
 	
 	public static String charset = Common.CHARTSET_UTF8;
 	
-	
 	/**
 	 * 获取页面源码
 	 * @param url
 	 * @return
 	 */
 	public static String readSource(String url){
-
-		//获取页面源码
+		
 		StringBuffer sb = new StringBuffer();
-		try {
-			//代理
-//			SocketAddress add = new InetSocketAddress("203.66.187.246", 81);
-//			Proxy p = new Proxy(Proxy.Type.HTTP , add);
-//			HttpURLConnection connection = (HttpURLConnection) u.openConnection(p);
-//			String headerKey = "Proxy-Authorization";  
-//			String headerValue = "Basic " + Base64.encode(user+":"+password);  
-//			conn.setRequestProperty(headerKey, headerValue);  
-			
-			URL u = new URL(url);
-			HttpURLConnection connection = (HttpURLConnection) u.openConnection();
-			connection.setRequestProperty("User-Agent", randomUserAgentStr());
-			
-			//connection.setRequestProperty("referer", "https://www.douban.com/");
-			
-			//默认UTF-8读取
-			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),charset));
-			String str;
-			while ((str = reader.readLine()) != null) {
-				sb.append(str);
+		
+		//判断是否已登录
+		if (LoginUtils.IS_LOGIN) {
+			//若已登录使用CHROME_DRIVER获取源码
+			WebDriver driver = LoginUtils.CHROME_DRIVER;			
+			driver.get(url);
+			Console.print("睡眠1s，等待页面加载完整。");
+			try {
+				Thread.sleep(1*1000l);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			reader.close();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+
+//			System.out.println("获取页面源码。");
+			String pageSource = driver.getPageSource();
+
+//			System.out.println("输出页面源码。");
+//			System.out.println(pageSource);
+			
+			sb.append(pageSource.toString());
+			
+		}else {
+			//若未登录，使用HttpURLConnection获取源码
+			//获取页面源码
+			try {
+				//代理
+//				SocketAddress add = new InetSocketAddress("203.66.187.246", 81);
+//				Proxy p = new Proxy(Proxy.Type.HTTP , add);
+//				HttpURLConnection connection = (HttpURLConnection) u.openConnection(p);
+//				String headerKey = "Proxy-Authorization";  
+//				String headerValue = "Basic " + Base64.encode(user+":"+password);  
+//				conn.setRequestProperty(headerKey, headerValue);  
+				
+				URL u = new URL(url);
+				HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+				connection.setRequestProperty("User-Agent", randomUserAgentStr());
+				
+				//connection.setRequestProperty("referer", "https://www.douban.com/");
+				
+				//默认UTF-8读取
+				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),charset));
+				String str;
+				while ((str = reader.readLine()) != null) {
+					sb.append(str);
+				}
+				reader.close();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		String result = sb.toString();
@@ -118,7 +143,6 @@ public class URLUtils {
 		return result;
 	}
 	
-	
 	/**
 	 * 判断URL资源是否存在
 	 * @param url
@@ -128,6 +152,19 @@ public class URLUtils {
 	 * @throws IOException
 	 */
 	public static boolean exists(String url) throws MalformedURLException, ProtocolException, IOException{
+		return exists(url);
+	}
+	
+	/**
+	 * 判断URL资源是否存在
+	 * @param url
+	 * @param cookie字符串
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws ProtocolException
+	 * @throws IOException
+	 */
+	public static boolean exists(String url, String cookieStr) throws MalformedURLException, ProtocolException, IOException{
 		URL u = new URL(url);
 		HttpURLConnection conn = (HttpURLConnection) u.openConnection();
 		//允许重定向，否则部分图片无法下载
@@ -139,6 +176,11 @@ public class URLUtils {
 		
 		//2016-03-16 如不加referer信息，下载影人相册时，大图监测返回403异常
 		conn.setRequestProperty("referer", "https://www.douban.com/");
+		
+		//2024-10-02 如果有Cookie，设置参数。用于登录后页面访问。
+		if (cookieStr != null && cookieStr != "") {
+			conn.setRequestProperty("Cookie", cookieStr);
+		}
 		
 		//=======信息=======
 //		Map<String, List<String>> map = conn.getHeaderFields();

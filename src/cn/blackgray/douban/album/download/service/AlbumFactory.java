@@ -61,6 +61,7 @@ public class AlbumFactory {
 			BufferedReader reader = new BufferedReader(new FileReader(descFile));
 			String str;
 			//获取相册信息
+			//首行为相册基本信息，根据长度不同，附带的信息内容有增加
 			if ((str = reader.readLine()) != null) {
 				String[] strArray = str.trim().split(" ",4);
 				if (strArray.length == 1) {
@@ -89,8 +90,16 @@ public class AlbumFactory {
 			//获取图片信息
 			List<BGImage> bgImages = album.getAlbumHandler().getBGImageFromDescDoc(descFile);
 			photosList.addAll(bgImages);
+			boolean flag = true;
 			for (BGImage bgImage : bgImages) {
 				imageNameList.add(bgImage.getName());
+				//根据第一张图片名称判断是否为私密相册，私密相册图片名称前缀为x，公共为p
+				if (flag) {
+					if (bgImage.getName().indexOf("x") >=0 ) {
+						album.setIsPrivateAlbum(flag);
+					}
+					flag = false;
+				}
 			}
 			reader.close();
 		}
