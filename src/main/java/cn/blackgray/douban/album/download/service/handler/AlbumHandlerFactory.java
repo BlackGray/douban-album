@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import cn.blackgray.douban.album.download.common.Console;
-import cn.blackgray.douban.album.download.common.ReflectUtils;
+import cn.blackgray.douban.album.download.common.utils.ReflectUtils;
 import cn.blackgray.douban.album.download.service.handler.finder.IAlbumURLFinder;
 import cn.blackgray.douban.album.download.service.handler.handler.DefaultAlbumHandler;
 

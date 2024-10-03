@@ -1,4 +1,4 @@
-package cn.blackgray.douban.album.download.common;
+package cn.blackgray.douban.album.download.common.utils;
 
 
 import java.io.File;
