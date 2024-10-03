@@ -69,8 +69,8 @@ public class Common {
 	
 	public static final Integer AUTO_DOWNLOAD_FAIL_FILE = 10;							//自动下载错误文件次数
 	
-	public static final String HTML_TEMPLATE_PAGE;
-	public static final String HTML_TEMPLATE_IMAGE;
+	public static String HTML_TEMPLATE_PAGE = "";
+	public static String HTML_TEMPLATE_IMAGE = "";
 	
 	public static final String HTML_TAG_IMAGES = "${images}";
 	public static final String HTML_TAG_IMAGES_TOTAL = "${imagesTotal}";
@@ -120,20 +120,25 @@ public class Common {
 		//加载HTML页面模版
 		StringBuffer sb = new StringBuffer();
 		InputStream inputStream = Common.class.getResourceAsStream("/cn/blackgray/douban/album/download/resources/html/Template.html");
-		BufferedReader bw = new BufferedReader(new InputStreamReader(inputStream));
-		String str;
+		BufferedReader bw;
 		try {
-			while ((str = bw.readLine()) != null) {
-				sb.append(str);
+			bw = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
+			String str;
+			try {
+				while ((str = bw.readLine()) != null) {
+					sb.append(str);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
+			HTML_TEMPLATE_PAGE = sb.toString();
+			
+			//初始化HTML图片单元模版
+			HTML_TEMPLATE_IMAGE = "<div class=\"photos\"><div class=\"desc\">${owner}${desc}</div><div class=\"number\">${num}</div><a href=\"${commentURL}\" target=\"_blank\"><img src=\"${image}\"/></a></div>";
+			
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		HTML_TEMPLATE_PAGE = sb.toString();
-		
-		//初始化HTML图片单元模版
-		HTML_TEMPLATE_IMAGE = "<div class=\"photos\"><div class=\"desc\">${owner}${desc}</div><div class=\"number\">${num}</div><a href=\"${commentURL}\" target=\"_blank\"><img src=\"${image}\"/></a></div>";
-		
 	}
 	
 	/**

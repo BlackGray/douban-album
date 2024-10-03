@@ -6,9 +6,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -198,10 +199,16 @@ public class HtmlCreator {
 		page = page.replace(Common.HTML_TAG_IMAGES, images.toString());
 		
 		File file = new File(album.getPath() + File.separator + Common.DEFAULT_HTML_NAME);
-		BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-		bw.write(page.toString());
-		bw.flush();
-		bw.close();
+		
+		OutputStream fileOutputStream = new FileOutputStream(file);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(bufferedOutputStream, "UTF-8");
+        BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+        
+		bufferedWriter.write(page.toString());
+		
+		bufferedWriter.flush();
+		bufferedWriter.close();
 
 
 		//输出资源文件
