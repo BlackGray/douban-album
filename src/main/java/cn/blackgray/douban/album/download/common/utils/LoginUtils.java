@@ -1,11 +1,13 @@
 package cn.blackgray.douban.album.download.common.utils;
 
 import java.io.File;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -197,5 +199,33 @@ public class LoginUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 获取Cookie字符串
+	 * @param cookies
+	 * @return
+	 */
+	public static String getCookiesStr(WebDriver driver) {
+		Set<Cookie> cookies = driver.manage().getCookies();
+		String cookieStr = convertCookiesToString(cookies);
+//		System.out.println("【CookiesStr】" + cookieStr);
+		return cookieStr;
+    }
+	
+	/**
+	 * Cookie集合转为字符串
+	 * @param cookies
+	 * @return
+	 */
+	private static String convertCookiesToString(Set<Cookie> cookies) {
+        StringBuilder cookieBuilder = new StringBuilder();
+        for (Cookie cookie : cookies) {
+            if (cookieBuilder.length() > 0) {
+                cookieBuilder.append("; ");
+            }
+            cookieBuilder.append(cookie.getName()).append("=").append(cookie.getValue());
+        }
+        return cookieBuilder.toString();
+    }
 
 }

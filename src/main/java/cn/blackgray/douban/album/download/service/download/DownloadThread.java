@@ -11,12 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JProgressBar;
-
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
 
 import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
@@ -160,21 +156,7 @@ public class DownloadThread extends Thread{
 		//私密相册，且已登录，生成请求所需的Cookie信息
 		String cookieStr = null;
 		if (isPrivateAlbum && isLogin) {
-			WebDriver driver = LoginUtils.CHROME_DRIVER;
-			
-			//访问获取图片
-			driver.get(url);
-			//睡眠3秒，加载图片
-			try {
-				Thread.sleep(3*1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			
-			Set<Cookie> cookies = driver.manage().getCookies();
-			cookieStr = convertCookiesToString(cookies);
-//			System.out.println("【CookiesStr】" + cookieStr);
+			cookieStr = LoginUtils.getCookiesStr(LoginUtils.CHROME_DRIVER);
 		}
 			
 		//相册下载处理
@@ -236,23 +218,6 @@ public class DownloadThread extends Thread{
 		}
 		
 	}
-	
-	/**
-	 * Cookie集合转为字符串
-	 * @param cookies
-	 * @return
-	 */
-	private static String convertCookiesToString(Set<Cookie> cookies) {
-        StringBuilder cookieBuilder = new StringBuilder();
-        for (Cookie cookie : cookies) {
-            if (cookieBuilder.length() > 0) {
-                cookieBuilder.append("; ");
-            }
-            cookieBuilder.append(cookie.getName()).append("=").append(cookie.getValue());
-        }
-        return cookieBuilder.toString();
-    }
-	
 	
 	public static void main(String[] args) throws MalformedURLException, FileNotFoundException, IOException {
 		//免登陆图片下载测试

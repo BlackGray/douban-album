@@ -10,8 +10,6 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Random;
 
-import org.openqa.selenium.WebDriver;
-
 import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
 
@@ -32,60 +30,46 @@ public class URLUtils {
 	 */
 	public static String readSource(String url){
 		
-		StringBuffer sb = new StringBuffer();
-		
-		//判断是否已登录
+		//私密相册，且已登录，生成请求所需的Cookie信息
+		String cookieStr = null;
 		if (LoginUtils.IS_LOGIN) {
-			//若已登录使用CHROME_DRIVER获取源码
-			WebDriver driver = LoginUtils.CHROME_DRIVER;			
-			driver.get(url);
-			Console.print("睡眠1s，等待页面加载完整。");
-			try {
-				Thread.sleep(1*1000l);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
-//			System.out.println("获取页面源码。");
-			String pageSource = driver.getPageSource();
-
-//			System.out.println("输出页面源码。");
-//			System.out.println(pageSource);
+			cookieStr = LoginUtils.getCookiesStr(LoginUtils.CHROME_DRIVER);
+		}
+				
+		//获取页面源码
+		StringBuffer sb = new StringBuffer();
+		try {
+			//代理
+//			SocketAddress add = new InetSocketAddress("203.66.187.246", 81);
+//			Proxy p = new Proxy(Proxy.Type.HTTP , add);
+//			HttpURLConnection connection = (HttpURLConnection) u.openConnection(p);
+//			String headerKey = "Proxy-Authorization";  
+//			String headerValue = "Basic " + Base64.encode(user+":"+password);  
+//			conn.setRequestProperty(headerKey, headerValue);  
 			
-			sb.append(pageSource.toString());
-			
-		}else {
-			//若未登录，使用HttpURLConnection获取源码
-			//获取页面源码
-			try {
-				//代理
-//				SocketAddress add = new InetSocketAddress("203.66.187.246", 81);
-//				Proxy p = new Proxy(Proxy.Type.HTTP , add);
-//				HttpURLConnection connection = (HttpURLConnection) u.openConnection(p);
-//				String headerKey = "Proxy-Authorization";  
-//				String headerValue = "Basic " + Base64.encode(user+":"+password);  
-//				conn.setRequestProperty(headerKey, headerValue);  
-				
-				URL u = new URL(url);
-				HttpURLConnection connection = (HttpURLConnection) u.openConnection();
-				connection.setRequestProperty("User-Agent", randomUserAgentStr());
-				
-				//connection.setRequestProperty("referer", "https://www.douban.com/");
-				
-				//默认UTF-8读取
-				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),charset));
-				String str;
-				while ((str = reader.readLine()) != null) {
-					sb.append(str);
-				}
-				reader.close();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			URL u = new URL(url);
+			HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+			connection.setRequestProperty("User-Agent", randomUserAgentStr());
+			//2024-10-02 设置通过selenium模拟登陆后获取的Cookie值
+			if (cookieStr != null) {
+				connection.setRequestProperty("Cookie", cookieStr);
 			}
+			
+			//connection.setRequestProperty("referer", "https://www.douban.com/");
+			
+			//默认UTF-8读取
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(),charset));
+			String str;
+			while ((str = reader.readLine()) != null) {
+				sb.append(str);
+			}
+			reader.close();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		String result = sb.toString();
