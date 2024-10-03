@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +29,9 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import cn.blackgray.douban.album.download.common.Common;
 import cn.blackgray.douban.album.download.common.Console;
 import cn.blackgray.douban.album.download.common.utils.CommonUtils;
@@ -40,10 +45,22 @@ import cn.blackgray.douban.album.download.ui.component.DropTextArea;
  */
 public class MainFrame extends javax.swing.JFrame {
 
+	private static Log log = LogFactory.getLog(MainFrame.class);
 	private static final long serialVersionUID = 1L;
 
 	/** Creates new form MainFrame */
 	private MainFrame() {
+		//关闭程序时执行内容
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if (LoginUtils.CHROME_DRIVER != null) {
+					//若存在Chrome实例，退出浏览器。
+					LoginUtils.CHROME_DRIVER.quit();
+					log.info("存在Chrome实例，退出浏览器。");
+				}
+			}
+		});
 		initComponents();
 		this.setBounds(350, 100, this.getWidth(), this.getHeight());
 		String ext = "";
